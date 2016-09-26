@@ -1,5 +1,6 @@
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio
 *.iml
+/*/*.iml
 
 ## Directory-based project format:
 /.idea/
@@ -73,13 +74,15 @@ local.properties
 
 
 #ignore the jooq generated files
-/dev notes/
+/bridge/dev notes/
 /bridge/src/main/java/dk/magenta/eark/cmis/viewer/
 
 #For UI
  logs/*
  !.gitkeep
  /frontend/node_modules/
+ /frontend/bower_components/
+ /frontend/dist/
  .settings
   nbproject/*
  /frontend/app/src/.sass-cache
