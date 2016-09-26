@@ -1,0 +1,17 @@
+<form name="languageSelectorForm" class="lang-selector">
+    <label
+        class="lang-selector__label"
+        for="lang-selector">
+        <i class="material-icons">language</i>
+    </label>
+    <select
+        id="lang-selector"
+        class="lang-selector__input"
+        name="langSelect"
+        ng-model="ctrl.selected"
+        ng-change="ctrl.changeLanguage(ctrl.selected)">
+        <option ng-repeat="lang in ctrl.langs" value="{{ lang.code }}">
+            {{ lang.title }}
+        </option>
+    </select>
+</form>

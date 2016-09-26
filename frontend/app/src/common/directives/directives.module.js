@@ -1,0 +1,1 @@
+angular.module('eArkPlatform.common.directives', ['ngMaterial', 'pascalprecht.translate']);

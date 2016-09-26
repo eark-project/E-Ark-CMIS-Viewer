@@ -1,0 +1,33 @@
+<app-header></app-header>
+
+<md-content layout="column">
+
+    <div class="sub-toolbar" layout-padding>
+        <h1 class="md-headline">{{ 'ADMIN.ADMINISTRATION_PAGES' | translate }}</h1>
+    </div>
+
+    <md-tabs md-dynamic-height md-selected="currentTab">
+
+        <md-tab ui-sref="administration.users">
+            <md-tab-label>
+                <span><i class="material-icons">person</i> {{ 'USER.USERS' | translate }}</span>
+            </md-tab-label>
+            <md-tab-body layout="column">
+                <div ui-view="users"></div>
+            </md-tab-body>
+        </md-tab>
+        
+        <md-tab ui-sref="administration.systemsettings">
+            <md-tab-label>
+                <span><i class="material-icons">settings</i> {{ 'SYSTEM_SETTINGS.SYSTEM_SETTINGS' | translate }}</span>
+            </md-tab-label>
+            <md-tab-body layout="column">
+                <div ui-view="systemsettings"></div>
+            </md-tab-body>
+        </md-tab>
+
+    </md-tabs>
+
+</md-content>
+
+<app-footer></app-footer>

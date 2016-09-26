@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <title>CMIS Browser</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
+    <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="./dist/eark-cmis-viewer-module.min.css">
+      
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
+
+    <!-- Vendor scripts -->
+
+    <script src="./bower_components/pdfjs-dist/build/pdf.combined.js"></script>
+    <script src="./bower_components/swfobject/swfobject/swfobject.js"></script>
+
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-messages/angular-messages.js"></script>
+    <script src="./bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="./bower_components/angular-route/angular-route.js"></script>
+    <script src="./bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="./bower_components/angular-resource/angular-resource.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.js"></script>
+    <script src="./bower_components/angular-aria/angular-aria.js"></script>
+    <script src="./bower_components/angular-encode-uri/dist/angular-encode-uri.js"></script>
+    <script src="./bower_components/angular-material/angular-material.js"></script>
+    <script src="./bower_components/material-wizard/dist/material-wizard.js"></script>
+    <script src="./bower_components/angular-translate/angular-translate.js"></script>
+    <script src="./bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="./bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
+    <script src="./bower_components/angular-pdf/dist/angular-pdf.js"></script>
+    <script src="./bower_components/angular-swfobject/angular-swfobject.js"></script>
+    <script src="./bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
+    <script src="./bower_components/angular-img-fallback/angular.dcb-img-fallback.min.js"></script>
+
+    <!-- eArkPlatform App -->
+    <script src="./dist/eark-cmis-viewer-module.js"></script>
+
+  </head>
+
+  <body ng-app="eArkPlatform" layout="column">
+    
+    <header ui-view="header"></header>
+    
+    <md-content ui-view="content" layout-padding></md-content>
+    
+    <footer ui-view="footer"></footer>
+    
+    <div id="loader" layout="column" layout-align="center center">
+        <md-progress-circular md-diameter="200" flex="initial" md-mode="indeterminate"></md-progress-circular>
+    </div>
+    
+  </body>
+
+</html>

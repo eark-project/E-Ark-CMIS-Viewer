@@ -1,0 +1,20 @@
+<md-dialog aria-label="Repository connect">
+    <form>
+        <md-toolbar layout="row">
+            <div class="md-toolbar-tools">
+                <h2>{{ 'ERMS_PROFILES.PROFILES.CONNECT' | translate }}</h2>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout="column" layout-padding layout-margin>
+            <h3>{{ 'ERMS_PROFILES.PROFILES.DIALOG.LABELS.SELECT_MAP_FILE' | translate }}</h3>
+            <md-button ng-repeat="mapfile in pmdc.mapFiles" ng-click="pmdc.selectMap(mapfile)">
+                {{ mapfile.name }}
+            </md-button>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="cancel()">
+                {{ 'COMMON.CANCEL' | translate }}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

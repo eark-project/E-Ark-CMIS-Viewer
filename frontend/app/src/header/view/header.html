@@ -1,0 +1,28 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <div>
+            <span>E-Ark tools:</span>
+
+            <h1>
+                <span>ERMS export</span>
+            </h1>
+        </div>
+
+        <span flex></span>
+        <language-selector></language-selector>
+        <md-button class="md-icon-button" aria-label="menu" ng-click="vm.toggleMenu()">
+            <i class="material-icons">menu</i>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<md-sidenav md-component-id="right" class="md-sidenav-right">
+
+    <md-list ng-controller="ModulesMenuController as menu">
+        <md-list-item ng-repeat="item in menu.items | orderBy: 'order'">
+            <ng-include src="item.templateUrl"></ng-include>
+            <md-divider></md-divider>
+        </md-list-item>
+    </md-list>
+
+</md-sidenav>

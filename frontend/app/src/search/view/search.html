@@ -1,0 +1,63 @@
+<md-content layout="column" ng-controller="SearchController as sctrl">
+
+    <div id="global-search"
+         ng-controller="AutosuggestController as asctrl"
+         class="global-tools__search">
+        <form ng-submit="asctrl.gotoSearchPage()">
+            <md-input-container md-no-float>
+                <i class="material-icons global-tools__search__icon">search</i>
+                <input type="text" ng-model="asctrl.searchTerm"
+                       ng-change=""
+                       ng-keydown="asctrl.keydown($event)" ng-model-options="{ debounce: 250 }"
+                       placeholder="{{ 'SEARCH.SEARCH' | translate }}">
+            </md-input-container>
+
+        </form>
+    </div>
+
+
+    <div class="sub-toolbar" layout-padding>
+        <h1 class="md-headline search__header">
+            <span class="muted">{{ 'SEARCH.SEARCHING_FOR' | translate }}:</span>
+            {{ sctrl.searchTerm }}
+        </h1>
+
+        <div flex class="opene-toggleview">
+            <md-button class="md-icon-button md-accent" ng-class="{active: sctrl.layout == 'grid'}"
+                       ng-click="sctrl.layout = 'grid'" title="{{ 'COMMON.GRID_VIEW' | translate }}"><i
+                    class="material-icons">view_stream</i></md-button>
+            <md-button class="md-icon-button md-accent" ng-class="{active: sctrl.layout == 'list'}"
+                       ng-click="sctrl.layout = 'list'" title="{{ 'COMMON.LIST_VIEW' | translate }}"><i
+                    class="material-icons">view_list</i></md-button>
+        </div>
+    </div>
+
+    <div layout="row">
+
+        <div class="search__list">
+
+            <div ng-repeat="item in sctrl.fullSearchResults.results" ng-show="sctrl.layout == 'grid'">
+
+            </div>
+
+            <table ng-show="sctrl.layout == 'list'" class="list-search">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>{{ "COMMON.TITLE" | translate }}</th>
+                    <th>{{ "COMMON.DESCRIPTION" | translate }}</th>
+                    <th style="text-align: right; padding-right: 24px;">{{ "COMMON.MODIFIED_BY" | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in sctrl.fullSearchResults.results">
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</md-content>

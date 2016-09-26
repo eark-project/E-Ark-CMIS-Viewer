@@ -1,0 +1,45 @@
+<div class="login-form" layout="column" layout-align="center center">
+    <md-card class="login-form__card" flex="initial">
+        <md-toolbar>
+            <h1 layout="row" layout-align="center center">
+                {{$root.appName}} {{'LOGIN.LOGIN' | translate}}
+            </h1>
+        </md-toolbar>
+        <md-card-content>
+
+            <form name="vm.form" novalidate>
+
+                <md-input-container flex="grow">
+                    <label>{{ 'LOGIN.USER_NAME' | translate }}</label>
+                    <input type="text" ng-model="vm.credentials.username" name="username" required autofocus
+                           ng-change="vm.updateValidator()">
+                    <opene-error form="vm.form" field="vm.form.username"></opene-error>
+                </md-input-container>
+
+                <md-input-container flex="grow">
+                    <input type="password" ng-model="vm.credentials.password" name="password" required
+                           ng-change="vm.updateValidator()">
+                    <label>{{ 'LOGIN.PASSWORD' | translate }}</label>
+                    <opene-error form="vm.form" field="vm.form.password"></opene-error>
+                </md-input-container>
+
+                <div layout="column" layout-align="start center">
+
+                    <md-button type="submit" class="md-raised md-primary"
+                               ng-click="vm.login(vm.credentials)"
+                               ng-disabled="vm.form.$invalid">
+                        {{ 'LOGIN.LOGIN' | translate }}
+                    </md-button>
+
+                </div>
+            </form>
+
+        </md-card-content>
+
+        <md-card-footer layout="row" layout-align="center">
+            <a href="#" ng-click="vm.showForgotDialog($event)">
+                {{ 'LOGIN.FORGOT_PASSWORD' | translate }}?
+            </a>
+        </md-card-footer>
+    </md-card>
+</div>

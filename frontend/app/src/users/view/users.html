@@ -1,0 +1,64 @@
+<md-card ng-controller="UsersController as vm">
+    <md-card-content>
+
+        <div layout layout-align="space-between center">
+            <h2 class="md-title" flex>{{ 'USER.USERS' | translate }}</h2>
+            <opene-filter-search flex="15"
+                                 select-options="vm.selectOptions"
+                                 finished="vm.filterCallback">
+            </opene-filter-search>
+        </div>
+
+        <div class="repeat-table">
+            <div class="repeat-header" layout>
+                <span layout="row" flex="95">
+                    <span class="r" flex="5"></span>
+                    <span class="r" flex="10" sort-table="userName">{{ 'USER.USERNAME' | translate }}</span>
+                    <span class="r" flex="15" sort-table="firstName">{{ 'USER.FIRST_NAME' | translate }}</span>
+                    <span class="r" flex="15" sort-table="lastName">{{ 'USER.LAST_NAME' | translate }}</span>
+                    <span class="r" flex sort-table="email">{{ 'COMMON.EMAIL' | translate }}</span>
+                    <span class="r" flex="15">{{ 'COMMON.ACTION' | translate }}</span>
+                </span>
+                <span flex="5"></span>
+            </div>
+            <md-virtual-repeat-container flex-height style="height: 450px;">
+                <div md-virtual-repeat="user in vm.allSystemUsers | orderObjectBy:orderByAttribute:reverseOrder"
+                     class="repeat-item {{user.enabled ? 'enabled' : 'muted'}}" layout="row">
+                    <a class="r-rowlink"
+                       layout="row"
+                       ng-show="user.userName != 'guest'"
+                       flex="95">
+                        <span class="r" flex="5"><i class="material-icons">account_box</i></span>
+                        <span class="r" flex="10">{{user.userName}}</span>
+                        <span class="r muted" flex="15">{{user.firstName}}</span>
+                        <span class="r muted" flex="15">{{user.lastName}}</span>
+                        <span class="r muted" flex>{{user.email}}</span>
+                        <span class="r muted" flex="15">
+                            <md-button class="md-primary" style="margin: 0;" ng-click="vm.editUser($event, user)"
+                                       aria-label="Edit user">
+                                {{ 'USER.EDIT_USER' | translate }}
+                            </md-button>
+                            <md-button class="md-primary" style="margin: 0;" ng-if="user.userName !== 'admin'"
+                                       ng-click="vm.deleteUser($event, user)" aria-label="Delete user">
+                                {{ 'COMMON.DELETE' | translate }}
+                            </md-button>
+                        </span>
+                    </a>
+                </div>
+            </md-virtual-repeat-container>
+        </div>
+    </md-card-content>
+
+    <div class="md-actions" layout>
+        <md-button class="md-primary" ng-click="vm.createUser($event)" aria-label="Create new user">
+            <i class="material-icons ng-scope">add</i> {{ 'USER.CREATE_USER' | translate }}
+        </md-button>
+        <md-button class="md-primary" ng-click="vm.showCSVUploadDialog($event)" aria-label="Upload users">
+            {{ 'USER.UPLOAD_USERS' | translate }}
+        </md-button>
+        <md-button class="md-primary" href="{{vm.wcsPrefix}}/api/openesdh/users/upload/sample"
+                   aria-label="Example user upload CSV">
+            {{ 'COMMON.DOWNLOAD_TEMPLATE_CSV' | translate }}
+        </md-button>
+    </div>
+</md-card>

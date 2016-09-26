@@ -1,0 +1,45 @@
+﻿{
+    "ERMS_PROFILES": {
+        "REPOSITORIES": {
+            "LABEL": "Dokumentarkiver"
+        },
+        "PROFILES": {
+            "LIST": {
+                "LABELS": {
+                    "PROFILE_NAME" : "Navn",
+                    "REPO_URL" : "Arkiv-URL",
+                    "USER_ID":"Bruger-ID",
+                    "PASSWORD":"Adgangskode"
+                }
+            },
+            "MENU":{
+                "LABELS":{
+                    "PROFILES": "Profiler"
+                },
+                "LABEL":{
+                    "PROFILES": "Profiler"
+                }
+            },
+            "DIALOG":{
+                "LABELS":{
+                    "CREATE_PROFILE": "Opret profil",
+                    "EDIT_PROFILE": "Redigér profil",
+                    "DELETE_PROFILE": "Slet profil",
+                    "PROFILE_DIALOG": "Profil",
+                    "REPO_URL": "Arkiv-URL",
+                    "ACCESS_ID": "Bruger-ID",
+                    "ACCESS_PASSWORD": "Adgangskode",
+                    "NAME": "Navn",
+                    "SELECT_MAP_FILE": "Vælg en XML-kortlægningsfil",
+                    "SELECT_ROOT": "Vælg arkiv-rodbibliotek",
+                    "ADD_ROOTS": "Angiv arkiv-rodbiblioteker"
+                }
+            },
+            "CONNECT": "Forbind til arkiv",
+            "PROFILE_LABEL": "Forbindelsesprofil",
+            "NO_PROFILES": "Der er ingen forbindelsesprofiler",
+            "PROFILE_ACTIONS": "Forbindelsesprofilhandlinger",
+            "REALLY_DELETE_PROFILE": "Vil du slette {{ profile }}?"
+        }
+    }
+}

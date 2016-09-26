@@ -1,0 +1,45 @@
+﻿{
+    "ERMS_PROFILES": {
+        "REPOSITORIES": {
+            "LABEL": "Repositories"
+        },
+        "PROFILES": {
+            "LIST": {
+                "LABELS": {
+                    "PROFILE_NAME" : "Name",
+                    "REPO_URL" : "Repository Url",
+                    "USER_ID":"Access ID",
+                    "PASSWORD":"Password"
+                }
+            },
+            "MENU":{
+                "LABELS":{
+                    "PROFILES": "Profiles"
+                },
+                "LABEL":{
+                    "PROFILES": "Profiles"
+                }
+            },
+            "DIALOG":{
+                "LABELS":{
+                    "CREATE_PROFILE": "Create profile",
+                    "EDIT_PROFILE": "Edit profile",
+                    "DELETE_PROFILE": "Delete profile",
+                    "PROFILE_DIALOG": "Profile dialog",
+                    "REPO_URL": "Repository URL",
+                    "ACCESS_ID": "Access ID",
+                    "ACCESS_PASSWORD": "Password",
+                    "NAME": "Name",
+                    "SELECT_MAP_FILE": "Select a mapping XML file",
+                    "SELECT_ROOT": "Select repository root directory",
+                    "ADD_ROOTS": "Add repository roots"
+                }
+            },
+            "CONNECT": "Repository connect",
+            "PROFILE_LABEL": "Connection profile",
+            "NO_PROFILES": "There are no profiles",
+            "PROFILE_ACTIONS": "Profile actions",
+            "REALLY_DELETE_PROFILE": "Do you want to delete {{ profile }}?"
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<div layout class="admin_sub_menu">
+    <md-card flex="20" >
+        <md-card-content layout >
+            <md-list>
+                <md-subheader class="md-no-sticky">{{ 'ADMIN.SYS_SETTINGS.SETTINGS' | translate}}</md-subheader>
+                <md-list-item ng-repeat="sysSetPage in vm.pages" ui-sref="{{sysSetPage.sref}}" ui-sref-active="active">
+                    <md-icon class="md-default-theme" class="material-icons">{{sysSetPage.icon}}</md-icon>
+                    <p>{{ sysSetPage.labelKey | translate}}</p>
+                </md-list-item>
+                
+                <md-divider></md-divider>
+                <md-subheader class="md-no-sticky">{{ 'ADMIN.SYS_SETTINGS.MODULES' | translate}}</md-subheader>
+                <md-list-item ui-sref="administration.systemsettings.test" ui-sref-active="active">
+                    <md-icon class="md-default-theme" class="material-icons">widgets</md-icon>
+                    <p>Addo plugin</p>
+                </md-list-item>
+                <md-list-item ng-repeat="sysSetPage in vm.modulesPages" ui-sref="{{sysSetPage.sref}}" ui-sref-active="active">
+                    <md-icon class="md-default-theme" class="material-icons">{{sysSetPage.icon}}</md-icon>
+                    <p>{{ sysSetPage.labelKey | translate}}</p>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card> 
+
+    <div flex="grow" ui-view="systemsetting-view"></div>
+</div>
+
