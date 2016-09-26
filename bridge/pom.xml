@@ -1,0 +1,287 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>dk.magenta.eark</groupId>
+    <artifactId>cmis-bridge</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>cmis-viewer-bridge</name>
+    <description>
+        This is a bridge between cmis repository and the Frontend viewer.
+    </description>
+    <developers>
+        <developer>
+            <id>https://github.com/DarkStar1</id>
+        </developer>
+        <developer>
+            <id>https://github.com/andreaskring</id>
+        </developer>
+    </developers>
+
+    <properties>
+
+        <!--<connection properties for the db -->
+        <db.host>localhost</db.host>
+        <db.username>cmis</db.username>
+        <db.password>eark</db.password>
+        <db.name>cmis_bridge</db.name>
+        <db.port>3306</db.port>
+        <!--The version of the mysql jar to load -->
+        <mysql.version>5.1.39</mysql.version>
+        <!--driver details for db -->
+        <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+        <jdbc.url.params> <![CDATA[?autoReconnect=true&useSSL=false]]></jdbc.url.params>
+        <jdbc.url>jdbc:mysql://${db.host}:${db.port}/${db.name}${jdbc.url.params}</jdbc.url>
+
+        <maven.tomcat.port>9090</maven.tomcat.port>
+        <maven.cmis.lib.version>0.14.0</maven.cmis.lib.version>
+        <maven.springloaded.version>1.2.6.RELEASE</maven.springloaded.version>
+
+        <jersey.version>2.22.1</jersey.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <finalName>cmis-bridge</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!--tomcat plugin -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>run-embedded</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <port>${maven.tomcat.port}</port>
+                            <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
+                            <contextFile>${project.basedir}/tomcat/context.xml</contextFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--JOOQ code gen integration -->
+            <plugin>
+                <!-- Specify the maven code generator plugin -->
+                <!-- Use org.jooq for the Open Source edition org.jooq.pro for commercial
+                    editions -->
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>3.8.2</version>
+
+                <!-- The plugin should hook into the generate goal -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <!-- Manage the plugin's dependency. In this example, we'll use a PostgreSQL
+                    database -->
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <!-- Specify the plugin configuration. The configuration format is the
+                    same as for the standalone code generator -->
+                <configuration>
+
+                    <!-- JDBC connection parameters -->
+                    <jdbc>
+                        <driver>${jdbc.driver}</driver>
+                        <url>${jdbc.url}</url>
+                        <user>${db.username}</user>
+                        <password>${db.password}</password>
+                    </jdbc>
+
+                    <!-- Generator parameters -->
+                    <generator>
+                        <database>
+                            <name>org.jooq.util.mysql.MySQLDatabase</name>
+                            <includes>.*</includes>
+                            <excludes></excludes>
+                            <inputSchema>${db.inputSchema}</inputSchema>
+                        </database>
+                        <target>
+                            <packageName>dk.magenta.eark.cmis.viewer.db.connector</packageName>
+                            <directory>src/main/java/</directory>
+                        </target>
+                    </generator>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>conf</directory>
+                <includes>
+                    <include>**/*.conf</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+
+        </resources>
+
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${jersey.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+            <!-- use the following artifactId if you don't need servlet 2.x compatibility -->
+            <!-- artifactId>jersey-container-servlet</artifactId -->
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-processing</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!--To use multipart feature -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <!-- Springloaded https://mvnrepository.com/artifact/org.springframework/springloaded -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>springloaded</artifactId>
+            <version>${maven.springloaded.version}</version>
+        </dependency>
+
+        <!--Bring in the mysql connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.39</version>
+        </dependency>
+        <!--Bring in the JOOQ plugin for working with the DB -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>3.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <version>3.8.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jdom/jdom2 -->
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom2</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <version>1.1.6</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+        <!--Some apache commons libraries -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.0</version>
+        </dependency>
+
+        <!--Some openCMIS libs -->
+        <dependency>
+            <groupId>org.apache.chemistry.opencmis</groupId>
+            <artifactId>chemistry-opencmis-client-impl</artifactId>
+            <version>${maven.cmis.lib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.chemistry.opencmis</groupId>
+            <artifactId>chemistry-opencmis-client-api</artifactId>
+            <version>${maven.cmis.lib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.chemistry.opencmis</groupId>
+            <artifactId>chemistry-opencmis-client-bindings</artifactId>
+            <version>${maven.cmis.lib.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>

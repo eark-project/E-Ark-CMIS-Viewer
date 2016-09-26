@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:map="http://www.magenta.dk/eark/erms/mapping/1.0"
+	targetNamespace="http://www.magenta.dk/eark/erms/mapping/1.0" 
+	xmlns:ead="http://ead3.archivists.org/schema/" 
+	elementFormDefault="qualified">
+	
+	<import namespace="http://ead3.archivists.org/schema/" schemaLocation="ead3.xsd"/>
+
+	<element name="mapping" type="map:mapping_type" />
+	<complexType name="mapping_type">
+		<sequence>
+			<element ref="map:objectTypes" />
+			<element ref="map:viewTypes" />
+			<element ref="map:eadTemplates" />
+		</sequence>
+	</complexType>
+
+	<element name="objectTypes" type="map:object_types" />
+	<complexType name="object_types">
+		<sequence>
+			<element ref="map:objectType" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<element name="objectType" type="map:object_type" />
+	<complexType name="object_type">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="id" type="string" use="required"/>
+				<attribute name="leaf" type="boolean" use="required"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+
+	<element name="viewTypes" type="map:view_types"/>
+	<complexType name="view_types">
+		<sequence>
+			<element ref="map:viewType" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<element name="viewType" type="string"/>
+
+	<element name="eadTemplates" type="map:eadtemplates_type" />
+	<complexType name="eadtemplates_type">
+		<sequence>
+			<element ref="map:template" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<element name="template" type="map:template_type" />
+	<complexType name="template_type">
+		<sequence>
+			<element ref="map:hooks"/>
+			<element ref="map:ead"/>
+			</sequence>
+		<attribute name="id" type="string" use="required"/>
+	</complexType>
+	
+	<element name="hooks" type="map:hooks_type"/>
+	<complexType name="hooks_type">
+		<sequence>
+			<element ref="map:hook" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	
+	<element name="hook" type="map:hook_type"/>
+	<complexType name="hook_type">
+		<sequence>
+			<element name="xpath" type="string"/>
+			<element name="cmisPropertyId" type="string"/>
+			<element ref="map:cmisEscapes" minOccurs="0"/>
+		</sequence>
+		<!-- simpleContent>
+			<extension base="string">
+				<attribute name="xpath" type="string" use="required"/>
+				<attribute name="attribute" type="string" use="optional"/>
+			</extension>
+		</simpleContent -->
+	</complexType>
+	
+	<element name="cmisEscapes" type="map:cmis_escapes_type"/>
+	<complexType name="cmis_escapes_type">
+		<sequence>
+			<element ref="map:escape" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	
+	<element name="escape" type="map:escape_type"/>
+	<complexType name="escape_type">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="regex" type="string" use="required"/>
+				<attribute name="replacement" type="string" use="required"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	
+	<element name="ead" type="map:ead_type"/>
+	<complexType name="ead_type">
+		<sequence>
+			<element name="c" type="ead:c"/>
+			<!-- element ref="ead:c01"/--> <!-- This is not working -->
+		</sequence>
+	</complexType>
+</schema>

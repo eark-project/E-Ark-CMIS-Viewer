@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead xmlns="http://ead3.archivists.org/schema/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://ead3.archivists.org/schema/ ead3.xsd">
+	
+	<control>
+		<recordid>id</recordid>
+		<filedesc>
+			<titlestmt>
+				<titleproper>title</titleproper>
+			</titlestmt>
+		</filedesc>
+		<maintenancestatus value="new">xyz</maintenancestatus>
+		<maintenanceagency>
+			<agencyname>agency</agencyname>
+		</maintenanceagency>
+		<maintenancehistory>
+			<maintenanceevent>
+				<eventtype value="created">xyz</eventtype>
+				<eventdatetime>2016</eventdatetime>
+				<agenttype value="human">xyz</agenttype>
+				<agent>xyz</agent>
+			</maintenanceevent>
+		</maintenancehistory>
+	</control>
+	
+	<archdesc level="class">
+		<did>
+			<abstract>abstract</abstract>
+		</did>
+	</archdesc>
+</ead>
+

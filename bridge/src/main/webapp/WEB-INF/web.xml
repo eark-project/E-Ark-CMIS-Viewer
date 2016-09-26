@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This web.xml file is not required when using Servlet 3.0 container,
+     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html -->
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+        <init-param>
+            <param-name>cors.allowed.origins</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.methods</param-name>
+            <param-value>DELETE,GET,POST,HEAD,PUT</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.headers</param-name>
+            <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.exposed.headers</param-name>
+            <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.support.credentials</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.preflight.maxage</param-name>
+            <param-value>10</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>dk.magenta.eark.cmis</param-value>
+        </init-param>
+        <!--support for multipart feature for file upload-->
+        <init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/webapi/*</url-pattern>
+    </servlet-mapping>
+</web-app>

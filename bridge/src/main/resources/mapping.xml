@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mapping xmlns="http://www.magenta.dk/eark/erms/mapping/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ead="http://ead3.archivists.org/schema/"
+	xsi:schemaLocation="http://www.magenta.dk/eark/erms/mapping/1.0 mapping.xsd">
+
+	<!-- Corresponding to the CMIS property ID "cmis:objectTypeId" -->
+	<objectTypes>
+		<objectType id="series" leaf="false">F:eark:series</objectType>
+		<objectType id="subseries" leaf="false">F:eark:subseries</objectType>
+		<objectType id="record" leaf="true">F:eark:record</objectType>
+	</objectTypes>
+
+	<!-- The viewTypes are the CMIS object types that should be reflected by 
+		the frontend viewer -->
+	<viewTypes>
+		<viewType>F:eark:series</viewType>
+		<viewType>F:eark:subseries</viewType>
+		<viewType>F:eark:record</viewType>
+		<viewType>cmis:document</viewType>
+	</viewTypes>
+
+	<eadTemplates>
+		<template id="series">
+			<hooks>
+				<hook>
+					<xpath>child::ead:did/child::ead:unitdate</xpath>
+					<cmisPropertyId>cmis:creationDate</cmisPropertyId>
+				</hook>
+				<hook>
+					<xpath>child::ead:did/child::ead:unittitle</xpath>
+					<cmisPropertyId>cmis:name</cmisPropertyId>
+				</hook>
+				<hook>
+					<xpath>child::ead:did/child::ead:unitid</xpath>
+					<cmisPropertyId>cmis:objectId</cmisPropertyId>
+					<cmisEscapes>
+						<escape regex="workspace://SpacesStore/" replacement="ID-"/>
+					</cmisEscapes>
+				</hook>
+			</hooks>
+			<ead>
+				<c level="series">
+					<ead:did>
+						<ead:unitdate datechar="created" />
+						<ead:unittitle />
+						<ead:unitid localtype="system_id" />
+					</ead:did>
+				</c>
+			</ead>
+		</template>
+		<template id="subseries">
+			<hooks>
+				<hook>
+					<xpath>child::ead:did/child::ead:unitdate</xpath>
+					<cmisPropertyId>cmis:creationDate</cmisPropertyId>
+				</hook>
+				<hook>
+					<xpath>child::ead:did/child::ead:unittitle</xpath>
+					<cmisPropertyId>cmis:name</cmisPropertyId>
+				</hook>
+				<hook>
+					<xpath>child::ead:did/child::ead:unitid</xpath>
+					<cmisPropertyId>cmis:objectId</cmisPropertyId>
+					<cmisEscapes>
+						<escape regex="workspace://SpacesStore/" replacement="ID-"/>
+					</cmisEscapes>
+				</hook>
+			</hooks>
+			<ead>
+				<c level="subseries">
+					<ead:did>
+						<ead:unitdate datechar="created" />
+						<ead:unittitle />
+						<ead:unitid localtype="system_id" />
+					</ead:did>
+				</c>
+			</ead>
+		</template>
+		<template id="record">
+			<hooks>
+				<hook>
+					<xpath>child::ead:did/child::ead:unitdate</xpath>
+					<cmisPropertyId>cmis:creationDate</cmisPropertyId>
+				</hook>
+				<hook>
+					<xpath>child::ead:did/child::ead:unittitle</xpath>
+					<cmisPropertyId>cmis:name</cmisPropertyId>
+				</hook>
+				<hook>
+					<xpath>child::ead:did/child::ead:unitid</xpath>
+					<cmisPropertyId>cmis:objectId</cmisPropertyId>
+					<cmisEscapes>
+						<escape regex="workspace://SpacesStore/" replacement="ID-"/>
+					</cmisEscapes>
+				</hook>
+				<hook>
+					<xpath>child::ead:did/child::ead:dao/attribute::id</xpath>
+					<cmisPropertyId>cmis:versionSeriesId</cmisPropertyId>
+					<cmisEscapes>
+						<escape regex="workspace://SpacesStore/" replacement="ID-"/>
+					</cmisEscapes>
+				</hook>
+			</hooks>
+			<ead>
+				<c level="file">
+					<ead:did>
+						<ead:unitdate datechar="created" />
+						<ead:unittitle />
+						<ead:unitid localtype="system_id" />
+
+						<!-- NOTE: only one dao element allowed here -->
+						<ead:dao id="to-be-filled-out-with-cmis-metadata" daotype="borndigital"
+							href="path-to-file" />
+
+					</ead:did>
+				</c>
+			</ead>
+		</template>
+	</eadTemplates>
+</mapping>
