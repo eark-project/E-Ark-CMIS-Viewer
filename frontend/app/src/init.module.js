@@ -14,7 +14,7 @@ angular
         logoSrc: './app/assets/images/logo.gif'
     })
     .constant('BRIDGE_URI',{
-        serviceProxy:'http://localhost:9090'
+        serviceProxy:'http://eark.magenta.dk:9090/cmis-bridge'
     })
     .filter('urlEncode', function(){
         return function(input){
