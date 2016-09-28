@@ -37,9 +37,10 @@
         border-bottom: solid 1px #eee;
         
         .tlist__cell {
-            color: #999;
-            text-transform: uppercase;
-            font-size: 0.8em;
+            text-align: left;
+            padding: 0 8px;
+            margin: 4px 0;
+            box-sizing: border-box;
         }
     }
     

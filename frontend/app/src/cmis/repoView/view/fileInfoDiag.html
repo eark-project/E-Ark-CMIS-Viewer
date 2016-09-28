@@ -14,27 +14,12 @@
         <md-dialog-content>
             <div class="md-dialog-content">
                 <div layout="row">
-                    <div flex="50" layout-padding>
-                        <dl>
-                            <dt>Name</dt><dd>{{ doc.name }}</dd>
-                            <dt>Created by</dt><dd>{{ doc.createdBy }}</dd>
-                            <dt>Creation date</dt><dd>{{ doc.creationDate }}</dd>
-                            <dt>Size</dt><dd>{{ doc.size }}</dd>
-                            <dt>Object ID</dt><dd>{{ doc.objectId }}</dd>
-                            <dt>Path</dt><dd>{{ doc.path }}</dd>
-                        </dl>
-                    </div>
-                    <div flex="50" layout-padding>
-                        <dl>
-                            <dt>Type</dt><dd>{{ doc.type }}</dd>
-                            <dt>Object type ID</dt><dd>{{ doc.objectTypeId }}</dd>
-                            <dt>Content stream file name</dt><dd>{{ doc.contentStreamFileName }}</dd>
-                            <dt>Content stream MIME type</dt><dd>{{ doc.contentStreamMimeType }}</dd>
-                            <dt>Content stream length</dt><dd>{{ doc.contentStreamLength }}</dd>
-                            <dt>Last modified by</dt><dd>{{ doc.lastModifiedBy }}</dd>
-                            <dt>Last modification date</dt><dd>{{ doc.lastModificationDate }}</dd>
-                        </dl>
-                    </div>
+                    <dl>
+                        <ng-repeat ng-repeat="(key, value) in doc">
+                            <dt>{{ key }}</dt>
+                            <dd>{{ value }}</dd>
+                        </ng-repeat>
+                    </dl>
                 </div>
             </div>
         </md-dialog-content>
