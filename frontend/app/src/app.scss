@@ -8,6 +8,23 @@ $u: 16px;
  * Global styles
  */
 
+body {
+    background-color: #eee;
+}
+
+dt {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.7em;
+    opacity: 0.65;
+}
+
+dd {
+    display: block;
+    padding: 0 0 $u;
+    margin: 0;
+}
+
 #loader {
     visibility: hidden;
     position: absolute;
@@ -18,6 +35,10 @@ $u: 16px;
     opacity: 0.7;
     filter: alpha(opacity=70);
     -moz-opacity: 0.7;
+}
+
+.muted {
+    opacity: 0.65;
 }
 
 // Buttons (adjust .md-button)

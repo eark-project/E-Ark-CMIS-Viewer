@@ -2,7 +2,7 @@ angular
     .module('eArkPlatform.cmis.repoView')
     .controller('RepoViewController', RepoViewController);
 
-function RepoViewController(cmisRepoService, fileUtilsService) {
+function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog) {
     var rvc = this;
     rvc.repo = cmisRepoService.repoItems;
     rvc.loadRepoView = loadRepoView;
@@ -10,6 +10,7 @@ function RepoViewController(cmisRepoService, fileUtilsService) {
     rvc.getItem = getItem;
     rvc.breadcrumbs = cmisRepoService.breadcrumbs;
     rvc.gotoCrumb = cmisRepoService.goToCrumb;
+    rvc.fileInfoDiag = fileInfoDiag;
 
     rvc.loadRepoView();
 
@@ -36,7 +37,7 @@ function RepoViewController(cmisRepoService, fileUtilsService) {
      * @param objectId
      * @private
      */
-    function _getDocument(objectId){
+    function _getDocument(ev, objectId){
         var requestObject = {
             profileName: rvc.profileName,
             documentObjectId: objectId
@@ -44,7 +45,9 @@ function RepoViewController(cmisRepoService, fileUtilsService) {
         cmisRepoService.getDocument(requestObject).then(function(response){
             rvc.document = response;
             rvc.document.displaySize = fileUtilsService.formatBytes(response.properties.size);
+            rvc.fileInfoDiag(ev, rvc.document);
         });
+        
     }
 
     /**
@@ -61,8 +64,8 @@ function RepoViewController(cmisRepoService, fileUtilsService) {
      * @param objectId
      * @param itemType
      */
-    function getItem(objectId, itemType){
-        (itemType === 'folder') ? _getFolderView(objectId) : _getDocument(objectId);
+    function getItem(ev, objectId, itemType){
+        (itemType === 'folder') ? _getFolderView(objectId) : _getDocument(ev, objectId);
     }
 
     /**
@@ -84,4 +87,38 @@ function RepoViewController(cmisRepoService, fileUtilsService) {
         rvc.breadcrumbs = cmisRepoService.breadcrumbs;
         rvc.repo = cmisRepoService.repoItems;
     }
+    
+    
+    /**
+     * Dialog to show info on individual files
+     */
+    
+    function fileInfoDiag(ev, doc) {
+        $mdDialog.show({
+          controller: fileInfoDialogController,
+          templateUrl: 'app/src/cmis/repoView/view/fileInfoDiag.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals: { document: doc },
+          clickOutsideToClose: true,
+          fullscreen: true
+        });
+    };
+    
+    function fileInfoDialogController($scope, $mdDialog, document) {
+        var fidc = this;
+        
+        $scope.doc = document.properties;
+        
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+    
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+    
+    };
+
+      
 }

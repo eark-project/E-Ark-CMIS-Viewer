@@ -34,6 +34,8 @@
 .tlist {
     
     .tlist__header {
+        border-bottom: solid 1px #eee;
+        
         .tlist__cell {
             color: #999;
             text-transform: uppercase;
@@ -41,22 +43,22 @@
         }
     }
     
-    .tlist__body {
-        
+    .tlist__item {
+        border-bottom: solid 1px #eee;
     }
     
     .tlist__item__link {
+        cursor: pointer;
         
+        &:hover {
+            background-color: #eee;
+        }
     }
     
     .tlist__cell {
-        padding: $u*0.25;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        
-        &.muted {
-            color: #999;
-        }
+        padding: 8px;
     }
 }

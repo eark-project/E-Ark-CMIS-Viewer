@@ -1,61 +1,79 @@
-<div layout="row" class="repview__title">
-    <h2 class="md-subhead">{{ rvc.profileName }} <span style="color: #999;">{{ 'DOCUMENT.DOCUMENTS' | translate }}</span></h2>
-</div>
-
-<md-card>
-
-    <div class="repo-docs__nav window">
+<div layout="column" layout-fill>
+    
+    <div class="repo-docs__nav window" layout-padding>
         <nav class="od-filebrowser-breadcrumb">
             <a ng-repeat="crumb in rvc.breadcrumbs" ng-click="rvc.gotoCrumb($index)">{{crumb.name}}</a>
             <span ng-if="$last" class="active">{{crumb.name}}</span>
         </nav>
     </div>
+    
+    <div style="background-color: #fff;" layout="column" flex>
 
-    <md-card-content>
-
-        <div layout="column">
-            <div class="tlist">
-                <div class="tlist__header" layout="row">
-                    <div class="tlist__cell tlist__cell__fileicon tlist__cardview__hide" flex="10"></div>
-                    <div class="tlist__cell" flex sort-table="title">{{ 'COMMON.TITLE' | translate }}</div>
-                    <div class="tlist__cell" flex="10" sort-table="creator.fullName">{{ 'COMMON.CREATEDBY' | translate
-                        }}
-                    </div>
-                    <!-- might not be convenient to sort if multiple owner -->
-                    <div class="tlist__cell" flex="10" sort-table="created">{{ 'COMMON.CREATED' | translate }}
-                    </div>
-                    <div class="tlist__cell" flex="10" sort-table="modified">{{ 'COMMON.MODIFIED_BY' | translate }}
-                    </div>
-                    <div class="tlist__cell" flex="10" sort-table="lastModificationDate">{{ 'COMMON.MODIFIED' |
-                        translate }}
-                    </div>
-                    <!--<div class="tlist__cell" flex="10"></div>-->
+        <div layout="column" class="tlist" flex>
+            <div class="tlist__header" layout="row">
+                <div class="tlist__cell" flex="10"></div>
+                <div class="tlist__cell" flex sort-table="title">
+                    {{ 'COMMON.TITLE' | translate }}
                 </div>
-                <md-virtual-repeat-container class="tlist__body" md-auto-shrink flex-height
-                                             ng-if="rvc.repo.children.length > 0">
-                    <div md-virtual-repeat="item in rvc.repo.children | orderObjectBy:orderByAttribute:reverseOrder"
-                         layout="column" flex>
-                        <!--class="tlist__item {{ item.locked ? 'muted' : '' }}" ng-disabled="item.locked">-->
-                        <div class="tlist__item__link" style="cursor: pointer" ng-click="rvc.getItem(item.objectId, item.type)" layout="row">
-                            <span class="tlist__cell tlist__cell__fileicon tlist__cardview__hide" flex="10">
-                                <img class="md-avatar" ng-src="app/assets/images/filetypes/{{item.thumbNailURL}}"/>
-                            </span>
-                            <span class="tlist__cell" flex>{{item.name}}<div class="muted" ng-show="rvc.isFile(item)">
-                                ({{item.displaySize}})
-                            </div></span>
-                            <span class="tlist__cell muted" flex="10"> {{item.createdBy}} </span>
-                            <span class="tlist__cell muted" flex="10">{{ item.creationDate }}</span>
-                            <span class="tlist__cell muted" flex="10">{{ item.lastModifiedBy  }}</span>
-                            <span class="tlist__cell muted" flex="10">{{ item.lastModificationDate  }}</span>
-                        </div>
-                    </div>
-                </md-virtual-repeat-container>
-                <div ng-if="rvc.repo.children.length == 0" class="empty_file_list muted">
-                    <i class="material-icons">insert_drive_file</i><br>
-                    {{"COMMON.EMPTY" | translate}}
+                <div class="tlist__cell" flex="10" sort-table="creator.fullName">
+                    {{ 'COMMON.CREATEDBY' | translate }}
+                </div>
+                <!-- might not be convenient to sort if multiple owner -->
+                <div class="tlist__cell" flex="20" sort-table="created">
+                    {{ 'COMMON.CREATED' | translate }}
+                </div>
+                <div class="tlist__cell" flex="10" sort-table="modified">
+                    {{ 'COMMON.MODIFIED_BY' | translate }}
+                </div>
+                <div class="tlist__cell" flex="20" sort-table="lastModificationDate">
+                    {{ 'COMMON.MODIFIED' | translate }}
                 </div>
             </div>
+            <md-virtual-repeat-container class="tlist__body"
+                flex
+                ng-if="rvc.repo.children.length > 0">
+                <div md-virtual-repeat="item in rvc.repo.children | orderObjectBy:orderByAttribute:reverseOrder"
+                    layout="column"
+                    class="tlist__item"
+                    flex>
+                    <div class="tlist__item__link"
+                        ng-click="rvc.getItem($event, item.objectId, item.type)"
+                        layout="row">
+                        <span class="tlist__cell" flex="10" layout="column" layout-align="center center">
+                            <img ng-src="app/assets/images/filetypes/{{item.thumbNailURL}}" alt="">
+                        </span>
+                        <span class="tlist__cell" flex layout="row" layout-align="flex-start center">
+                            <span>
+                                {{ item.name }}
+                            </span>
+                            <small class="muted" style="padding-left: 8px;" ng-show="rvc.isFile(item)">
+                                {{ item.displaySize }}
+                            </small>
+                        </span>
+                        <span class="tlist__cell muted" flex="10" layout="row" layout-align="flex-start center">
+                            {{ item.createdBy }}
+                        </span>
+                        <span class="tlist__cell muted" flex="20" layout="row" layout-align="flex-start center">
+                            {{ item.creationDate }}
+                        </span>
+                        <span class="tlist__cell muted" flex="10" layout="row" layout-align="flex-start center">
+                            {{ item.lastModifiedBy }}
+                        </span>
+                        <span class="tlist__cell muted" flex="20" layout="row" layout-align="flex-start center">
+                            {{ item.lastModificationDate  }}
+                        </span>
+                    </div>
+                </div>
+            </md-virtual-repeat-container>
+            
+            <div ng-if="rvc.repo.children.length == 0"
+                class="empty_file_list muted"
+                layout="column"
+                layout-align="center center">
+                <p class="subhead">This directory is empty</p>
+            </div>
         </div>
-    </md-card-content>
+        
+    </div>
 
-</md-card>
+</div>
