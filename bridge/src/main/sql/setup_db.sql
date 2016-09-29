@@ -23,7 +23,7 @@ LOCK TABLES `Repository` WRITE;
 
 INSERT INTO `Repository` (`name`, `url`, `userName`, `password`)
 VALUES
-	('repository','http://example.com/cmis-server/services/cmis?wsdl','exampleUser','password');
+	('repository','http://cmis-example-magenta.dk/cmis-server/services/cmis?wsdl','user','password');
 
 /*!40000 ALTER TABLE `Repository` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -36,7 +36,7 @@ CREATE TABLE `Roles` (
   `userName` varchar(50) NOT NULL DEFAULT '',
   `role` varchar(20) NOT NULL DEFAULT '',
   PRIMARY KEY (`userName`),
-  CONSTRAINT `person_ibfk_1` FOREIGN KEY (`userName`) REFERENCES `Person` (`userName`) ON DELETE CASCADE
+  CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`userName`) REFERENCES `User` (`userName`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `Roles` WRITE;
@@ -67,16 +67,14 @@ LOCK TABLES `User` WRITE;
 
 INSERT INTO `User` (`userName`, `firstName`, `lastName`, `email`, `password`)
 VALUES
-	('admin','Super','User','admin@example.com','admin');
+	('admin','Super','User','admin@magenta.dk','password');
 
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;3', 'url3', 'user3', 'pwd3');
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
