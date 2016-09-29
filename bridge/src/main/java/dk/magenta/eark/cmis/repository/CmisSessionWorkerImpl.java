@@ -311,8 +311,17 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
         jsonBuilder.add(Constants.CREATION_DATE, Utils.convertToISO8601Date(cmisObject.getCreationDate()));
         jsonBuilder.add(Constants.CREATED_BY, cmisObject.getCreatedBy());
         jsonBuilder.add(Constants.LAST_MODIFIED, cmisObject.getLastModifiedBy());
+        jsonBuilder.add("allProperties", extractProps(cmisObject));
 
         return jsonBuilder.build();
     }
 
+    private JsonObject extractProps(CmisObject cmisObject){
+        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+        List<Property<?>> objectProps = cmisObject.getProperties();
+        for (Property prop : objectProps){
+            jsonObjectBuilder.add(prop.getDisplayName(), prop.getValueAsString() == null ? "" : prop.getValueAsString());
+        }
+        return jsonObjectBuilder.build();
+    }
 }
