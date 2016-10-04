@@ -44,7 +44,7 @@ function userService($http) {
 
     function getPersons(roleType) {
         var url = '/webapi/people?selectableType=';
-        roleType (roleType && roleType.length > 0) ? url += roleType : url+= '*';
+        //roleType (roleType && roleType.length > 0) ? url += roleType : url+= '*';
         return $http.get(url).then(function (result) {
             return result.data;
         });

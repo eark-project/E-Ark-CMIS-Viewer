@@ -7,15 +7,14 @@ angular
  * @param $scope
  * @constructor
  */
-function UsersController($scope, $mdDialog, $mdToast, userService, $translate, sessionService, ALFRESCO_URI) {
+function UsersController($scope, $mdDialog, $mdToast, userService, $translate, sessionService) {
     var vm = this;
 
     vm.createUser = createUser;
     vm.deleteUser = deleteUser;
     vm.editUser = editUser;
-    vm.showCSVUploadDialog = showCSVUploadDialog;
     vm.userExists = false;
-    vm.wcsPrefix = ALFRESCO_URI.webClientServiceProxy;
+    //vm.wcsPrefix = ALFRESCO_URI.webClientServiceProxy;
 
     //For the search control filter
     vm.selectOptions = [
@@ -122,7 +121,7 @@ function UsersController($scope, $mdDialog, $mdToast, userService, $translate, s
 
     function getAllSystemUsers(query) {
         var filter = query ? query : "";
-        return userService.getPeople(filter).then(function (response) {
+        return userService.getPersons(filter).then(function (response) {
             vm.allSystemUsers = response.people;
             return response;
         });

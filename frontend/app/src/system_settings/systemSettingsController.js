@@ -1,5 +1,5 @@
 angular
-    .module('openeApp.systemsettings')
+    .module('eArkPlatform.systemsettings')
     .controller('SystemSettingsController', SystemSettingsCtrl);
 
 function SystemSettingsCtrl(systemSettingsPagesService, authService) {
