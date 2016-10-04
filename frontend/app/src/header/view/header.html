@@ -4,6 +4,12 @@
         <h1 class="md-headline">
             <span>CMIS Browser</span>
         </h1>
+        
+        <nav class="menu-items" ng-controller="ModulesMenuController as menu" layout="row" layout-align="flex-start center">
+            <div ng-repeat="item in menu.items | orderBy: 'order'">
+                <ng-include src="item.templateUrl"></ng-include>
+            </div>
+        </nav>
 
         <span flex></span>
         

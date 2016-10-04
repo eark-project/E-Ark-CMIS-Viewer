@@ -2,39 +2,17 @@ angular
     .module('eArkPlatform')
     .factory('searchService', searchService);
 
-function searchService($http) {
+function searchService($http, AIP_REPOSITORY_URI) {
+
     var service = {};
 
-    /**
-     * Could we just use the live search results and return a concatenation of the results??
-     * Thoughts: What about faceting?
-     *
-     * @param term
-     * @returns {*}
-     */
-    service.search = function (term) {
+    service.aipSearch = function(term){
+        return $http.get(AIP_REPOSITORY_URI.serviceProxy +'/select?'+ term).then(function(response){
+            //debugger;
+            return response.data.response;
+        })
     };
 
-    /**
-     * summary:
-     *        takes a name/value mapping object and returns a string representing
-     *        a URL-encoded version of that object.
-     * example:
-     *        this object:
-     *    {
-         *		blah: "blah",
-         *		multi: [
-         *			"thud",
-         *			"thonk"
-         *	    ]
-         *	};
-     *
-     *    yields the following query string: "blah=blah&multi=thud&multi=thonk"
-     *
-     * credit to alfresco Aikau developers.
-     * @param map
-     * @returns {string}
-     */
     service.objectToQueryString = function (map) {
         // FIXME: need to implement encodeAscii!!
         var enc = encodeURIComponent, pairs = [];

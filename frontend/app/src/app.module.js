@@ -15,6 +15,7 @@ angular
         'eArkPlatform.header',
         'eArkPlatform.systemsettings',
         'eArkPlatform.users',
+        'eArkPlatform.search',
         //'eArkPlatform.dashboard',
         'eArkPlatform.cmis.repoView',
         'eArkPlatform.common.directives',
