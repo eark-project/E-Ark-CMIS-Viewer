@@ -159,6 +159,8 @@ public class JDBCConnectionStrategy implements DatabaseConnectionStrategy {
                 }
                 return commits;
             });
+            //Set the role after creating the user
+            setUserRole(person.getUserName(), person.getRole().toString());
         } catch (Exception ge){
             logger.error("An issue with persisting the person in the db.\n"+ ge.getMessage());
             ge.printStackTrace();
@@ -211,7 +213,6 @@ public class JDBCConnectionStrategy implements DatabaseConnectionStrategy {
             result = db.transactionResult( configuration -> {
                 //Update the profile in question. This should actually lock the record during update. I think/hope
                int commits = DSL.using(configuration).update(User.USER)
-                        .set(User.USER.USERNAME, person.getUserName())
                         .set(User.USER.FIRSTNAME, person.getFirstName())
                         .set(User.USER.LASTNAME, person.getLastName())
                         .set(User.USER.EMAIL, person.getEmail())
