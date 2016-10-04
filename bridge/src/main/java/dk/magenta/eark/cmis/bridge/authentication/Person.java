@@ -12,24 +12,27 @@ import javax.json.JsonObjectBuilder;
  */
 public class Person {
     private static final Logger logger = LoggerFactory.getLogger(Person.class);
+    public static final String DEFAULT_ROLE = "admin";
     private String userName, firstName, lastName, email, password;
     private Role role;
 
     public enum Role {ADMIN, STANDARD}
-    public static final String USERNAME = "userName";
-    public static final String FIRSTNAME = "firstName";
-    public static final String LASTNAME = "lastName";
-    public static final String EMAIL = "email";
-    public static final String PASSWORD = "password";
 
     //Constructors
     public Person() { //used to denote an empty person
+    }
+    // creating a person with just the mandatory properties
+    public Person(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+        this.setRole(DEFAULT_ROLE);
     }
     // creating a person with just the mandatory properties
     public Person(String userName, String email, String password) {
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.setRole(DEFAULT_ROLE);
     }
     // creating a person with just the mandatory properties with role
     public Person(String userName, String email, String password, String role) {
@@ -39,15 +42,16 @@ public class Person {
         this.setRole(role);
     }
     // creating a person with all properties
-    public Person(String userName, String password, String email, String firstName, String lastName) {
+    public Person(String userName, String email, String password, String firstName, String lastName) {
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.setRole(DEFAULT_ROLE);
     }
     //With role
-    public Person(String userName, String firstName, String lastName, String email, String password, String role) {
+    public Person(String userName, String email, String password, String firstName, String lastName, String role) {
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
