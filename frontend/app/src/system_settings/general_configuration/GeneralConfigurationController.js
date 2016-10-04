@@ -1,6 +1,6 @@
 
 angular
-        .module('openeApp.systemsettings')
+        .module('eArkPlatform.systemsettings')
         .controller('GeneralConfigurationController', GeneralConfigurationController);
 
 function GeneralConfigurationController($mdDialog, $translate, $state, notificationUtilsService,

@@ -1,6 +1,6 @@
 
 angular
-        .module('openeApp.systemsettings')
+        .module('eArkPlatform.systemsettings')
         .factory('oeParametersService', oeParametersService);
 
 function oeParametersService($http, $window) {

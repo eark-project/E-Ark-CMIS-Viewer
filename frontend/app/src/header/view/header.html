@@ -6,26 +6,42 @@
         </h1>
 
         <span flex></span>
+        
         <language-selector></language-selector>
         
-        <!-- NO NEED FOR MENU ITEMS QUITE YET
-        <md-button class="md-icon-button" aria-label="menu" ng-click="vm.toggleMenu()">
-            <i class="material-icons">menu</i>
-        </md-button>
-        -->
+        <md-menu ng-controller="AuthController as vm" md-position-mode="target-right target">
+            <md-button class="md-icon-button" aria-label="{{ 'MENU.OPEN_MENU' | translate }}"
+                       ng-click="$mdOpenMenu($event)">
+                <i class="material-icons">more_vert</i>
+            </md-button>
+            <md-menu-content width="4">
+                <md-menu-item>
+                    <md-button class="md-text-icon-button" ng-disabled="true">
+                        <i class="material-icons" md-menu-align-target>person</i>
+                        {{ vm.getUserInfo().user.firstname }} {{ vm.getUserInfo().user.lastname }}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button class="md-text-icon-button" ui-sref="systemsettings">
+                        <i class="material-icons">settings</i>
+                        Configure repository
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button class="md-text-icon-button" ui-sref="users">
+                        <i class="material-icons">people</i>
+                        Configure users
+                    </md-button>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-button class="md-text-icon-button" id="logout" ng-click="vm.logout()">
+                        <i class="material-icons">exit_to_app</i>
+                        {{ 'MENU.LOGOUT' | translate }}
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
         
     </div>
 </md-toolbar>
-
-<!-- NO NEED FOR MENU ITEMS QUITE YET
-<md-sidenav md-component-id="right" class="md-sidenav-right">
-
-    <md-list ng-controller="ModulesMenuController as menu">
-        <md-list-item ng-repeat="item in menu.items | orderBy: 'order'">
-            <ng-include src="item.templateUrl"></ng-include>
-            <md-divider></md-divider>
-        </md-list-item>
-    </md-list>
-
-</md-sidenav>
--->

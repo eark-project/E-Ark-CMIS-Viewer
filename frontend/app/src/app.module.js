@@ -13,7 +13,7 @@ angular
         'eArkPlatform.init',
         'eArkPlatform.translations.init',
         'eArkPlatform.header',
-        'eArkPlatform.administration',
+        'eArkPlatform.systemsettings',
         'eArkPlatform.users',
         //'eArkPlatform.dashboard',
         'eArkPlatform.cmis.repoView',

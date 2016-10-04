@@ -1,5 +1,5 @@
 angular
-        .module('openeApp.systemsettings')
+        .module('eArkPlatform.systemsettings')
         .provider('systemSettingsPagesService', SystemSettingsPagesServiceProvider);
 
 function SystemSettingsPagesServiceProvider() {
