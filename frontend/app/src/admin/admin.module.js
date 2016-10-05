@@ -23,6 +23,5 @@ function config($stateProvider, languageFilesProvider, $translateProvider, USER_
             selectedTab: 0
         }
     });
-
     $translateProvider.forceAsyncReload(true);
 }
