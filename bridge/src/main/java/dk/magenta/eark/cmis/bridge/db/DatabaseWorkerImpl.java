@@ -8,10 +8,10 @@ import dk.magenta.eark.cmis.system.PropertiesHandlerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author lanre.
@@ -118,6 +118,32 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
             jsonObjectBuilder.add(Constants.ERRORMSG, sqe.getMessage());
             return jsonObjectBuilder.build();
         }
+    }
+
+    /**
+     * Returns a json object with the list of everyone on the system
+     *
+     * @return JsonObject {everyone}
+     */
+    @Override
+    public JsonObject getPeople() {
+        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+        try {
+            JsonArrayBuilder users = Json.createArrayBuilder();
+            List<JsonObject> persons = this.dbConnectionStrategy.getPersons().stream().map(Person::toJson)
+                                           .collect(Collectors.toList());
+            persons.forEach(users::add);
+            jsonObjectBuilder.add(Constants.SUCCESS, true);
+            jsonObjectBuilder.add("users", users.build());
+
+        }
+        catch (SQLException sqe){
+            logger.error("********** Error Retrieving person **********");
+            sqe.printStackTrace();
+            jsonObjectBuilder.add(Constants.SUCCESS, false);
+            jsonObjectBuilder.add(Constants.ERRORMSG, sqe.getMessage());
+        }
+        return jsonObjectBuilder.build();
     }
 
     /**

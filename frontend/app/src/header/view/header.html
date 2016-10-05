@@ -24,19 +24,19 @@
                 <md-menu-item>
                     <md-button class="md-text-icon-button" ng-disabled="true">
                         <i class="material-icons" md-menu-align-target>person</i>
-                        {{ vm.getUserInfo().user.firstname }} {{ vm.getUserInfo().user.lastname }}
+                        {{ vm.getUserInfo().user.firstName }} {{ vm.getUserInfo().user.lastName }}
                     </md-button>
                 </md-menu-item>
-                <md-menu-item>
+                <md-menu-item ng-show="vm.getUserInfo().user.role == 'ADMIN'">
                     <md-button class="md-text-icon-button" ui-sref="systemsettings">
                         <i class="material-icons">settings</i>
-                        Configure repository
+                        {{'ERMS.ADMIN.SYS_SETTINGS.LABELS.CONFIGURE_REPO' | translate}}
                     </md-button>
                 </md-menu-item>
-                <md-menu-item>
+                <md-menu-item ng-show="vm.getUserInfo().user.role == 'ADMIN'">
                     <md-button class="md-text-icon-button" ui-sref="users">
                         <i class="material-icons">people</i>
-                        Configure users
+                        {{'ERMS.ADMIN.SYS_SETTINGS.LABELS.MANAGE_USERS' | translate}}
                     </md-button>
                 </md-menu-item>
                 <md-menu-divider></md-menu-divider>

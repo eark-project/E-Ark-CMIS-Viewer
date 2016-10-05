@@ -65,7 +65,7 @@ function httpTicketInterceptor($injector, $translate, $window, $q, sessionServic
     }
 }
 
-function authService($http, $window, $state, sessionService, userService, $q) {
+function authService($http, $window, sessionService, userService, $q) {
     var service = {
         login: login,
         logout: logout,

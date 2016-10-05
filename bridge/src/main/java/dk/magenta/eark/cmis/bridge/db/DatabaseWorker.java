@@ -28,6 +28,12 @@ public interface DatabaseWorker {
     boolean createPerson(JsonObject jsonObject) throws CmisBridgeUserAdminException;
 
     /**
+     * Returns a json object with the list of everyone on the system
+     * @return JsonObject {everyone}
+     */
+    JsonObject getPeople();
+
+    /**
      * Returns a json object representing a person from the repository based on the supplied user name
      * @param userName person's user name
      * @return JsonObject {person}

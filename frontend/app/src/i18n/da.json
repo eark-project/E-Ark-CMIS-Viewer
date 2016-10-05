@@ -67,7 +67,8 @@
     "GRID_VIEW": "Gittervisning",
     "DOWNLOAD_TEMPLATE_CSV": "Hent CSV skabelon",
     "LOCKED_BY": "Låst af {{locked_by}}",
-    "CONGRATULATIONS": "Tillykke!"
+    "CONGRATULATIONS": "Tillykke!",
+    "ROLE": "Rolle"
   },
   "DOCUMENT": {
     "STATUS_CHANGED_SUCCESS": "Status er ændret",
@@ -156,7 +157,11 @@
     "FAILED_TO_UPLOAD_MSG": "{{failedNumberOfUsers}} bruger(e) blev ikke tilføjet af følgende grunde:",
     "ARE_YOU_SURE_YOU_WANT_TO_DELETE_USER": "Er du sikker på, at du vil slette '{{user}}'?",
     "CAN_NOT_DELETE_ADMIN_USER": "Sletning af admin brugeren er ikke tilladt",
-    "EMAIL_FEED_ENABLED": "E-mail-feed aktiveret"
+    "EMAIL_FEED_ENABLED": "E-mail-feed aktiveret",
+    "ROLES": {
+      "ADMIN": "Administrator",
+      "STANDARD": "Standard"
+    }
   },
   "ERROR": {
     "REQUIRED": "Obligatoriske felt",

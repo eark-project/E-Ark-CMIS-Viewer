@@ -154,4 +154,22 @@ public class AuthenticationResource {
         }
         return builder.build();
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("people")
+    public JsonObject getPeople(){
+        try {
+            //Get a session worker
+            DatabaseWorker databaseWorker = new DatabaseWorkerImpl();
+            return databaseWorker.getPeople();
+        } catch (Exception e) {
+            JsonObjectBuilder builder = Json.createObjectBuilder();
+            builder.add(Constants.SUCCESS, false);
+            builder.add(Constants.ERRORMSG, e.getMessage());
+            return builder.build();
+        }
+    }
+
+
 }
