@@ -1,7 +1,7 @@
 angular.module('eArkPlatform.administration', ['ngMaterial', 'pascalprecht.translate'])
     .config(config);
 
-function config(modulesMenuServiceProvider, $stateProvider, languageFilesProvider, $translateProvider, USER_ROLES) {
+function config($stateProvider, languageFilesProvider, $translateProvider, USER_ROLES) {
 
     /**
      * Inject the modules translation files
