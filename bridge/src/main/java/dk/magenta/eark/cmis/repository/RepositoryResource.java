@@ -1,6 +1,9 @@
 package dk.magenta.eark.cmis.repository;
 
+import dk.magenta.eark.cmis.Repository;
 import dk.magenta.eark.cmis.bridge.Constants;
+import dk.magenta.eark.cmis.bridge.db.DatabaseWorker;
+import dk.magenta.eark.cmis.bridge.db.DatabaseWorkerImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,8 @@ import javax.json.JsonObjectBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lanre.
@@ -23,7 +28,8 @@ public class RepositoryResource {
     public static final String FOLDER_OBJECT_ID = "folderObjectId";
     public static final String DOCUMENT_OBJECT_ID = "documentObjectId";
 
-    public RepositoryResource() {}
+    public RepositoryResource() {
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -32,21 +38,21 @@ public class RepositoryResource {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonObject response;
 
-            try {
-                //Get a session worker
-                CmisSessionWorker sessionWorker = this.getSessionWorker();
+        try {
+            //Get a session worker
+            CmisSessionWorker sessionWorker = this.getSessionWorker();
 
-                //Build the json for the repository info
-                response = sessionWorker.getRepositoryInfo();
-                builder.add("repositoryInfo", response);
-                builder.add("rootFolder", sessionWorker.getRootFolder());
+            //Build the json for the repository info
+            response = sessionWorker.getRepositoryInfo();
+            builder.add("repositoryInfo", response);
+            builder.add("rootFolder", sessionWorker.getRootFolder());
 
-            } catch (Exception e) {
-                builder.add(Constants.SUCCESS, false);
-                builder.add(Constants.ERRORMSG, e.getMessage());
-            }
+        } catch (Exception e) {
+            builder.add(Constants.SUCCESS, false);
+            builder.add(Constants.ERRORMSG, e.getMessage());
+        }
 
-            builder.add(Constants.SUCCESS, true);
+        builder.add(Constants.SUCCESS, true);
 
          /*else {
             builder.add(Constants.SUCCESS, false);
@@ -90,6 +96,7 @@ public class RepositoryResource {
 
     /**
      * Just returns a folder object
+     *
      * @param json
      * @return
      */
@@ -125,7 +132,6 @@ public class RepositoryResource {
     }
 
     /**
-     *
      * @param objectId
      * @return
      */
@@ -139,7 +145,7 @@ public class RepositoryResource {
                 objectId = URLDecoder.decode(objectId, "UTF-8");
                 CmisSessionWorker cmisSessionWorker = this.getSessionWorker();
                 JsonObject rootFolder = cmisSessionWorker.getRootFolder();
-                String repoRoot =  rootFolder.getJsonObject("properties").getString("objectId") ;
+                String repoRoot = rootFolder.getJsonObject("properties").getString("objectId");
 
                 //Build the json for the repository info
                 builder.add("isRoot", objectId.equalsIgnoreCase(repoRoot));
@@ -159,11 +165,73 @@ public class RepositoryResource {
         return builder.build();
     }
 
+    //CMIS repository RU
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("details")
+    public JsonObject getRepoDetails() {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        try {
+            //Get a db session worker
+            DatabaseWorker dbWorker = new DatabaseWorkerImpl();
+
+            //Build the json for the repository details
+            builder.add("repository", dbWorker.getRepositoryDetails());
+            builder.add(Constants.SUCCESS, true);
+
+        } catch (Exception e) {
+            builder.add(Constants.SUCCESS, false);
+            builder.add(Constants.ERRORMSG, e.getMessage());
+        }
+
+        return builder.build();
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("update")
+    public JsonObject updateRepoDetails(JsonObject json) {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        if (!json.isEmpty()) {
+            Map<String, String> repoProps = new HashMap<>();
+            if (json.containsKey(Repository.URL))
+                repoProps.put(Repository.URL, json.getString(Repository.URL));
+            if (json.containsKey(Repository.USERNAME))
+                json.getString(Repository.USERNAME);
+            if (json.containsKey(Repository.PASSWORD))
+                json.getString(Repository.PASSWORD);
+
+            try {
+                //Get a session worker
+                DatabaseWorker dbWorker = new DatabaseWorkerImpl();
+
+                //Build the json for the repository details
+                builder.add("repository", dbWorker.updateRepoDetails(repoProps));
+                builder.add(Constants.MESSAGE, "Repository details successfully update");
+                builder.add(Constants.SUCCESS, true);
+
+            } catch (Exception e) {
+                builder.add(Constants.SUCCESS, false);
+                builder.add(Constants.ERRORMSG, e.getMessage());
+            }
+
+            builder.add(Constants.SUCCESS, true);
+
+        } else {
+            builder.add(Constants.SUCCESS, false);
+            builder.add(Constants.ERRORMSG, "The connection profile does not have a name!");
+        }
+
+        return builder.build();
+    }
+
     /**
      * Returns a cmis session worker instance given a profile name
+     *
      * @return
      */
-    private CmisSessionWorker getSessionWorker(){
+    private CmisSessionWorker getSessionWorker() {
         try {
             return new CmisSessionWorkerImpl();
         } catch (Exception ge) {

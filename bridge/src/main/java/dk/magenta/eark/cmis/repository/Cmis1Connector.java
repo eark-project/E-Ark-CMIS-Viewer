@@ -197,6 +197,68 @@ public class Cmis1Connector {
         }
     }
 
+    /**
+     * Extracts the various CMIS 1.0 webservices endpoints from the wsdl file at the repository url.
+     * This is how we determine whether the webservices url is valid
+     *
+     * @param url for the wsdl file
+     * @return
+     */
+    public boolean isValidWebServicesUrls(URL url) {
+        try {
+            Map<String, String> servicesListURL;
+            File wsdlTemp = File.createTempFile("repoWSDL", ".xml"); //create temp file
+            FileUtils.copyURLToFile(url, wsdlTemp);// copy the wsdl document so we can extract service endpoints
+            SAXBuilder builder = new SAXBuilder();
+            org.jdom2.Document wsdlDoc = builder.build(wsdlTemp);
+            Element rootNode = wsdlDoc.getRootElement();//extract root xml document
+            Namespace defaultNamespace = rootNode.getNamespace();
+            //never use the other method as it returns nothing. http://stackoverflow.com/a/12582380/107301
+            List<Element> servicesList = rootNode.getChildren("service", defaultNamespace);
+            servicesListURL = servicesList.stream().map(this::extractEndpoints).collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
+            if (servicesListURL.size() > 1)
+                return true;
+        } catch (Exception ge) {
+            System.out.println("************ Error ***********\n\t\t\t" + ge.getMessage() + "\n\n=== Full stack trace ===\n");
+            ge.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Just a short simple test against the CMIS repository to see if it's alive by retrieving a few attributes about it
+     */
+    public void testCMISConnection() {
+        try {
+            Cmis1Connector tstConnector = new Cmis1Connector();
+            Session tstSess = tstConnector.getSession("admin");
+            RepositoryInfo repoInfo = tstSess.getRepositoryInfo();
+
+            System.out.println("RepositoryId => " + repoInfo.getId());
+            System.out.println("Supported CMIS version => " + repoInfo.getCmisVersionSupported());
+            System.out.println("Root Folder ID - " + repoInfo.getRootFolderId());
+            System.out.println("Listing capabilities......\n");
+            listRepoCapabilities(repoInfo);
+        } catch (Exception ge) {
+            logger.warn("There was an exception testing the repository's CMIS capabilities: \n" + ge.getMessage());
+        }
+    }
+
+    /**
+     * returns the repository details as a hash map
+     * @return
+     */
+    public Map getRepoDetails(){
+        return repo.toMap();
+    }
+
+    /**
+     * Refreshes the object. (Used in case of db updates to the repository details)
+     */
+    public void refreshRepoDetails(){
+        repo.refreshDetails();
+    }
+
     private void logSearchResult(String query, ItemIterable<QueryResult> searchResult) {
         logger.info("Results from query " + query);
         int i = 1;
@@ -296,34 +358,6 @@ public class Cmis1Connector {
 
     /**
      * Extracts the various CMIS 1.0 webservices endpoints from the wsdl file at the repository url.
-     * This is how we determine whether the webservices url is valid
-     *
-     * @param url for the wsdl file
-     * @return
-     */
-    public boolean isValidWebServicesUrls(URL url) {
-        try {
-            Map<String, String> servicesListURL;
-            File wsdlTemp = File.createTempFile("repoWSDL", ".xml"); //create temp file
-            FileUtils.copyURLToFile(url, wsdlTemp);// copy the wsdl document so we can extract service endpoints
-            SAXBuilder builder = new SAXBuilder();
-            org.jdom2.Document wsdlDoc = builder.build(wsdlTemp);
-            Element rootNode = wsdlDoc.getRootElement();//extract root xml document
-            Namespace defaultNamespace = rootNode.getNamespace();
-            //never use the other method as it returns nothing. http://stackoverflow.com/a/12582380/107301
-            List<Element> servicesList = rootNode.getChildren("service", defaultNamespace);
-            servicesListURL = servicesList.stream().map(this::extractEndpoints).collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
-            if (servicesListURL.size() > 1)
-                return true;
-        } catch (Exception ge) {
-            System.out.println("************ Error ***********\n\t\t\t" + ge.getMessage() + "\n\n=== Full stack trace ===\n");
-            ge.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * Extracts the various CMIS 1.0 webservices endpoints from the wsdl file at the repository url.
      *
      * @param url for the wsdl file
      * @return
@@ -375,25 +409,4 @@ public class Cmis1Connector {
                 servicesMap.put(key, urlValue + "?wsdl");
         }
     }
-
-    /**
-     * Just a short simple test against the CMIS repository to see if it's alive by retrieving a few attributes about it
-     */
-    public void testCMISConnection() {
-        try {
-            Cmis1Connector tstConnector = new Cmis1Connector();
-            Session tstSess = tstConnector.getSession("admin");
-            RepositoryInfo repoInfo = tstSess.getRepositoryInfo();
-
-            System.out.println("RepositoryId => " + repoInfo.getId());
-            System.out.println("Supported CMIS version => " + repoInfo.getCmisVersionSupported());
-            System.out.println("Root Folder ID - " + repoInfo.getRootFolderId());
-            System.out.println("Listing capabilities......\n");
-            listRepoCapabilities(repoInfo);
-        } catch (Exception ge) {
-            logger.warn("There was an exception testing the repository's CMIS capabilities: \n" + ge.getMessage());
-        }
-    }
-
-
 }
