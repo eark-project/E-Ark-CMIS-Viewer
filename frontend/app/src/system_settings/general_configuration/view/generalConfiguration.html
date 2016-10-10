@@ -1,6 +1,6 @@
 <md-card flex="grow">
     <md-card-content>
-        <h2>{{ 'ADMIN.SYS_SETTINGS.GENERAL.REPOSITORY_DETAILS' | translate}}</h2>
+        <h2>{{ 'ADMIN.SYS_SETTINGS.LABEL.REPOSITORY_DETAILS' | translate}}</h2>
 
         <div layout>
             <md-button class="md-primary" ng-click="vm.toggleEditMode($event)" ng-show="!vm.editMode">
@@ -8,7 +8,7 @@
             </md-button>
 
             <md-input-container flex>
-                <label>{{ 'USER.USERNAME.' | translate }}</label>
+                <label>{{ 'USER.USERNAME' | translate }}</label>
                 <input type="text" name="userName" ng-model="vm.repoDetails.userName" ng-disabled="!vm.editMode" required md-autofocus>
             </md-input-container>
 
