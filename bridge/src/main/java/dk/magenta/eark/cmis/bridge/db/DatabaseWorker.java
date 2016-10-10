@@ -1,8 +1,10 @@
 package dk.magenta.eark.cmis.bridge.db;
 
+import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDbException;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeUserAdminException;
 
 import javax.json.JsonObject;
+import java.util.Map;
 
 /**
  * @author lanre.
@@ -56,6 +58,21 @@ public interface DatabaseWorker {
      * @throws CmisBridgeUserAdminException if anything goes wrong with the operation
      */
     boolean deletePerson(String userName) throws CmisBridgeUserAdminException;
+
+    /**
+     * Gets the cmis repository details from the db
+     * @return a JSON object representing the repository details
+     * @throws CmisBridgeDbException
+     */
+    JsonObject getRepositoryDetails() throws CmisBridgeDbException;
+
+    /**
+     *
+     * @param repoProperties a map containing the repository properties to update
+     * @return JSON object representing the repository
+     * @throws CmisBridgeDbException
+     */
+    JsonObject updateRepoDetails(Map<String, String> repoProperties) throws CmisBridgeDbException;
 
     /**
      * Returns true or false as to whether a userName already exists in the db

@@ -1,0 +1,13 @@
+{
+  "ADMIN": {
+    "SYS_SETTINGS": {
+      "LABEL":{
+        "REPOSITORY_DETAILS": "Repository"
+      },
+      "MESSAGES":{
+        "SAVE_PROMPT": "Are you sure you want to update the <br/>repository details?",
+        "SAVED_SUCCESSFULLY":"Repository successfully updated"
+      }
+    }
+  }
+}

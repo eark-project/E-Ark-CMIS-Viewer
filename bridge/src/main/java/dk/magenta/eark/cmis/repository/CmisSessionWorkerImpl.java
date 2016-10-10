@@ -45,7 +45,8 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
             DatabaseConnectionStrategy dbConnectionStrategy = new JDBCConnectionStrategy(new PropertiesHandlerImpl("settings.properties"));
             Cmis1Connector cmis1Connector = new Cmis1Connector();
             //Get a CMIS session object
-            this.session = cmis1Connector.getSession("admin");
+//            this.session = cmis1Connector.getSession("admin");
+            this.session = cmis1Connector.getAtomPubSession("admin");
             this.operationContext = this.session.createOperationContext();
             this.session.setDefaultContext(this.operationContext);
             this.objectFactory = session.getObjectFactory();

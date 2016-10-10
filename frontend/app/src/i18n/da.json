@@ -68,6 +68,8 @@
     "DOWNLOAD_TEMPLATE_CSV": "Hent CSV skabelon",
     "LOCKED_BY": "Låst af {{locked_by}}",
     "CONGRATULATIONS": "Tillykke!",
+    "PASSWORD": "Adgangskode",
+    "URL": "Url",
     "ROLE": "Rolle"
   },
   "DOCUMENT": {

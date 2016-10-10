@@ -2,7 +2,12 @@ angular
     .module('eArkPlatform.systemsettings', [ 'ngMaterial', 'pascalprecht.translate'])
     .config(config);
 
-function config(systemSettingsPagesServiceProvider, $stateProvider, USER_ROLES){
+function config( $stateProvider, languageFilesProvider, USER_ROLES){
+
+    /**
+     * Inject the modules translation files
+     */
+    languageFilesProvider.addFile('app/src/system_settings/i18n/','-cmis.json');
 
     $stateProvider.state('systemsettings', {
         parent: 'site',
