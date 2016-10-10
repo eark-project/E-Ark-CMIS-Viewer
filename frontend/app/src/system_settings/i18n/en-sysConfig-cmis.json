@@ -5,7 +5,7 @@
         "REPOSITORY_DETAILS": "Repository"
       },
       "MESSAGES":{
-        "SAVE_PROMPT": "Are you sure you want to update the <br/>repository details?",
+        "SAVE_PROMPT": "Are you sure you want to update the repository details?",
         "SAVED_SUCCESSFULLY":"Repository successfully updated"
       }
     }
