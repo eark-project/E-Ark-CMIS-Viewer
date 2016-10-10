@@ -7,7 +7,7 @@ function config($stateProvider, languageFilesProvider, USER_ROLES, modulesMenuSe
     modulesMenuServiceProvider.addItem({
         templateUrl: 'app/src/cmis/repoView/view/moduleMenuItem.html',
         order: 1,
-        authorizedRole: USER_ROLES.standard
+        authorizedRole: [USER_ROLES.standard]
     });
 
     $stateProvider.state('repositoryView', {
@@ -21,7 +21,7 @@ function config($stateProvider, languageFilesProvider, USER_ROLES, modulesMenuSe
             }
         },
         data: {
-            authorizedRoles: []
+            authorizedRoles: [USER_ROLES.standard]
         }
     });
 

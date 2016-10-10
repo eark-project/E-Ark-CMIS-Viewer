@@ -72,7 +72,7 @@ public class Cmis1Connector {
             catch (CmisConnectionException | CmisRuntimeException ce){
                 logger.error("********** Repository connection exception **********");
                 ce.printStackTrace();
-                throw new CmisBridgeConnectionException("Unable to connect to the cmis repositorydue to; \n"
+                throw new CmisBridgeConnectionException("Unable to connect to the cmis repository due to; \n"
                         +ce.getMessage());
             }
 
@@ -409,4 +409,12 @@ public class Cmis1Connector {
                 servicesMap.put(key, urlValue + "?wsdl");
         }
     }
+
+    /**
+     * clears the connections cache in the even that we update the repository connections details and the new
+     * connections details have different permissions/rights. In this case we need the session(s) to be re-initialised.
+     */
+    public static void clearSessions(){
+        connections.clear();
+    };
 }

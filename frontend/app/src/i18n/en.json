@@ -67,6 +67,8 @@
     "DOWNLOAD_TEMPLATE_CSV": "Download template CSV",
     "LOCKED_BY": "Locked by {{locked_by}}",
     "CONGRATULATIONS": "Congratulations!",
+    "PASSWORD": "Password",
+    "URL": "Url",
     "ROLE": "Role"
   },
   "DOCUMENT": {

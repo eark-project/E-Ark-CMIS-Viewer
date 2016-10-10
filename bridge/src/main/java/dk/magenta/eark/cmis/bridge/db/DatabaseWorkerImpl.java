@@ -237,8 +237,13 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
     @Override
     public JsonObject updateRepoDetails(Map<String, String> repoProperties) throws CmisBridgeDbException {
         try {
-            if(this.dbConnectionStrategy.updateRepository(repoProperties))
-                    return this.getRepositoryDetails();
+            if(this.dbConnectionStrategy.updateRepository(repoProperties)) {
+                //Refresh the singleton
+                Repository.getInstance().refreshDetails();
+                //Clear any cached sessions
+                Cmis1Connector.clearSessions();
+                return this.getRepositoryDetails();
+            }
             else throw new CmisBridgeDbException("Unable to update repository details");
         }
         catch (Exception ge){

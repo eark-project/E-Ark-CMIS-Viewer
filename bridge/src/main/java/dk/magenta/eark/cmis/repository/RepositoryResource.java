@@ -198,9 +198,9 @@ public class RepositoryResource {
             if (json.containsKey(Repository.URL))
                 repoProps.put(Repository.URL, json.getString(Repository.URL));
             if (json.containsKey(Repository.USERNAME))
-                json.getString(Repository.USERNAME);
+                repoProps.put((Repository.USERNAME), json.getString(Repository.USERNAME));
             if (json.containsKey(Repository.PASSWORD))
-                json.getString(Repository.PASSWORD);
+                repoProps.put((Repository.PASSWORD), json.getString(Repository.PASSWORD));
 
             try {
                 //Get a session worker

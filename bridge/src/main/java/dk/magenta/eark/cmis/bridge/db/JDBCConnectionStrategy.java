@@ -1,5 +1,6 @@
 package dk.magenta.eark.cmis.bridge.db;
 
+import dk.magenta.eark.cmis.bridge.Constants;
 import dk.magenta.eark.cmis.bridge.authentication.Person;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDbException;
 import dk.magenta.eark.cmis.viewer.db.connector.cmis_bridge.tables.Repository;
@@ -299,12 +300,12 @@ public class JDBCConnectionStrategy implements DatabaseConnectionStrategy {
         try (DSLContext db = DSL.using(connection, SQLDialect.MYSQL)) {
 
             List<Query> queries = new ArrayList<>();
-            Query passwordQuery = db.insertInto(Repository.REPOSITORY, Repository.REPOSITORY.PASSWORD)
-                    .values(props.get("password"));
-            Query userNameQuery = db.insertInto(Repository.REPOSITORY, Repository.REPOSITORY.USERNAME)
-                    .values(props.get("userName"));
-            Query urlQuery = db.insertInto(Repository.REPOSITORY, Repository.REPOSITORY.URL)
-                    .values(props.get("url"));
+            Query passwordQuery = db.update(Repository.REPOSITORY).set(Repository.REPOSITORY.PASSWORD, props.get("password"))
+                    .where(Repository.REPOSITORY.NAME.equal(REPOSITORY_NAME));
+            Query userNameQuery = db.update(Repository.REPOSITORY).set(Repository.REPOSITORY.USERNAME, props.get(Constants.USER_NAME))
+                    .where(Repository.REPOSITORY.NAME.equal(REPOSITORY_NAME));
+            Query urlQuery = db.update(Repository.REPOSITORY).set(Repository.REPOSITORY.URL, props.get("url"))
+                    .where(Repository.REPOSITORY.NAME.equal(REPOSITORY_NAME));
 
             if(props.containsKey("password"))
                 queries.add(passwordQuery);

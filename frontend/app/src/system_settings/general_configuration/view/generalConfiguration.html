@@ -1,11 +1,30 @@
 <md-card flex="grow">
     <md-card-content>
-        <h2>{{ 'ADMIN.SYS_SETTINGS.GENERAL.PARAMETERS' | translate}}</h2>
-        <div ng-repeat="parameter in vm.parameters">
-            <input type="checkbox" id="oe_param_{{parameter.name}}" ng-model="parameter.value">
-            <label for="oe_param_{{parameter.name}}">{{ 'ADMIN.SYS_SETTINGS.GENERAL.' + parameter.name | translate}}</label>
-        </div>
+        <h2>{{ 'ADMIN.SYS_SETTINGS.GENERAL.REPOSITORY_DETAILS' | translate}}</h2>
 
-        <md-button class="md-primary" ng-click="vm.saveParameters($event)"><i class="material-icons">save</i> {{ 'ADMIN.SYS_SETTINGS.GENERAL.SAVE_PARAMETERS' | translate}}</md-button>
+        <div layout>
+            <md-button class="md-primary" ng-click="vm.toggleEditMode($event)" ng-show="!vm.editMode">
+                <i class="material-icons">mode_edit</i>
+            </md-button>
+
+            <md-input-container flex>
+                <label>{{ 'USER.USERNAME.' | translate }}</label>
+                <input type="text" name="userName" ng-model="vm.repoDetails.userName" ng-disabled="!vm.editMode" required md-autofocus>
+            </md-input-container>
+
+            <md-input-container flex>
+                <label>{{ 'COMMON.PASSWORD' | translate }}</label>
+                <input type="password" name="password" ng-model="vm.repoDetails.password" ng-disabled="!vm.editMode"  required>
+            </md-input-container>
+
+            <md-input-container flex>
+                <label>{{ 'COMMON.URL' | translate }}</label>
+                <input type="text" name="url" ng-model="vm.repoDetails.url" ng-disabled="!vm.editMode"  required>
+            </md-input-container>
+
+            <md-button ng-show="vm.editMode" class="md-primary" ng-click="vm.saveParameters($event)">
+                <i class="material-icons">save</i> {{ 'COMMON.SAVE' | translate}}
+            </md-button>
+        </div>
     </md-card-content>
 </md-card>
