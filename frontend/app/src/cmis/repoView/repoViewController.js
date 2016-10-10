@@ -2,7 +2,7 @@ angular
     .module('eArkPlatform.cmis.repoView')
     .controller('RepoViewController', RepoViewController);
 
-function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog) {
+function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $window, BRIDGE_URI) {
     var rvc = this;
     rvc.repo = cmisRepoService.repoItems;
     rvc.loadRepoView = loadRepoView;
@@ -11,6 +11,7 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog) {
     rvc.breadcrumbs = cmisRepoService.breadcrumbs;
     rvc.gotoCrumb = cmisRepoService.goToCrumb;
     rvc.fileInfoDiag = fileInfoDiag;
+    rvc.download = download;
 
     rvc.loadRepoView();
 
@@ -64,6 +65,15 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog) {
      * @param objectId
      * @param itemType
      */
+    function download(document){
+        $window.open(BRIDGE_URI.serviceProxy+cmisRepoService.getDocumentUrl(document.objectId));
+    }
+
+    /**
+     * Decides which to call between getting information on a document or a folder.
+     * @param objectId
+     * @param itemType
+     */
     function getItem(ev, objectId, itemType){
         (itemType === 'folder') ? _getFolderView(objectId) : _getDocument(ev, objectId);
     }
@@ -103,7 +113,7 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog) {
           clickOutsideToClose: true,
           fullscreen: true
         });
-    };
+    }
     
     function fileInfoDialogController($scope, $mdDialog, document) {
         var fidc = this;

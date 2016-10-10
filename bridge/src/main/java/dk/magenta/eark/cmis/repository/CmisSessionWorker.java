@@ -88,6 +88,13 @@ public interface CmisSessionWorker {
     JsonObject getDocument(String documentObjectId, boolean includeContentStream);
 
     /**
+     * provides a URL from which the requested document can be downloaded.
+     * @param documentObjectId the id of the document to retrieve
+     * @return
+     */
+    String getBufferedDocumentPath(String documentObjectId);
+
+    /**
      * Returns the parent folder of a folder object
      *
      * @param folderObjectId

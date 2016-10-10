@@ -13,6 +13,7 @@ function cmisRepoService($http, fileUtilsService) {
     cmisSvc.initRepoView = initRepoView;
     cmisSvc.getFolderChildren = getFolderChildren;
     cmisSvc.getDocument = getDocument;
+    cmisSvc.getDocumentUrl = getDocumentUrl;
     cmisSvc.goToCrumb = goToCrumb;
 
     /**
@@ -38,6 +39,15 @@ function cmisRepoService($http, fileUtilsService) {
         return $http.post('/webapi/repository/getFolder', requestObject).then(function (response) {
             initRepoView(response.data.folder);
         });
+    }
+
+    /**
+     * Will return the properties of a document and, optionally, it's content stream.
+     * @param requestObject object constructed thus {profileName:[a profile name], objectId:[documentObjectId, includeContentStream:false/true}
+     * @returns {*}
+     */
+    function getDocumentUrl(objectId) {
+        return '/webapi/repository/document/'+encodeURIComponent(objectId);
     }
 
     /**

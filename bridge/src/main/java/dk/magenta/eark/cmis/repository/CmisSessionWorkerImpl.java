@@ -16,13 +16,17 @@ import org.apache.chemistry.opencmis.commons.enums.IncludeRelationships;
 import org.apache.chemistry.opencmis.commons.impl.IOUtils;
 import org.apache.chemistry.opencmis.commons.impl.JSONConverter;
 import org.apache.chemistry.opencmis.commons.spi.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.json.*;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -174,6 +178,34 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
             throw new CmisBridgeIOException("\nUnable to read document:\n" + ge.getMessage());
         }
         return documentBuilder.build();
+    }
+
+    /**
+     * provides a URL from which the requested document can be downloaded.
+     *
+     * @param documentObjectId the id of the document to retrieve
+     * @return
+     */
+    @Override
+    public String getBufferedDocumentPath(String documentObjectId) {
+        try {
+             /*Create a temp file we might need to use this for pre-processing before storing. e.g. validation */
+
+            Document document = (Document) this.session.getObject(documentObjectId);
+            String docName = StringUtils.substringBeforeLast(document.getName(), ".");
+            String docPostfix = StringUtils.substringAfterLast(document.getName(), ".");
+            File tempFile = File.createTempFile(docName, "."+docPostfix);
+            InputStream documentInputstream = document.getContentStream().getStream();
+
+            //The java 8 way
+            int rd  = (int) Files.copy(documentInputstream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            org.apache.commons.io.IOUtils.closeQuietly(documentInputstream);
+            return tempFile.getAbsolutePath();
+        } catch (Exception ge) {
+            System.out.println("********** Error: **********\n");
+            ge.printStackTrace();
+            throw new CmisBridgeIOException("Unable to read document:\n" + ge.getMessage());
+        }
     }
 
     /**

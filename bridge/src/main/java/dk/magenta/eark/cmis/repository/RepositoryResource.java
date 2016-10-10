@@ -8,12 +8,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.File;
 import java.net.URLDecoder;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +64,27 @@ public class RepositoryResource {
         }*/
 
         return builder.build();
+    }
+
+    @GET
+    @Path("document/{docId}")
+    @Produces("*/*")
+    public Response DownloadDocument(@PathParam("docId") String documentId) {
+        try {
+            documentId = URLDecoder.decode(documentId, "UTF-8");
+
+            CmisSessionWorker cmisSessionWorker = this.getSessionWorker();
+            java.nio.file.Path source = Paths.get(cmisSessionWorker.getBufferedDocumentPath(documentId));
+            File theFile = source.toFile();
+            Response.ResponseBuilder rb = Response.ok(theFile);
+
+            rb.header("Content-Disposition","inline;filename="+theFile.getName())
+              .header("Content-Type", new MimetypesFileTypeMap().getContentType(theFile));
+            return rb.build();
+        }
+        catch(Exception ge){
+            return Response.serverError().build();
+        }
     }
 
     @POST
