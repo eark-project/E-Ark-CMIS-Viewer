@@ -7,7 +7,7 @@ function config( $stateProvider, languageFilesProvider, USER_ROLES){
     /**
      * Inject the modules translation files
      */
-    languageFilesProvider.addFile('app/src/system_settings/i18n/','-cmis.json');
+    languageFilesProvider.addFile('app/src/system_settings/i18n/','-sysConfig-cmis.json');
 
     $stateProvider.state('systemsettings', {
         parent: 'site',
