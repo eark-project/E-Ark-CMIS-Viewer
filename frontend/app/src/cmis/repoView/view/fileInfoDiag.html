@@ -15,7 +15,7 @@
             <div class="md-dialog-content">
                 <div layout="row">
                     <dl>
-                        <ng-repeat ng-repeat="(key, value) in doc">
+                        <ng-repeat ng-repeat="(key, value) in doc.allProperties" ng-if="value">
                             <dt>{{ key }}</dt>
                             <dd>{{ value }}</dd>
                         </ng-repeat>
