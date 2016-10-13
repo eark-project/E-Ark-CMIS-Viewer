@@ -120,6 +120,8 @@ public class AuthenticationResource {
     public JsonObject deletePerson(@PathParam("userName") String userName ){
         JsonObjectBuilder builder = Json.createObjectBuilder();
             try {
+                if(userName.equalsIgnoreCase("admin"))
+                    throw new CmisBridgeUserAdminException("Admin account can not be deleted. Thou shalt not pass!!!!");
                 //Get a session worker
                 DatabaseWorker databaseWorker = new DatabaseWorkerImpl();
                 databaseWorker.deletePerson(userName);
