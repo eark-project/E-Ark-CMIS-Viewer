@@ -1,8 +1,8 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
         
-        <h1 class="md-headline">
-            <span>CMIS Browser</span>
+        <h1 class="md-header" style="margin-right: 16px;">
+            {{ 'ERMS_REPOS.TITLE' | translate }}
         </h1>
         
         <nav class="menu-items" ng-controller="ModulesMenuController as menu" layout="row" layout-align="flex-start center">
@@ -30,13 +30,13 @@
                 <md-menu-item ng-show="vm.getUserInfo().user.role == 'ADMIN'">
                     <md-button class="md-text-icon-button" ui-sref="systemsettings">
                         <i class="material-icons">settings</i>
-                        {{'ERMS.ADMIN.SYS_SETTINGS.LABELS.CONFIGURE_REPO' | translate}}
+                        {{ 'ADMIN.SYS_SETTINGS.LABEL.CONFIGURE_REPO' | translate }}
                     </md-button>
                 </md-menu-item>
                 <md-menu-item ng-show="vm.getUserInfo().user.role == 'ADMIN'">
                     <md-button class="md-text-icon-button" ui-sref="users">
                         <i class="material-icons">people</i>
-                        {{'ERMS.ADMIN.SYS_SETTINGS.LABELS.MANAGE_USERS' | translate}}
+                        {{ 'ADMIN.SYS_SETTINGS.LABEL.MANAGE_USERS' | translate }}
                     </md-button>
                 </md-menu-item>
                 <md-menu-divider></md-menu-divider>
