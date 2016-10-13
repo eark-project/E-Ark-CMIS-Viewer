@@ -1,6 +1,14 @@
 <a ui-sref="search"
+    hide-xs
     ng-class="{ active: menu.state.is('search') }"
     class="md-button md-text-icon-button">
     <i class="material-icons">search</i>
     {{ 'SEARCH.SEARCH' | translate }}
+</a>
+
+<a ui-sref="search"
+    hide-gt-xs
+    ng-class="{ active: menu.state.is('search') }"
+    class="md-button md-icon-button">
+    <i class="material-icons">search</i>
 </a>

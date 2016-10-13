@@ -1,30 +1,42 @@
-<md-card flex="grow">
-    <md-card-content>
-        <h2>{{ 'ADMIN.SYS_SETTINGS.LABEL.REPOSITORY_DETAILS' | translate}}</h2>
-
-        <div layout>
-            <md-button class="md-primary" ng-click="vm.toggleEditMode($event)" ng-show="!vm.editMode">
+<md-card>
+    
+    <md-card-title>
+        <md-card-title-text layout="row" layout-align="space-between">
+            <h2 class="md-headline">{{ 'ADMIN.SYS_SETTINGS.LABEL.REPOSITORY_DETAILS' | translate}}</h2>
+            <md-button class="md-primary md-icon-button" ng-click="vm.toggleEditMode($event)" ng-show="!vm.editMode">
                 <i class="material-icons">mode_edit</i>
             </md-button>
+        </md-card-title-text>
+    </md-card-title>
+    
+    <md-card-content>
 
-            <md-input-container flex>
+        <form ng-submit="vm.saveParameters($event)">
+
+            <md-input-container>
                 <label>{{ 'USER.USERNAME' | translate }}</label>
                 <input type="text" name="userName" ng-model="vm.repoDetails.userName" ng-disabled="!vm.editMode" required md-autofocus>
             </md-input-container>
 
-            <md-input-container flex>
+            <md-input-container>
                 <label>{{ 'COMMON.PASSWORD' | translate }}</label>
-                <input type="password" name="password" ng-model="vm.repoDetails.password" ng-disabled="!vm.editMode"  required>
+                <input type="password" name="password" ng-model="vm.repoDetails.password" ng-disabled="!vm.editMode" required>
             </md-input-container>
 
-            <md-input-container flex>
+            <md-input-container>
                 <label>{{ 'COMMON.URL' | translate }}  <b>(Atom pub)</b> </label>
-                <input type="text" name="url" ng-model="vm.repoDetails.url" ng-disabled="!vm.editMode"  required>
+                <input type="text" size="75" name="url" ng-model="vm.repoDetails.url" ng-disabled="!vm.editMode" required>
             </md-input-container>
-
-            <md-button ng-show="vm.editMode" class="md-primary" ng-click="vm.saveParameters($event)">
-                <i class="material-icons">save</i> {{ 'COMMON.SAVE' | translate}}
-            </md-button>
-        </div>
+            
+            <div layout="row" layout-align="end">
+                <md-button ng-show="vm.editMode" class="md-primary md-raised md-text-icon-button" type="submit">
+                    <i class="material-icons">save</i>
+                    {{ 'COMMON.SAVE' | translate}}
+                </md-button>
+            </div>
+            
+        </form>
+        
     </md-card-content>
+    
 </md-card>
