@@ -49,7 +49,7 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
             documentObjectId: objectId
         };
         cmisRepoService.getDocument(requestObject).then(function(response){
-            rvc.document = response;
+            rvc.document = response.properties;
             rvc.document.displaySize = fileUtilsService.formatBytes(response.properties.size);
             rvc.download(rvc.document);
         });

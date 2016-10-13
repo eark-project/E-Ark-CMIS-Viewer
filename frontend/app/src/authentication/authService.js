@@ -94,7 +94,6 @@ function authService($http, $window, sessionService, userService, $q) {
     }
 
     function login(username, password) {
-        var userInfo = {};
         return $http.post('/webapi/authentication/login', {userName: username, password: password}).then(function (response) {
                 //sessionService.setUserInfo(response.data);
                 return addUserAndParamsToSession(username);
