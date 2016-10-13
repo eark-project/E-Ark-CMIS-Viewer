@@ -1,8 +1,15 @@
 <md-card>
     
     <md-card-title>
-        <md-card-title-text layout="row" layout-align="space-between">
-            <h2 class="md-headline">{{ 'ADMIN.SYS_SETTINGS.LABEL.REPOSITORY_DETAILS' | translate}}</h2>
+        <md-card-title-text layout="row" layout-align="space-between center">
+            
+            <div layout="row" layout-align="start center">
+                <md-button class="md-icon-button md-raised" onclick="window.history.go(-1);">
+                    <i class="material-icons">arrow_back</i>
+                </md-button>
+                <h2 class="md-headline">{{ 'ADMIN.SYS_SETTINGS.LABEL.REPOSITORY_DETAILS' | translate}}</h2>
+            </div>
+            
             <md-button class="md-primary md-icon-button" ng-click="vm.toggleEditMode($event)" ng-show="!vm.editMode">
                 <i class="material-icons">mode_edit</i>
             </md-button>
