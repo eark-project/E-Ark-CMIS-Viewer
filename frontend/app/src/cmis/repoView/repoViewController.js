@@ -8,6 +8,7 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
     rvc.loadRepoView = loadRepoView;
     rvc.isFile = isFile;
     rvc.getItem = getItem;
+    rvc.getItemInfo = getItemInfo;
     rvc.breadcrumbs = cmisRepoService.breadcrumbs;
     rvc.gotoCrumb = cmisRepoService.goToCrumb;
     rvc.fileInfoDiag = fileInfoDiag;
@@ -20,11 +21,13 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         cmisRepoService.connect();
     }
 
+    
     /**
      * Request folder children for view
      * @param objectId
      * @private
      */
+    
     function _getFolderView(objectId){
         var requestObject = {
             profileName: rvc.profileName,
@@ -33,11 +36,13 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         cmisRepoService.getFolderChildren(requestObject);
     }
 
+    
     /**
      * Returns all the information about a document
      * @param objectId
      * @private
      */
+    
     function _getDocument(ev, objectId){
         var requestObject = {
             profileName: rvc.profileName,
@@ -46,42 +51,75 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         cmisRepoService.getDocument(requestObject).then(function(response){
             rvc.document = response;
             rvc.document.displaySize = fileUtilsService.formatBytes(response.properties.size);
-            rvc.fileInfoDiag(ev, rvc.document);
+            rvc.download(rvc.document);
         });
         
     }
 
+    
     /**
      * Just returns whether the item is a document or folder
      * @param item
      * @returns {boolean}
      */
+    
     function isFile(item){
         return item.type === "document";
     }
 
+    
     /**
-     * Decides which to call between getting information on a document or a folder.
-     * @param objectId
-     * @param itemType
+     * Downloads a document
+     * @param document
      */
+    
     function download(document){
         $window.open(BRIDGE_URI.serviceProxy+cmisRepoService.getDocumentUrl(document.objectId));
     }
 
+    
     /**
      * Decides which to call between getting information on a document or a folder.
      * @param objectId
      * @param itemType
      */
+    
     function getItem(ev, objectId, itemType){
         (itemType === 'folder') ? _getFolderView(objectId) : _getDocument(ev, objectId);
     }
+    
+    
+    /**
+     * Display meta-data for a document or a folder.
+     * @param objectId
+     */
+    
+    function getItemInfo(ev, objectId, itemType){
+        ev.preventDefault();
+        ev.stopPropagation();
+        var requestObject = { profileName: rvc.profileName }
+        if (itemType === 'folder') {
+            requestObject.folderObjectId = objectId;
+            cmisRepoService.getFolder(requestObject).then(function(response){
+                rvc.folder = response.folder;
+                rvc.fileInfoDiag(ev, rvc.folder);
+            });
+        } else {
+            requestObject.documentObjectId = objectId;
+            cmisRepoService.getDocument(requestObject).then(function(response){
+                rvc.document = response;
+                rvc.document.displaySize = fileUtilsService.formatBytes(response.properties.size);
+                rvc.fileInfoDiag(ev, rvc.document);
+            });
+        };
+    }
 
+    
     /**
      * Returns the current path based on the breadcrumbs
      * @private
      */
+    
     function _getBreadcrumbPath(){
         var path = "";
         rvc.breadcrumbs.forEach(function(item){
@@ -90,9 +128,11 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         return path;
     }
 
+    
     /**
      * Re-assigns the repo view array on changes to objects in the array
      */
+    
     function repoViewObserver(){
         rvc.breadcrumbs = cmisRepoService.breadcrumbs;
         rvc.repo = cmisRepoService.repoItems;
@@ -114,6 +154,7 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
           fullscreen: true
         });
     }
+    
     
     function fileInfoDialogController($scope, $mdDialog, document) {
         var fidc = this;
