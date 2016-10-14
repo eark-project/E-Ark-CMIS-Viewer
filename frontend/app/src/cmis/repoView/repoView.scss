@@ -4,7 +4,7 @@
 
 .od-filebrowser-breadcrumb {
     margin: 0;
-    background-color: #eee;
+    background-color: $background-color;
     font-size: $u*0.9;
     padding: 0 $u*0.25;
   
@@ -14,11 +14,11 @@
         display: inline-block;
         padding: $u*0.5 0 $u*0.5 $u*0.25;
         cursor: pointer;
-        color: rgb(33,150,243);
+        color: $main-color;
     }
     a:hover,
     a:active {
-        color: rgba(33,150,243, 0.66);
+        color: darken($main-color, 20%);
     }
     a:before {
         display: inline-block;
@@ -34,7 +34,7 @@
 .tlist {
     
     .tlist__header {
-        border-bottom: solid 1px #eee;
+        border-bottom: solid 1px $background-color;
         
         .tlist__cell {
             text-align: left;
@@ -45,14 +45,14 @@
     }
     
     .tlist__item {
-        border-bottom: solid 1px #eee;
+        border-bottom: solid 1px $background-color;
     }
     
     .tlist__item__link {
         cursor: pointer;
         
         &:hover {
-            background-color: #eee;
+            background-color: rgba(0,0,0,0.1);
         }
     }
     
