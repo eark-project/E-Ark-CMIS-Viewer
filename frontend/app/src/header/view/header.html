@@ -1,9 +1,8 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
         
-        <h1 class="md-header" style="margin-right: 16px;">
-            {{ 'ERMS_REPOS.TITLE' | translate }}
-        </h1>
+        <img src="./app/assets/images/logos/e-ark-text.svg" alt="E-Ark" style="height: 50%; margin-right: 8px;">
+        <h1 class="md-title" hide-xs style="margin-right: 16px;">{{ 'ERMS_REPOS.TITLE' | translate }}</h1>
         
         <nav class="menu-items" ng-controller="ModulesMenuController as menu" layout="row" layout-align="flex-start center">
             <div ng-repeat="item in menu.items | orderBy: 'order'">
