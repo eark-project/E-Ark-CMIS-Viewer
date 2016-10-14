@@ -9,7 +9,7 @@ angular
         phone: /^[+]?[0-9\- ]+$/
     })
     .constant('APP_CONFIG', {
-        appName: 'EARK-CMIS-BROWSER',
+        appName: 'E-Ark CMIS browser',
         logoSrc: './app/assets/images/logo.gif'
     })
     .constant('BRIDGE_URI',{
