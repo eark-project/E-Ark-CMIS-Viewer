@@ -2,7 +2,9 @@
   "ADMIN": {
     "SYS_SETTINGS": {
       "LABEL":{
-        "REPOSITORY_DETAILS": "Repository"
+        "REPOSITORY_DETAILS": "Repository details",
+        "CONFIGURE_REPO": "Configure repository",
+        "MANAGE_USERS": "Manage users"
       },
       "MESSAGES":{
         "SAVE_PROMPT": "Are you sure you want to update the repository details?",

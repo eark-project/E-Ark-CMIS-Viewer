@@ -1,6 +1,14 @@
 <a ui-sref="repositoryView"
+    hide-xs
     ng-class="{ active: menu.state.is('repositoryView') }"
     class="md-button md-text-icon-button">
     <i class="material-icons">content_copy</i>
-    {{ 'APP.LABEL.ORDER' | translate }}
+    {{ 'ERMS_REPOS.REPO' | translate }}
+</a>
+
+<a ui-sref="repositoryView"
+    hide-gt-xs
+    ng-class="{ active: menu.state.is('repositoryView') }"
+    class="md-button md-icon-button">
+    <i class="material-icons">content_copy</i>
 </a>
