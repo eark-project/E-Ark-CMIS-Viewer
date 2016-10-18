@@ -9,9 +9,11 @@ import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDirectoryException;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeIOException;
 import dk.magenta.eark.cmis.system.PropertiesHandlerImpl;
 import org.apache.chemistry.opencmis.client.api.*;
+import org.apache.chemistry.opencmis.commons.data.CmisExtensionElement;
 import org.apache.chemistry.opencmis.commons.data.ObjectData;
 import org.apache.chemistry.opencmis.commons.data.ObjectInFolderData;
 import org.apache.chemistry.opencmis.commons.data.RepositoryInfo;
+import org.apache.chemistry.opencmis.commons.enums.ExtensionLevel;
 import org.apache.chemistry.opencmis.commons.enums.IncludeRelationships;
 import org.apache.chemistry.opencmis.commons.impl.IOUtils;
 import org.apache.chemistry.opencmis.commons.impl.JSONConverter;
@@ -28,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,11 +57,10 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
             this.operationContext = this.session.createOperationContext();
             this.session.setDefaultContext(this.operationContext);
             this.objectFactory = session.getObjectFactory();
-        }
-        catch (SQLException sqe) {
+        } catch (SQLException sqe) {
             sqe.printStackTrace();
             throw new CmisBridgeDbException("Unable to establish a session with the repository due to an issue with the " +
-                    "db: "+sqe.getMessage());
+                    "db: " + sqe.getMessage());
         }
     }
 
@@ -190,19 +192,17 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
     public String getBufferedDocumentPath(String documentObjectId) {
         try {
              /*Create a temp file we might need to use this for pre-processing before storing. e.g. validation */
-
             Document document = (Document) this.session.getObject(documentObjectId);
             String docName = StringUtils.substringBeforeLast(document.getName(), ".");
             String docPostfix = StringUtils.substringAfterLast(document.getName(), ".");
-            File tempFile = File.createTempFile(docName, "."+docPostfix);
-            InputStream documentInputstream = document.getContentStream().getStream();
+            File tempFile = File.createTempFile(docName, "." + docPostfix);
+            InputStream documentInputStream = document.getContentStream().getStream();
 
-            //The java 8 way
-            int rd  = (int) Files.copy(documentInputstream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            org.apache.commons.io.IOUtils.closeQuietly(documentInputstream);
+            int rd = (int) Files.copy(documentInputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            org.apache.commons.io.IOUtils.closeQuietly(documentInputStream);
             return tempFile.getAbsolutePath();
         } catch (Exception ge) {
-            System.out.println("********** Error: **********\n");
+            logger.error("********** Document Read Error: **********\n");
             ge.printStackTrace();
             throw new CmisBridgeIOException("Unable to read document:\n" + ge.getMessage());
         }
@@ -234,6 +234,7 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
 
     /**
      * Returns a filtered view of the folder by restricting the returned types to the list of types defined in the mapping file.
+     *
      * @param folderObjectId The object id of the folder we're interested in
      * @return Json object that represents the folder
      */
@@ -345,16 +346,80 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
         jsonBuilder.add(Constants.CREATED_BY, cmisObject.getCreatedBy());
         jsonBuilder.add(Constants.LAST_MODIFIED, cmisObject.getLastModifiedBy());
         jsonBuilder.add("allProperties", extractProps(cmisObject));
+        jsonBuilder.add("extensionProperties", getExtendedProperties(cmisObject));
 
         return jsonBuilder.build();
     }
 
-    private JsonObject extractProps(CmisObject cmisObject){
+    /**
+     * Extracts all the properties of the object
+     *
+     * @param cmisObject
+     * @return
+     */
+    private JsonObject extractProps(CmisObject cmisObject) {
         JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
         List<Property<?>> objectProps = cmisObject.getProperties();
-        for (Property prop : objectProps){
+        for (Property prop : objectProps) {
             jsonObjectBuilder.add(prop.getDisplayName(), prop.getValueAsString() == null ? "" : prop.getValueAsString());
         }
         return jsonObjectBuilder.build();
     }
+
+    private JsonArray getExtendedProperties(CmisObject cmisObject) {
+        JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+        List<CmisExtensionElement> extensions = Collections.EMPTY_LIST;
+
+        if (!cmisObject.getExtensions(ExtensionLevel.PROPERTIES).isEmpty())
+            // object extensions
+            extensions = cmisObject.getExtensions(ExtensionLevel.OBJECT);
+
+        if (!cmisObject.getExtensions(ExtensionLevel.PROPERTIES).isEmpty()) {
+            // property extensions
+            if (extensions.isEmpty())
+                extensions = cmisObject.getExtensions(ExtensionLevel.PROPERTIES);
+            else
+                extensions.addAll(cmisObject.getExtensions(ExtensionLevel.PROPERTIES));
+        }
+
+        JsonObject temp;
+        if (extensions != null) {
+            temp = new ExtensionNode(extensions.get(0)).toJson();
+            jsonArrayBuilder.add(temp);
+        }
+        return jsonArrayBuilder.build();
+    }
+
+    static class ExtensionNode {
+        private final CmisExtensionElement extension;
+
+        public ExtensionNode(CmisExtensionElement extension) {
+            this.extension = extension;
+        }
+
+        @Override
+        public String toString() {
+            return (extension.getNamespace() == null ? "" : "{" + extension.getNamespace() + "}") + extension.getName()
+                    + (!extension.getAttributes().isEmpty() ? " " + extension.getAttributes() : "")
+                    + (extension.getChildren().isEmpty() ? ": " + extension.getValue() : "");
+        }
+
+        //Return a Json representation on the tree.
+        public JsonObject toJson(){
+            JsonArrayBuilder children = Json.createArrayBuilder();
+            JsonObjectBuilder node = Json.createObjectBuilder();
+            node.add("nameSpace", extension.getNamespace() == null ? "" : "{" + extension.getNamespace() + "}");
+            node.add("name", extension.getName() == null ? "" : extension.getName());
+            if(extension.getChildren().isEmpty())
+                node.add("value", extension.getValue());
+            else{
+                for(CmisExtensionElement child : extension.getChildren()){
+                    children.add(new ExtensionNode(child).toJson());
+                }
+                node.add("children", children.build());
+            }
+            return node.build();
+        }
+    }
+
 }

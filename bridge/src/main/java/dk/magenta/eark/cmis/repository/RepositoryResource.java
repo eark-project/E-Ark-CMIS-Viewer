@@ -57,12 +57,6 @@ public class RepositoryResource {
         }
 
         builder.add(Constants.SUCCESS, true);
-
-         /*else {
-            builder.add(Constants.SUCCESS, false);
-            builder.add(Constants.ERRORMSG, "The connection profile does not have a name!");
-        }*/
-
         return builder.build();
     }
 
