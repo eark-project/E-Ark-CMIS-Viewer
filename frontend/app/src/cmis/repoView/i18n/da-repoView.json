@@ -2,6 +2,7 @@
     "ERMS_REPOS": {
         "TITLE": "CMIS Browser",
         "REPO": "Dokumentarkiv",
-        "REPOS": "Dokumentarkiver"
+        "REPOS": "Dokumentarkiver",
+        "VIEW_META": "Se alle metadata"
     }
 }
