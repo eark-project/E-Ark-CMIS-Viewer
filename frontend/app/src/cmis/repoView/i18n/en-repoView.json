@@ -2,6 +2,7 @@
     "ERMS_REPOS": {
         "TITLE": "CMIS Browser",
         "REPO": "Repository",
-        "REPOS": "Repositories"
+        "REPOS": "Repositories",
+        "VIEW_META": "View complete metadata"
     }
 }

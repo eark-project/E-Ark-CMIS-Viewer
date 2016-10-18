@@ -121,7 +121,9 @@
                             layout="column"
                             layout-align="center center">
                             <md-button ng-click="rvc.getItemInfo($event, item.objectId, item.type)"
-                                class="md-icon-button">
+                                class="md-icon-button"
+                                aria-label="{{ 'ERMS_REPOS.VIEW_META' | translate }}"
+                                title="{{ 'ERMS_REPOS.VIEW_META' | translate }}">
                                 <i class="material-icons">info_outline</i>
                             </md-button>
                         </span>
