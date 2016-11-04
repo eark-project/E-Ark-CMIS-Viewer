@@ -1,15 +1,9 @@
 <div layout="column" layout-fill>
     
-    <div class="repo-docs__nav window" layout-padding>
+    <div class="repo-docs__nav window">
         <nav class="od-filebrowser-breadcrumb">
             <a ng-repeat="crumb in rvc.breadcrumbs" ng-click="rvc.gotoCrumb($index)">{{crumb.name}}</a>
             <span ng-if="$last" class="active">{{crumb.name}}</span>
-        </nav>
-    </div>
-    
-    <div layout="row">
-        <nav class="od-filebrowser-breadcrumb" flex>
-            <a ng-repeat="link in ipc.bcpath" ui-sref="ipview.ip({ path: link.path })">{{ link.title }}</a>
         </nav>
     </div>
     
