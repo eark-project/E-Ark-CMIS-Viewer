@@ -6,28 +6,45 @@
     margin: 0;
     background-color: $background-color;
     font-size: $u*0.9;
-    padding: 0 $u*0.25;
+    padding: 0 $u*0.5;
+    border-bottom: solid 1px darken($background-color, 10%);
+    display: flex;
+    flex-flow: row wrap;
   
+    a:after {
+        content: '';
+        display: inline-block;
+        width: $u*2.5;
+        height: $u*2.5;
+        border: solid 1px transparent;
+        border-color: darken($background-color, 10%) darken($background-color, 10%) transparent transparent;
+        transform: rotate(45deg);
+        margin-left: -($u*1.5);
+    }
     a,
     a:link,
     a:visited {
-        display: inline-block;
-        padding: $u*0.5 0 $u*0.5 $u*0.25;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        padding: $u*0.5;
         cursor: pointer;
         color: $main-color;
+        text-decoration: none; 
+        max-height: $u*2; 
+        overflow: hidden;
     }
     a:hover,
     a:active {
         color: darken($main-color, 20%);
     }
-    a:before {
-        display: inline-block;
-        content: '/';
-        padding-right: $u*0.125;
-    }
     a:last-child {
         cursor: default;
         color: #000;
+        
+        &:after {
+            content: none;
+        }
     }
 }
 

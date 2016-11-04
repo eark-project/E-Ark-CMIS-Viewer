@@ -7,6 +7,12 @@
         </nav>
     </div>
     
+    <div layout="row">
+        <nav class="od-filebrowser-breadcrumb" flex>
+            <a ng-repeat="link in ipc.bcpath" ui-sref="ipview.ip({ path: link.path })">{{ link.title }}</a>
+        </nav>
+    </div>
+    
     <div style="background-color: #fff;" layout="column" flex>
 
         <div layout="column" class="tlist" flex>
@@ -59,10 +65,10 @@
                 flex
                 ng-if="rvc.repo.children.length > 0">
                 <div md-virtual-repeat="item in rvc.repo.children | orderObjectBy:orderByAttribute:reverseOrder"
-                    ng-click="rvc.getItem($event, item.objectId, item.type)"
-                    layout="column"
-                    class="tlist__item"
-                    flex>
+                     ng-click="rvc.getItem($event, item.objectId, item.type)"
+                     layout="column"
+                     class="tlist__item"
+                     flex>
                     <div class="tlist__item__link" layout="row">
                         <span class="tlist__cell"
                             flex="20"
