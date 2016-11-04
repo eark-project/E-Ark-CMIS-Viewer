@@ -29,7 +29,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,7 +56,7 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
             this.operationContext = this.session.createOperationContext();
             this.session.setDefaultContext(this.operationContext);
             this.objectFactory = session.getObjectFactory();
-        } catch (SQLException sqe) {
+        } catch (Exception sqe) {
             sqe.printStackTrace();
             throw new CmisBridgeDbException("Unable to establish a session with the repository due to an issue with the " +
                     "db: " + sqe.getMessage());
@@ -385,7 +384,7 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
         }
 
         JsonObject temp;
-        if (extensions != null) {
+        if (extensions.size() > 0) {
             temp = new ExtensionNode(extensions.get(0)).toJson();
             jsonArrayBuilder.add(temp);
         }
