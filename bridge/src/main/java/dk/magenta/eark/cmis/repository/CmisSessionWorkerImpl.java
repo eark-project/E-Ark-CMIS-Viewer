@@ -29,7 +29,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,7 +56,7 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
             this.operationContext = this.session.createOperationContext();
             this.session.setDefaultContext(this.operationContext);
             this.objectFactory = session.getObjectFactory();
-        } catch (SQLException sqe) {
+        } catch (Exception sqe) {
             sqe.printStackTrace();
             throw new CmisBridgeDbException("Unable to establish a session with the repository due to an issue with the " +
                     "db: " + sqe.getMessage());
@@ -175,7 +174,7 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
                 documentBuilder.add("contentStream", IOUtils.readAllLines(document.getContentStream().getStream()));
             }
         } catch (Exception ge) {
-            System.out.println("********** Stacktrace **********\n");
+            logger.error("********** Stacktrace **********\n");
             ge.printStackTrace();
             throw new CmisBridgeIOException("\nUnable to read document:\n" + ge.getMessage());
         }
@@ -281,9 +280,9 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
             rootFolder.add("children", cb.build());
 
         } catch (Exception ge) {
-            System.out.println("******** Error ********\n");
+            logger.error("******** Error ********\n");
             ge.printStackTrace();
-            System.out.println("\n******** End ********\n");
+            logger.error("\n******** End ********\n");
             throw new CmisBridgeDirectoryException("Unable to read folder items for root folder:\n" + ge.getMessage());
         }
         return rootFolder.build();
@@ -370,11 +369,13 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
         JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
         List<CmisExtensionElement> extensions = Collections.EMPTY_LIST;
 
-        if (!cmisObject.getExtensions(ExtensionLevel.PROPERTIES).isEmpty())
+        if (cmisObject.getExtensions(ExtensionLevel.OBJECT) != null &&
+                !cmisObject.getExtensions(ExtensionLevel.OBJECT).isEmpty())
             // object extensions
             extensions = cmisObject.getExtensions(ExtensionLevel.OBJECT);
 
-        if (!cmisObject.getExtensions(ExtensionLevel.PROPERTIES).isEmpty()) {
+        if (cmisObject.getExtensions(ExtensionLevel.PROPERTIES) != null &&
+                !cmisObject.getExtensions(ExtensionLevel.PROPERTIES).isEmpty()) {
             // property extensions
             if (extensions.isEmpty())
                 extensions = cmisObject.getExtensions(ExtensionLevel.PROPERTIES);
@@ -383,7 +384,7 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
         }
 
         JsonObject temp;
-        if (extensions != null) {
+        if (extensions.size() > 0) {
             temp = new ExtensionNode(extensions.get(0)).toJson();
             jsonArrayBuilder.add(temp);
         }
