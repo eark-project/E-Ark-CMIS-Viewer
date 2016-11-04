@@ -13,8 +13,9 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
     rvc.gotoCrumb = cmisRepoService.goToCrumb;
     rvc.fileInfoDiag = fileInfoDiag;
     rvc.download = download;
-
+    
     rvc.loadRepoView();
+    
 
     function loadRepoView(){
         cmisRepoService.registerObserverCallback(repoViewObserver);
@@ -34,6 +35,7 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
             folderObjectId: objectId
         };
         cmisRepoService.getFolderChildren(requestObject);
+        rvc.repo = []; // Reset repo items
     }
 
     

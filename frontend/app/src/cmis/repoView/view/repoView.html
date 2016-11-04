@@ -1,6 +1,6 @@
 <div layout="column" layout-fill>
     
-    <div class="repo-docs__nav window" layout-padding>
+    <div class="repo-docs__nav window">
         <nav class="od-filebrowser-breadcrumb">
             <a ng-repeat="crumb in rvc.breadcrumbs" ng-click="rvc.gotoCrumb($index)">{{crumb.name}}</a>
             <span ng-if="$last" class="active">{{crumb.name}}</span>
@@ -59,10 +59,10 @@
                 flex
                 ng-if="rvc.repo.children.length > 0">
                 <div md-virtual-repeat="item in rvc.repo.children | orderObjectBy:orderByAttribute:reverseOrder"
-                    ng-click="rvc.getItem($event, item.objectId, item.type)"
-                    layout="column"
-                    class="tlist__item"
-                    flex>
+                     ng-click="rvc.getItem($event, item.objectId, item.type)"
+                     layout="column"
+                     class="tlist__item"
+                     flex>
                     <div class="tlist__item__link" layout="row">
                         <span class="tlist__cell"
                             flex="20"
