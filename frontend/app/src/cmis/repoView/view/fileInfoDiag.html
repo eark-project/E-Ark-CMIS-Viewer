@@ -1,6 +1,6 @@
 <md-dialog aria-label="File information">
     <form ng-cloak>
-        
+
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>{{ doc.name }}</h2>
@@ -10,37 +10,50 @@
                 </md-button>
             </div>
         </md-toolbar>
-    
-        <md-dialog-content>
-            <div class="md-dialog-content">
-                <div layout="column" layout-gt-xs="row">
-                    
-                    <dl>
-                        <ng-repeat ng-repeat="(key, value) in doc.allProperties" ng-if="value">
-                            <dt>{{ key }}</dt>
-                            <dd>{{ value }}</dd>
-                        </ng-repeat>
-                    </dl>
-                    
-                    <div>
-                        <h2>Extension properties</h2>
-                        <script type="text/ng-template" id="nodes_renderer.html">
-                            <span>{{ data.name }}</span>
-                            <ol>
-                                <li ng-repeat="data in data.children"
-                                    ng-include="'nodes_renderer.html'">
-                                </li>
-                            </ol>
-                        </script>
-                        <ol>
-                            <li ng-repeat="data in doc.extensionProperties" ng-include="'nodes_renderer.html'">
-                            </li>
-                        </ol>
-                    </div>
-                    
-                </div>
-            </div>
-        </md-dialog-content>
-        
+
+        <md-content>
+            <md-tabs md-dynamic-height md-selected="currentTab">
+                <md-tab id="tab1">
+                    <md-tab-label>Properties</md-tab-label>
+                    <md-tab-body>
+                        <div layout="column" layout-gt-xs="row">
+                            <dl>
+                                <ng-repeat ng-repeat="(key, value) in doc.allProperties" ng-if="value">
+                                    <dt>{{ key }}</dt>
+                                    <dd>{{ value }}</dd>
+                                </ng-repeat>
+                            </dl>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab id="tab2">
+                    <md-tab-label>Extension properties</md-tab-label>
+                    <md-tab-body>
+                        <div layout="column" layout-gt-xs="row">
+                            <script type="text/ng-template" id="nodes_renderer.html">
+                                <span>{{ data.name }} :</span>
+                                <div ng-if="data.children.length > 0">
+                                    <ul>
+                                        <li ng-repeat="data in data.children"
+                                            ng-include="'nodes_renderer.html'">
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div ng-if="data.value !='' "> <span>{{ data.value }} </span>
+                                </div>
+                            </script>
+                                <ul>
+                                    <li ng-repeat="data in doc.extensionProperties" ng-include="'nodes_renderer.html'">
+                                    </li>
+                                </ul>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+
+            </md-tabs>
+
+        </md-content>
+
     </form>
 </md-dialog>
