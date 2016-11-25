@@ -1,4 +1,4 @@
-<md-dialog aria-label="File information">
+<md-dialog aria-label="File information" class="file-info-diag">
     <form ng-cloak>
 
         <md-toolbar>
@@ -16,7 +16,7 @@
                 <md-tab id="tab1">
                     <md-tab-label>Properties</md-tab-label>
                     <md-tab-body>
-                        <div layout="column" layout-gt-xs="row">
+                        <div layout="column" layout-gt-xs="row" layout-padding>
                             <dl>
                                 <ng-repeat ng-repeat="(key, value) in doc.allProperties" ng-if="value">
                                     <dt>{{ key }}</dt>
@@ -29,24 +29,22 @@
                 <md-tab id="tab2">
                     <md-tab-label>Extension properties</md-tab-label>
                     <md-tab-body>
-                        <div layout="column" layout-gt-xs="row">
+                        <div layout="column" layout-gt-xs="row" layout-padding>
                             <script type="text/ng-template" id="nodes_renderer.html">
-                                <span>{{ data.name }} :</span>
+                                <span class="extprops-name muted">{{ data.name }} :</span>
                                 <div ng-if="data.children.length > 0">
-                                    <ul>
+                                    <ul class="extprops">
                                         <li ng-repeat="data in data.children"
                                             ng-include="'nodes_renderer.html'">
                                         </li>
                                     </ul>
                                 </div>
-
-                                <div ng-if="data.value !='' "> <span>{{ data.value }} </span>
-                                </div>
+                                <div class="extprops-value" ng-if="data.value !='' "><span>{{ data.value }}</span></div>
                             </script>
-                                <ul>
-                                    <li ng-repeat="data in doc.extensionProperties" ng-include="'nodes_renderer.html'">
-                                    </li>
-                                </ul>
+                            <ul class="extprops">
+                                <li ng-repeat="data in doc.extensionProperties" ng-include="'nodes_renderer.html'">
+                                </li>
+                            </ul>
                         </div>
                     </md-tab-body>
                 </md-tab>
