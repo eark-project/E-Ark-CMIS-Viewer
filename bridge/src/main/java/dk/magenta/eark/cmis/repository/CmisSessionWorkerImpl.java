@@ -26,6 +26,7 @@ import javax.json.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -192,9 +193,9 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
              /*Create a temp file we might need to use this for pre-processing before storing. e.g. validation */
             Document document = (Document) this.session.getObject(documentObjectId);
             String docName = StringUtils.substringBeforeLast(document.getName(), ".");
-            //Make sure that the file name is UTF-8 encoded
-            byte ptext[] = docName.getBytes("UTF-8");
-            docName = new String(ptext, "UTF-8");
+            //Make sure that the file name is URL encoded to get around special characters
+            //See https://github.com/magenta-aps/E-Ark-CMIS-Viewer/issues/17
+            docName = URLEncoder.encode(docName, "UTF-8");
 
             String docPostfix = StringUtils.substringAfterLast(document.getName(), ".");
             File tempFile = File.createTempFile(docName, "." + docPostfix);
