@@ -51,7 +51,6 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
             DatabaseConnectionStrategy dbConnectionStrategy = new JDBCConnectionStrategy(new PropertiesHandlerImpl("settings.properties"));
             Cmis1Connector cmis1Connector = new Cmis1Connector();
             //Get a CMIS session object
-//            this.session = cmis1Connector.getSession("admin");
             this.session = cmis1Connector.getAtomPubSession("admin");
             this.operationContext = this.session.createOperationContext();
             this.session.setDefaultContext(this.operationContext);
@@ -193,6 +192,10 @@ public class CmisSessionWorkerImpl implements CmisSessionWorker {
              /*Create a temp file we might need to use this for pre-processing before storing. e.g. validation */
             Document document = (Document) this.session.getObject(documentObjectId);
             String docName = StringUtils.substringBeforeLast(document.getName(), ".");
+            //Make sure that the file name is UTF-8 encoded
+            byte ptext[] = docName.getBytes("UTF-8");
+            docName = new String(ptext, "UTF-8");
+
             String docPostfix = StringUtils.substringAfterLast(document.getName(), ".");
             File tempFile = File.createTempFile(docName, "." + docPostfix);
             InputStream documentInputStream = document.getContentStream().getStream();
