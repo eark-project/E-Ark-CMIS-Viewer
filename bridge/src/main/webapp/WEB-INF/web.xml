@@ -16,11 +16,13 @@
         </init-param>
         <init-param>
             <param-name>cors.allowed.headers</param-name>
-            <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+            <param-value>
+                Authorization,Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers
+            </param-value>
         </init-param>
         <init-param>
             <param-name>cors.exposed.headers</param-name>
-            <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+            <param-value>Authorization,Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
         </init-param>
         <init-param>
             <param-name>cors.support.credentials</param-name>
@@ -31,6 +33,7 @@
             <param-value>10</param-value>
         </init-param>
     </filter>
+    <!--Filter mappings-->
     <filter-mapping>
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -42,6 +45,10 @@
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>dk.magenta.eark.cmis</param-value>
+        </init-param>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>dk.magenta.eark.cmis.system.CmisApplication</param-value>
         </init-param>
         <!--support for multipart feature for file upload-->
         <init-param>

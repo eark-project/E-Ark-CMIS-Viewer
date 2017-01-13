@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -31,6 +32,8 @@ public class RepositoryResource {
 
     public static final String FOLDER_OBJECT_ID = "folderObjectId";
     public static final String DOCUMENT_OBJECT_ID = "documentObjectId";
+    @Inject
+    CmisSessionWorker cmisSessionWorker;
 
     public RepositoryResource() {
     }
@@ -43,13 +46,11 @@ public class RepositoryResource {
         JsonObject response;
 
         try {
-            //Get a session worker
-            CmisSessionWorker sessionWorker = this.getSessionWorker();
 
             //Build the json for the repository info
-            response = sessionWorker.getRepositoryInfo();
+            response = cmisSessionWorker.getRepositoryInfo();
             builder.add("repositoryInfo", response);
-            builder.add("rootFolder", sessionWorker.getRootFolder());
+            builder.add("rootFolder", cmisSessionWorker.getRootFolder());
 
         } catch (Exception e) {
             builder.add(Constants.SUCCESS, false);
@@ -66,8 +67,6 @@ public class RepositoryResource {
     public Response DownloadDocument(@PathParam("docId") String documentId) {
         try {
             documentId = URLDecoder.decode(documentId, "UTF-8");
-
-            CmisSessionWorker cmisSessionWorker = this.getSessionWorker();
             java.nio.file.Path source = Paths.get(cmisSessionWorker.getBufferedDocumentPath(documentId));
             File theFile = source.toFile();
             Response.ResponseBuilder rb = Response.ok(theFile);
@@ -92,11 +91,8 @@ public class RepositoryResource {
             boolean includeContentStream = json.getBoolean("includeContentStream", false);
 
             try {
-                //Get a session worker
-                CmisSessionWorker sessionWorker = this.getSessionWorker();
-
                 //Build the json for the repository info
-                builder.add("document", sessionWorker.getDocument(documentObjectId, includeContentStream));
+                builder.add("document", cmisSessionWorker.getDocument(documentObjectId, includeContentStream));
 
             } catch (Exception e) {
                 builder.add(Constants.SUCCESS, false);
@@ -130,8 +126,6 @@ public class RepositoryResource {
             String folderObjectId = json.getString(FOLDER_OBJECT_ID);
 
             try {
-                CmisSessionWorker cmisSessionWorker = this.getSessionWorker();
-
                 //Build the json for the repository info
                 builder.add("folder", cmisSessionWorker.getFolder(folderObjectId));
 
@@ -162,7 +156,6 @@ public class RepositoryResource {
         if (StringUtils.isNotBlank(objectId)) {
             try {
                 objectId = URLDecoder.decode(objectId, "UTF-8");
-                CmisSessionWorker cmisSessionWorker = this.getSessionWorker();
                 JsonObject rootFolder = cmisSessionWorker.getRootFolder();
                 String repoRoot = rootFolder.getJsonObject("properties").getString("objectId");
 
@@ -244,19 +237,4 @@ public class RepositoryResource {
 
         return builder.build();
     }
-
-    /**
-     * Returns a cmis session worker instance given a profile name
-     *
-     * @return
-     */
-    private CmisSessionWorker getSessionWorker() {
-        try {
-            return new CmisSessionWorkerImpl();
-        } catch (Exception ge) {
-            logger.error("Unable to create session worker due to: " + ge.getMessage());
-            throw new RuntimeException(ge.getMessage());
-        }
-    }
-
 }

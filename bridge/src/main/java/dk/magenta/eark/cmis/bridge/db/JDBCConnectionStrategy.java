@@ -3,19 +3,21 @@ package dk.magenta.eark.cmis.bridge.db;
 import dk.magenta.eark.cmis.bridge.Constants;
 import dk.magenta.eark.cmis.bridge.authentication.Person;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDbException;
+import dk.magenta.eark.cmis.system.PropertiesHandler;
 import dk.magenta.eark.cmis.viewer.db.connector.cmis_bridge.tables.Repository;
 import dk.magenta.eark.cmis.viewer.db.connector.cmis_bridge.tables.Roles;
 import dk.magenta.eark.cmis.viewer.db.connector.cmis_bridge.tables.User;
-import dk.magenta.eark.cmis.system.PropertiesHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
 import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,13 +27,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class JDBCConnectionStrategy implements DatabaseConnectionStrategy {
     private final Logger logger = LoggerFactory.getLogger(JDBCConnectionStrategy.class);
     private Connection connection;
     private static final String REPOSITORY_NAME = "repository";
 
+    @Inject
     public JDBCConnectionStrategy(PropertiesHandler propertiesHandler) throws SQLException{
-        PropertiesHandler propertiesHandler1 = propertiesHandler;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             String host = propertiesHandler.getProperty("host");

@@ -3,6 +3,7 @@ package dk.magenta.eark.cmis.repository;
 import org.apache.chemistry.opencmis.client.api.CmisObject;
 import org.apache.chemistry.opencmis.client.api.Session;
 import org.apache.chemistry.opencmis.commons.spi.*;
+import org.jvnet.hk2.annotations.Contract;
 
 import javax.json.JsonObject;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * @author lanre.
  */
+@Contract
 public interface CmisSessionWorker {
 
     //<editor-fold desc="webservices endpoints">

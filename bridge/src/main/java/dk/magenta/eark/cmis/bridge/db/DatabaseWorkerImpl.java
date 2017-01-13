@@ -5,12 +5,14 @@ import dk.magenta.eark.cmis.bridge.Constants;
 import dk.magenta.eark.cmis.bridge.authentication.Person;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDbException;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeUserAdminException;
+import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeUserAuthenticationException;
 import dk.magenta.eark.cmis.repository.Cmis1Connector;
-import dk.magenta.eark.cmis.system.PropertiesHandlerImpl;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -23,24 +25,12 @@ import java.util.stream.Collectors;
 /**
  * @author lanre.
  */
+@Service
 public class DatabaseWorkerImpl implements DatabaseWorker {
     private final Logger logger = LoggerFactory.getLogger(DatabaseWorkerImpl.class);
-    private DatabaseConnectionStrategy dbConnectionStrategy;
+    @Inject
+    DatabaseConnectionStrategy dbConnectionStrategy;
 
-    /**
-     *
-     */
-    public DatabaseWorkerImpl() {
-
-        try {
-            this.dbConnectionStrategy = new JDBCConnectionStrategy(new PropertiesHandlerImpl("settings.properties"));
-        } catch (SQLException sqe) {
-            logger.error("********** Error Initialising Database Connector **********");
-            sqe.printStackTrace();
-            throw new CmisBridgeDbException("Unable to initialise new db connection. See error logs for " +
-                    "details\n" + sqe.getMessage());
-        }
-    }
 
     /**
      * Returns a json object representing a person from the db if the user name and password match
@@ -50,24 +40,20 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
      * @return
      */
     @Override
-    public JsonObject authenticatePerson(String userName, String password) {
-        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+    public JsonObject authenticatePerson(String userName, String password) throws CmisBridgeUserAuthenticationException {
         try {
             Person person = dbConnectionStrategy.getPerson(userName);
             if (person != Person.EMPTY && person.getPassword().equals(password))
                 return person.toJson();
             else {
-                jsonObjectBuilder.add(Constants.SUCCESS, false);
-                jsonObjectBuilder.add(Constants.ERRORMSG, "User not found");
+                logger.error("******** Error retrieving user from db *********");
+                throw new CmisBridgeUserAuthenticationException("Unable to find userName with matching password");
             }
         } catch (SQLException sqe) {
             logger.error("********** Error Retrieving person **********");
             sqe.printStackTrace();
-            jsonObjectBuilder.add(Constants.SUCCESS, false);
-            jsonObjectBuilder.add(Constants.ERRORMSG, sqe.getMessage());
+            throw new CmisBridgeUserAuthenticationException("Unable to find userName with matching password");
         }
-        return jsonObjectBuilder.build();
-
     }
 
     /**
@@ -237,16 +223,14 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
     @Override
     public JsonObject updateRepoDetails(Map<String, String> repoProperties) throws CmisBridgeDbException {
         try {
-            if(this.dbConnectionStrategy.updateRepository(repoProperties)) {
+            if (this.dbConnectionStrategy.updateRepository(repoProperties)) {
                 //Refresh the singleton
                 Repository.getInstance().refreshDetails();
                 //Clear any cached sessions
                 Cmis1Connector.clearSessions();
                 return this.getRepositoryDetails();
-            }
-            else throw new CmisBridgeDbException("Unable to update repository details");
-        }
-        catch (Exception ge){
+            } else throw new CmisBridgeDbException("Unable to update repository details");
+        } catch (Exception ge) {
             String rnd = RandomStringUtils.random(7, true, true);
             logger.error("********** Error (" + rnd + ") **********");
             ge.printStackTrace();

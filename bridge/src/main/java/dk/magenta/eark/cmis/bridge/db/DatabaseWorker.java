@@ -2,6 +2,7 @@ package dk.magenta.eark.cmis.bridge.db;
 
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDbException;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeUserAdminException;
+import org.jvnet.hk2.annotations.Contract;
 
 import javax.json.JsonObject;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 /**
  * @author lanre.
  */
+@Contract
 public interface DatabaseWorker {
 
     //TODO since we have no notion of who is logged in, there needs to be away of dtermining that the updates are being perfomred by an admin or someone

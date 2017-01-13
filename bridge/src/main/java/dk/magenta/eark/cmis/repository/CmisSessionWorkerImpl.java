@@ -2,12 +2,9 @@ package dk.magenta.eark.cmis.repository;
 
 import dk.magenta.eark.cmis.bridge.Constants;
 import dk.magenta.eark.cmis.bridge.Utils;
-import dk.magenta.eark.cmis.bridge.db.DatabaseConnectionStrategy;
-import dk.magenta.eark.cmis.bridge.db.JDBCConnectionStrategy;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDbException;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDirectoryException;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeIOException;
-import dk.magenta.eark.cmis.system.PropertiesHandlerImpl;
 import org.apache.chemistry.opencmis.client.api.*;
 import org.apache.chemistry.opencmis.commons.data.CmisExtensionElement;
 import org.apache.chemistry.opencmis.commons.data.ObjectData;
@@ -19,6 +16,7 @@ import org.apache.chemistry.opencmis.commons.impl.IOUtils;
 import org.apache.chemistry.opencmis.commons.impl.JSONConverter;
 import org.apache.chemistry.opencmis.commons.spi.*;
 import org.apache.commons.lang3.StringUtils;
+import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,19 +35,16 @@ import java.util.stream.Collectors;
 /**
  * @author lanre.
  */
+@Service
 public class CmisSessionWorkerImpl implements CmisSessionWorker {
     private final Logger logger = LoggerFactory.getLogger(CmisSessionWorkerImpl.class);
     private Session session;
     private ObjectFactory objectFactory;
     private OperationContext operationContext;
 
-    /**
-     *
-     */
     public CmisSessionWorkerImpl() {
 
         try {
-            DatabaseConnectionStrategy dbConnectionStrategy = new JDBCConnectionStrategy(new PropertiesHandlerImpl("settings.properties"));
             Cmis1Connector cmis1Connector = new Cmis1Connector();
             //Get a CMIS session object
             this.session = cmis1Connector.getAtomPubSession("admin");

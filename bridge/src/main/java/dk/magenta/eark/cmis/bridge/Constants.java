@@ -39,5 +39,6 @@ public class Constants {
 	public static final String EMAIL = "email";
 	public static final String PASSWORD = "password";
 	public static final String USER_ROLE = "role";
+	public static final String SESSION_TICKET = "sessionTicket";
 //	public static final String  = "";
 }

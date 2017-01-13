@@ -3,11 +3,13 @@ package dk.magenta.eark.cmis.bridge.db;
 import dk.magenta.eark.cmis.bridge.authentication.Person;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDbException;
 import org.jooq.Record;
+import org.jvnet.hk2.annotations.Contract;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+@Contract
 public interface DatabaseConnectionStrategy {
     /**
      * Returns a list of persons from the db

@@ -87,8 +87,7 @@ public class Repository {
      */
     public void refreshDetails(){
         try {
-            DatabaseConnectionStrategy dbConnectionStrategy = new JDBCConnectionStrategy(new
-                    PropertiesHandlerImpl("settings.properties"));
+            DatabaseConnectionStrategy dbConnectionStrategy = new JDBCConnectionStrategy(new PropertiesHandlerImpl());
             Record record = dbConnectionStrategy.getRepository();
             this.name = record.get(NAME).toString();
             this.url = record.get(URL).toString();

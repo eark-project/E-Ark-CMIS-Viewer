@@ -35,14 +35,16 @@
 
         <maven.tomcat.port>9090</maven.tomcat.port>
         <maven.cmis.lib.version>0.14.0</maven.cmis.lib.version>
+        <maven.hk2.version>2.5.0-b31</maven.hk2.version>
         <maven.springloaded.version>1.2.6.RELEASE</maven.springloaded.version>
 
-        <jersey.version>2.22.1</jersey.version>
+        <jersey.version>2.25</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
         <finalName>cmis-bridge</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -150,6 +152,20 @@
                         </target>
                     </generator>
                 </configuration>
+            </plugin>
+
+            <!--dynamic dependency injection framework. See https://hk2.java.net/2.2.0/inhabitant-generator.html#Using_Maven-->
+            <plugin>
+                <groupId>org.glassfish.hk2</groupId>
+                <artifactId>hk2-inhabitant-generator</artifactId>
+                <version>${maven.hk2.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-inhabitants</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
@@ -283,5 +299,17 @@
             <version>${maven.cmis.lib.version}</version>
         </dependency>
 
+        <!--HK2 dependency for generating inhabitants file.
+        See https://hk2.java.net/2.5.0-b31/getting-started.html#Automatic_Service_Population-->
+        <dependency>
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2-locator</artifactId>
+            <version>${maven.hk2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2-metadata-generator</artifactId>
+            <version>${maven.hk2.version}</version>
+        </dependency>
     </dependencies>
 </project>
