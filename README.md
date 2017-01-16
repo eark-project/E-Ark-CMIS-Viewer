@@ -27,10 +27,10 @@ Preparing the Server:<br/>
  
 Installing the viewer:
  - Clone the project
- - For the bridge/backend:
-1 - In the root of the bridge folder, build the project using maven by execuing the following command in a terminal: `mvn clean package`. There should now be a resulting `*.war` file in [bridge/target]() directory named `cmis-bridge.war`
-2 - Install the warfile in your java servlet container
-3 - Browse to [http://server-address:<port>/<app-context>/webapi/system/check]() and it should result in a simple HTML page twith the following message: `CMIS Bridge is up and running!` (Note that the "app-context" part of the url is optional. In case the bridge isn't the ROOT context in the servlet container. The default app-context will be cmis-bridge, unless of course the WAR file is renamed to something else)
+ - For the bridge/backend:<br/>
+1 - In the root of the bridge folder, build the project using maven by execuing the following command in a terminal: `mvn clean package`. There should now be a resulting `*.war` file in [bridge/target]() directory named `cmis-bridge.war`<br/>
+2 - Install the warfile in your java servlet container<br/>
+3 - Browse to [http://server-address:<port>/<app-context>/webapi/system/check]() and it should result in a simple HTML page twith the following message: `CMIS Bridge is up and running!` (Note that the "app-context" part of the url is optional. In case the bridge isn't the ROOT context in the servlet container. The default app-context will be cmis-bridge, unless of course the WAR file is renamed to something else)<br/>
 
 - Installing the UI:
 ## ToDo
