@@ -13,11 +13,12 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
 /**
- * @author lanre.
+ * @author DarkStar1.
  */
 @Provider
 public class RestAuthenticationFilter implements ContainerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(RestAuthenticationFilter.class);
+    private static final String TEST_PATH = "system/check";
     private static final String LOGIN_PATH = "authentication/login";
     public static final String AUTHENTICATION_HEADER = "Authorization";
 
@@ -50,7 +51,7 @@ public class RestAuthenticationFilter implements ContainerRequestFilter {
 
         final String relPath = reqURI.getPath();
         //proceed as normal
-        if(!LOGIN_PATH.equals(relPath)){
+        if(!LOGIN_PATH.equals(relPath) && !TEST_PATH.equals(relPath)){
             String authCredentials = requestContext.getHeaderString(AUTHENTICATION_HEADER);
             if (! authenticationService.isAuthenticated(authCredentials) ){
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
@@ -58,5 +59,6 @@ public class RestAuthenticationFilter implements ContainerRequestFilter {
                         .build());
             }
         }
+
     }
 }

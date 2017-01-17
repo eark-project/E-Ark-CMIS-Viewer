@@ -32,6 +32,8 @@ UNLOCK TABLES;
 # Dump of table Roles
 # ------------------------------------------------------------
 
+DROP TABLE IF EXISTS `Roles`;
+
 CREATE TABLE `Roles` (
   `userName` varchar(50) NOT NULL DEFAULT '',
   `role` varchar(20) NOT NULL DEFAULT '',
@@ -44,7 +46,7 @@ LOCK TABLES `Roles` WRITE;
 
 INSERT INTO `Roles` (`userName`, `role`)
 VALUES
-	('admin','admin');
+	('admin','ADMIN');
 
 /*!40000 ALTER TABLE `Roles` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -53,12 +55,14 @@ UNLOCK TABLES;
 # Dump of table User
 # ------------------------------------------------------------
 
+DROP TABLE IF EXISTS `User`;
+
 CREATE TABLE `User` (
   `userName` varchar(32) NOT NULL,
   `firstName` varchar(50) DEFAULT NULL,
   `lastName` varchar(50) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`userName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -67,10 +71,12 @@ LOCK TABLES `User` WRITE;
 
 INSERT INTO `User` (`userName`, `firstName`, `lastName`, `email`, `password`)
 VALUES
-	('admin','Super','User','admin@magenta.dk','password');
+	('admin','Super','User','admin@eark-magenta.dk','passw0rd');
 
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
