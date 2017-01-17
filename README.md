@@ -36,13 +36,13 @@ Installing the viewer:
 1 - Configure the webserver to serve the project root directory<br/>
 2 - There's sort of an in-app proxying to the bridge so [this url](https://github.com/magenta-aps/E-Ark-CMIS-Viewer/blob/feature/eark-readme-documentation/frontend/app/src/init.module.js#L16) needs to be changed to target the bridge service. (As can be seen in this case, it is targetting the app context on the magenta server)<br/>
 3 - Run terminal commands:<br/>
-    ´´´
+    ```
     npm update<br/>
     npm install<br/>
     bower update<br/>
     bower install<br/>
     gulp build<br/>
-    ´´´
+    ```
     
 ## Features to consider
 
