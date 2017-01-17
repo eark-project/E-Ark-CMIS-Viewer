@@ -32,16 +32,16 @@ Installing the viewer:
 2 - Install the warfile in your java servlet container<br/>
 3 - Browse to [http://server-address:port/app-context/webapi/system/check]() and it should result in a simple HTML page twith the following message: `CMIS Bridge is up and running!`<br/>(Note that the "app-context" portion of the url is optional. In case the war isn't deployed as the ROOT context in the servlet container. The default app-context will be `cmis-bridge`, unless of course the WAR file is renamed to something else)<br/>
 
-- Installing the UI:
+- Installing the UI:<br/>
 1 - Configure the webserver to serve the project root directory<br/>
 2 - There's sort of an in-app proxying to the bridge so [this url](https://github.com/magenta-aps/E-Ark-CMIS-Viewer/blob/feature/eark-readme-documentation/frontend/app/src/init.module.js#L16) needs to be changed to target the bridge service. (As can be seen in this case, it is targetting the app context on the magenta server)<br/>
-3 - Run terminal commands:
+3 - Run terminal commands:<br/>
     ´´´
-    npm update
-    npm install
-    bower update
-    bower install
-    gulp build
+    npm update<br/>
+    npm install<br/>
+    bower update<br/>
+    bower install<br/>
+    gulp build<br/>
     ´´´
     
 ## Features to consider
