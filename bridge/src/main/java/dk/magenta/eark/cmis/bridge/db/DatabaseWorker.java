@@ -8,7 +8,7 @@ import javax.json.JsonObject;
 import java.util.Map;
 
 /**
- * @author lanre.
+ * @author DarkStar1.
  */
 @Contract
 public interface DatabaseWorker {

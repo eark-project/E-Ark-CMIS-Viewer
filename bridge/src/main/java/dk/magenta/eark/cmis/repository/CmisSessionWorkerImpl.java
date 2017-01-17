@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author lanre.
+ * @author DarkStar1.
  */
 @Service
 public class CmisSessionWorkerImpl implements CmisSessionWorker {

@@ -18,7 +18,7 @@ import java.security.SecureRandom;
 import java.util.*;
 
 /**
- * @author lanre.
+ * @author DarkStar1.
  */
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {

@@ -15,7 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
- * @author lanre.
+ * @author DarkStar1.
  */
 
 @Path("authentication")
