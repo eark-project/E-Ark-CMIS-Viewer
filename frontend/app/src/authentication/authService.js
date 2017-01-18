@@ -6,7 +6,6 @@ angular
 
 function config($httpProvider) {
     $httpProvider.interceptors.push('httpTicketInterceptor');
-    $httpProvider.defaults.headers.common.Authorization = undefined;
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }
 
@@ -18,18 +17,18 @@ function httpTicketInterceptor($injector, $translate, $window, $q, sessionServic
     };
 
     function request(config) {
-        config.url = prefixAlfrescoServiceUrl(config.url);
+        config.url = prefixServiceUrl(config.url);
         if (sessionService.getUserInfo()) {
+            config.headers['Authorization'] = sessionService.getUserInfo().sessionTicket;
             config.params = config.params || {};
-            config.params.alf_ticket = sessionService.getUserInfo().ticket;
         }
         return config;
     }
 
-    function prefixAlfrescoServiceUrl(url) {
+    function prefixServiceUrl(url) {
         if (url.indexOf("/webapi") == 0) {
-         return BRIDGE_URI.serviceProxy + url;
-         }
+            return BRIDGE_URI.serviceProxy + url;
+        }
         return url;
     }
 
@@ -42,8 +41,8 @@ function httpTicketInterceptor($injector, $translate, $window, $q, sessionServic
 
     function responseError(rejection) {
         //Prevent from popping up the message on failed SSO attempt
-        if (rejection.status == 401) {
-            console.log('==> Authentication failure ');
+        if (rejection.status == 401 || rejection.status == 500 ) {
+            console.log('==> Authentication failure/Session Expired ');
             sessionExpired();
         }
         return $q.reject(rejection);
@@ -54,18 +53,19 @@ function httpTicketInterceptor($injector, $translate, $window, $q, sessionServic
             return;
 
         $window._omsSessionExpired = true;
-        sessionService.setUserInfo(null);
+        sessionService.clearUserInfo();
+        sessionService.clearRetainedLocation();
         var $mdDialog = $injector.get('$mdDialog'),
             notificationUtilsService = $injector.get('notificationUtilsService');
         $mdDialog.cancel();
-        sessionService.retainCurrentLocation();
+        //sessionService.retainCurrentLocation();
         $window.location = "/#/login";
         notificationUtilsService.notify($translate.instant('LOGIN.SESSION_TIMEOUT'));
         delete $window._omsSessionExpired;
     }
 }
 
-function authService($http, $window, $state, sessionService, userService, $q) {
+function authService($http, $window, sessionService, userService, $q) {
     var service = {
         login: login,
         logout: logout,
@@ -93,28 +93,31 @@ function authService($http, $window, $state, sessionService, userService, $q) {
         });
     }
 
-    function login(username, password) {
-        var userInfo = {};
-        return $http.post('/webapi/authentication/login', {userName: username, password: password}).then(function (response) {
-                //sessionService.setUserInfo(response.data);
-                return addUserAndParamsToSession(username);
-            }, function (reason) {
-                console.log(reason);
-                return reason;
-            });
+    function login(userName, password) {
+        return $http.post('/webapi/authentication/login', {
+            userName: userName,
+            password: password
+        }).then(function (response) {
+            if (response.data.sessionTicket) {
+                sessionService.setUserInfo({sessionTicket : response.data.sessionTicket});
+                return addUserAndParamsToSession(userName);
+            }
+        }, function (reason) {
+            console.log(reason);
+            return reason;
+        });
     }
 
     function logout() {
         var userInfo = sessionService.getUserInfo();
-
-
         if (userInfo) {
-            //return $http.post('/webapi/logout').then(function (response) {
+            return $http.post('/webapi/authentication/logout', {
+                userName: userInfo.user.userName,
+                sessionTicket: userInfo.sessionTicket
+            }).then(function (response) {
                 sessionService.clearUserInfo();
                 sessionService.clearRetainedLocation();
-                //return response;
-            //});
-
+            });
         }
         return $q.resolve(true);
     }
@@ -151,8 +154,8 @@ function authService($http, $window, $state, sessionService, userService, $q) {
             (authorizedRoles.length > 0 && authorizedRoles.indexOf('standard') > -1);
     }
 
-    function addUserAndParamsToSession(username) {
-        return userService.getPerson(username).then(function (user) {
+    function addUserAndParamsToSession(userName) {
+        return userService.getPerson(userName).then(function (user) {
             delete $window._omsSessionExpired;
             var userInfo = sessionService.getUserInfo();
             userInfo['user'] = user;

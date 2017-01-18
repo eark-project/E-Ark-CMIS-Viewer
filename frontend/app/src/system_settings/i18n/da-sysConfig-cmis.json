@@ -1,0 +1,15 @@
+{
+  "ADMIN": {
+    "SYS_SETTINGS": {
+      "LABEL":{
+        "REPOSITORY_DETAILS": "Indstillinger for dokumentarkiv ",
+        "CONFIGURE_REPO": "Konfigurér dokumentarkiv",
+        "MANAGE_USERS": "Administrér brugere"
+      },
+      "MESSAGES":{
+        "SAVE_PROMPT": "Er du sikker på at du vil ændre detaljer for dokumentarkivet?",
+        "SAVED_SUCCESSFULLY":"Oplysninger opdateret"
+      }
+    }
+  }
+}

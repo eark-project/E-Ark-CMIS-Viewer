@@ -1,20 +1,23 @@
 package dk.magenta.eark.cmis.bridge.db;
 
+import dk.magenta.eark.cmis.bridge.Constants;
 import dk.magenta.eark.cmis.bridge.authentication.Person;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeDbException;
+import dk.magenta.eark.cmis.system.PropertiesHandler;
 import dk.magenta.eark.cmis.viewer.db.connector.cmis_bridge.tables.Repository;
 import dk.magenta.eark.cmis.viewer.db.connector.cmis_bridge.tables.Roles;
 import dk.magenta.eark.cmis.viewer.db.connector.cmis_bridge.tables.User;
-import dk.magenta.eark.cmis.system.PropertiesHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
 import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -24,13 +27,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class JDBCConnectionStrategy implements DatabaseConnectionStrategy {
     private final Logger logger = LoggerFactory.getLogger(JDBCConnectionStrategy.class);
     private Connection connection;
     private static final String REPOSITORY_NAME = "repository";
 
+    @Inject
     public JDBCConnectionStrategy(PropertiesHandler propertiesHandler) throws SQLException{
-        PropertiesHandler propertiesHandler1 = propertiesHandler;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             String host = propertiesHandler.getProperty("host");
@@ -159,6 +163,8 @@ public class JDBCConnectionStrategy implements DatabaseConnectionStrategy {
                 }
                 return commits;
             });
+            //Set the role after creating the user
+            setUserRole(person.getUserName(), person.getRole().toString());
         } catch (Exception ge){
             logger.error("An issue with persisting the person in the db.\n"+ ge.getMessage());
             ge.printStackTrace();
@@ -211,7 +217,6 @@ public class JDBCConnectionStrategy implements DatabaseConnectionStrategy {
             result = db.transactionResult( configuration -> {
                 //Update the profile in question. This should actually lock the record during update. I think/hope
                int commits = DSL.using(configuration).update(User.USER)
-                        .set(User.USER.USERNAME, person.getUserName())
                         .set(User.USER.FIRSTNAME, person.getFirstName())
                         .set(User.USER.LASTNAME, person.getLastName())
                         .set(User.USER.EMAIL, person.getEmail())
@@ -298,12 +303,12 @@ public class JDBCConnectionStrategy implements DatabaseConnectionStrategy {
         try (DSLContext db = DSL.using(connection, SQLDialect.MYSQL)) {
 
             List<Query> queries = new ArrayList<>();
-            Query passwordQuery = db.insertInto(Repository.REPOSITORY, Repository.REPOSITORY.PASSWORD)
-                    .values(props.get("password"));
-            Query userNameQuery = db.insertInto(Repository.REPOSITORY, Repository.REPOSITORY.USERNAME)
-                    .values(props.get("userName"));
-            Query urlQuery = db.insertInto(Repository.REPOSITORY, Repository.REPOSITORY.URL)
-                    .values(props.get("url"));
+            Query passwordQuery = db.update(Repository.REPOSITORY).set(Repository.REPOSITORY.PASSWORD, props.get("password"))
+                    .where(Repository.REPOSITORY.NAME.equal(REPOSITORY_NAME));
+            Query userNameQuery = db.update(Repository.REPOSITORY).set(Repository.REPOSITORY.USERNAME, props.get(Constants.USER_NAME))
+                    .where(Repository.REPOSITORY.NAME.equal(REPOSITORY_NAME));
+            Query urlQuery = db.update(Repository.REPOSITORY).set(Repository.REPOSITORY.URL, props.get("url"))
+                    .where(Repository.REPOSITORY.NAME.equal(REPOSITORY_NAME));
 
             if(props.containsKey("password"))
                 queries.add(passwordQuery);

@@ -2,27 +2,17 @@ angular
     .module('eArkPlatform.users')
     .controller('UserDialogController', UserDialogController);
 
-function UserDialogController($scope, $mdDialog, $mdToast, $translate, $injector, $timeout, notificationUtilsService, userService, user) {
+function UserDialogController($mdDialog, $mdToast, $translate, $injector, notificationUtilsService, userService, user) {
     var ucd = this;
 
     // Data from the user creation form
     ucd.user = angular.copy(user);
     ucd.dialogMode = user ? 'USER.EDIT_USER' : 'USER.CREATE_USER';
     ucd.userExists = user ? true : false;
+    ucd.roles=["ADMIN","STANDARD"];
     ucd.cancel = cancel;
     ucd.update = update;
     ucd.clearFieldValidation = clearFieldValidation;
-    ucd.useAddo = $injector.has('addoService');
-    ucd.isAddoConfigured = false;
-
-    if (ucd.useAddo) {
-        var addoService = $injector.get('addoService');
-        if (ucd.userExists) {
-            addoService.getAddoUserProperties(user.userName).then(function (addoProps) {
-                ucd.user.addoUsername = addoProps.addoUsername;
-            });
-        }
-    }
 
     // When the form is submitted, show a notification:
     ucd.toastPosition = {
@@ -38,25 +28,12 @@ function UserDialogController($scope, $mdDialog, $mdToast, $translate, $injector
     }
 
     function update(u) {
-        if (ucd.userExists)
-            ucd.user.disableAccount = !u.enabled;
         var promise = (ucd.userExists) ? userService.updateUser(ucd.user) : userService.createUser(ucd.user);
         promise.then(function (userSaveResponse) {
-            if (ucd.useAddo && ucd.user.addoPassword) {
-                addoService
-                    .saveAddoUser(ucd.user.userName, ucd.user.addoUsername, ucd.user.addoPassword)
-                    .then(function () {
-                        notifyUserSaved(userSaveResponse);
-                    }, function (response) {
-                        ucd.userExists = true;
-                        handleCreateEditError(response);
-                    });
-            } else {
-                notifyUserSaved(userSaveResponse);
-            }
+            notifyUserSaved(userSaveResponse);
         }, handleCreateEditError)
             .then(function () {
-                userService.setEmailFeedDisabled(ucd.user);
+                
             });
     }
 
@@ -112,15 +89,6 @@ function UserDialogController($scope, $mdDialog, $mdToast, $translate, $injector
             if (cStack.indexOf('Error updating email: already exists') > -1 ||
                 cStack.indexOf('Email must be unique and already exists.') > -1) {
                 ucd.userForm.email.$setValidity('emailExists', false);
-                return;
-            }
-
-            // Incorrect Addo password
-            if (msg.indexOf('ADDO.USER.') > -1) {
-                ucd.userForm.addoUsername.$setDirty();
-                ucd.userForm.addoUsername.$setValidity('incorrectAddoPass', false);
-                ucd.userForm.addoPassword.$setDirty();
-                ucd.userForm.addoPassword.$setValidity('incorrectAddoPass', false);
                 return;
             }
         }

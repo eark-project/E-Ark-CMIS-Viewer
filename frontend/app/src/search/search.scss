@@ -18,7 +18,7 @@
   flex-flow: row nowrap;
   background-color: #fff;
   padding: 16px 24px;
-  border-top: solid 1px #eee;
+  border-top: solid 1px $background-color;
 }
 
 .search__item__info {
@@ -36,11 +36,6 @@
   font-weight: 400;
   margin: 0;
   font-size: 1.1em;
-}
-
-a.search__item__link:link,
-a.search__item__link:visited {
-  color: rgb(30, 136, 229);
 }
 
 .search__item__title .muted {
@@ -71,7 +66,7 @@ a.search__item__link:visited {
     max-width: 100%;
   }
   th {
-    border-top: solid 1px #ddd;
+    border-top: solid 1px $background-color;
   }
   td {
     overflow: hidden;
@@ -90,43 +85,5 @@ a.search__item__link:visited {
  */
 
 .menu {
-  background-color: #eee;
-}
-
-.filters {
-
-  .filter-title {
-    font-weight: 500;
-    font-size: 0.9em;
-    padding: 16px 24px;
-    display: block;
-  }
-
-  fieldset {
-    display: block;
-    margin: 0;
-    padding: 0;
-    border-top-color: #ccc;
-  }
-
-  .toggle-btn {
-    display: block;
-    margin: 0;
-    padding: 8px 16px 8px 24px;
-    color: rgb(30, 136, 229);
-
-    .material-icons {
-      float: right;
-    }
-  }
-
-  .toggle-obj {
-    margin: 0;
-    padding: 16px 24px 8px;
-    border-top: dashed 1px #ccc;
-  }
-
-  md-checkbox {
-    display: block;
-  }
+  background-color: $background-color;
 }

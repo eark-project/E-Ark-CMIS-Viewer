@@ -80,9 +80,9 @@ local.properties
 #For UI
  logs/*
  !.gitkeep
- /frontend/node_modules/
- /frontend/bower_components/
- /frontend/dist/
+ frontend/node_modules/
+ frontend/bower_components/
+ frontend/dist/
  .settings
   nbproject/*
  /frontend/app/src/.sass-cache

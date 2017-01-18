@@ -30,7 +30,7 @@
             </div>
 
             <div layout>
-                <md-input-container flex="50">
+                <md-input-container flex>
                     <label>{{ 'LOGIN.USER_NAME' | translate }} *</label>
                     <input type="text" name="userName" ng-model="ucd.user.userName" required
                            ng-disabled="ucd.userExists"
@@ -38,16 +38,12 @@
                     <opene-error form="ucd.userForm" field="ucd.userForm.userName"></opene-error>
                 </md-input-container>
 
-                <div ng-show="ucd.userExists">
-                    <md-checkbox ng-model="ucd.user.enabled" ng-true-value="false" ng-false-value="true"
-                                 aria-label="disable account" class="md-warn">
-                        Disable Account
-                    </md-checkbox>
-                </div>
-                <md-checkbox ng-model="ucd.user.emailFeedDisabled" ng-true-value="false" ng-false-value="true"
-                             aria-label="enable email feed" class="md-warn">
-                    {{ 'USER.EMAIL_FEED_ENABLED' | translate }}
-                </md-checkbox>
+                <md-input-container flex>
+                    <label>{{ 'COMMON.ROLE' | translate }}</label>
+                        <md-select ng-hide="ucd.user.userName == 'admin'" ng-model="ucd.user.role" ng-selected="ucd.user.role" style="margin: 0px" >
+                            <md-option ng-repeat="role in ucd.roles" ng-value="role"> {{role | uppercase}} </md-option>
+                        </md-select>
+                 </md-input-container>
             </div>
 
 
@@ -66,30 +62,13 @@
                 </md-input-container>
             </div>
 
-            <div layout>
-                <md-input-container flex>
-                    <label>{{ 'COMMON.DESCRIPTION' | translate }}</label>
-                    <textarea ng-model="ucd.user.desc"></textarea>
-                </md-input-container>
-            </div>
-
-            <div layout ng-if="ucd.useAddo">
-                <md-input-container flex>
-                    <label>{{ 'ADDO.USER.USERNAME' | translate }}</label>
-                    <input type="text" name="addoUsername" ng-model="ucd.user.addoUsername"
-                           ng-required="ucd.useAddo && ucd.user.addoPassword"
-                           ng-click="ucd.userForm.addoPassword.$setTouched()"
-                           ng-change="ucd.clearFieldValidation(ucd.userForm.addoUsername); ucd.clearFieldValidation(ucd.userForm.addoPassword)">
-                    <opene-error form="ucd.userForm" field="ucd.userForm.addoPassword"></opene-error>
-                </md-input-container>
-                <md-input-container flex>
-                    <label>{{ 'ADDO.USER.PASSWORD' | translate }}</label>
-                    <input type="password" name="addoPassword" ng-model="ucd.user.addoPassword"
-                           ng-required="ucd.useAddo && ucd.user.addoUsername && ucd.userForm.addoUsername.$touched"
-                           ng-click="ucd.userForm.addoUsername.$setTouched()"
-                           ng-change="ucd.clearFieldValidation(ucd.userForm.addoUsername); ucd.clearFieldValidation(ucd.userForm.addoPassword)">
-                </md-input-container>
-            </div>
+            <!-- <div layout>
+                 <md-input-container flex>
+                     <label>{{ 'COMMON.DESCRIPTION' | translate }}</label>
+                     <textarea ng-model="ucd.user.desc"></textarea>
+                 </md-input-container>
+             </div>
+ -->
 
         </md-dialog-content>
         <md-dialog-actions>

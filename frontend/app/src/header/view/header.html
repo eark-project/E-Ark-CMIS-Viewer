@@ -1,28 +1,52 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
-        <div>
-            <span>E-Ark tools:</span>
-
-            <h1>
-                <span>ERMS export</span>
-            </h1>
-        </div>
+        
+        <img src="./app/assets/images/logos/e-ark-text.svg" alt="E-Ark" style="height: 50%; margin-right: 8px;">
+        <h1 class="md-title" hide-xs style="margin-right: 16px;">{{ 'ERMS_REPOS.TITLE' | translate }}</h1>
+        
+        <nav class="menu-items" ng-controller="ModulesMenuController as menu" layout="row" layout-align="flex-start center">
+            <div ng-repeat="item in menu.items | orderBy: 'order'">
+                <ng-include src="item.templateUrl"></ng-include>
+            </div>
+        </nav>
 
         <span flex></span>
+        
         <language-selector></language-selector>
-        <md-button class="md-icon-button" aria-label="menu" ng-click="vm.toggleMenu()">
-            <i class="material-icons">menu</i>
-        </md-button>
+        
+        <md-menu ng-controller="AuthController as vm" md-position-mode="target-right target">
+            <md-button class="md-icon-button" aria-label="{{ 'MENU.OPEN_MENU' | translate }}"
+                       ng-click="$mdOpenMenu($event)">
+                <i class="material-icons">more_vert</i>
+            </md-button>
+            <md-menu-content width="4">
+                <md-menu-item>
+                    <md-button class="md-text-icon-button" ng-disabled="true">
+                        <i class="material-icons" md-menu-align-target>person</i>
+                        {{ vm.getUserInfo().user.firstName }} {{ vm.getUserInfo().user.lastName }}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-show="vm.getUserInfo().user.role == 'ADMIN'">
+                    <md-button class="md-text-icon-button" ui-sref="systemsettings">
+                        <i class="material-icons">settings</i>
+                        {{ 'ADMIN.SYS_SETTINGS.LABEL.CONFIGURE_REPO' | translate }}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-show="vm.getUserInfo().user.role == 'ADMIN'">
+                    <md-button class="md-text-icon-button" ui-sref="users">
+                        <i class="material-icons">people</i>
+                        {{ 'ADMIN.SYS_SETTINGS.LABEL.MANAGE_USERS' | translate }}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-button class="md-text-icon-button" id="logout" ng-click="vm.logout()">
+                        <i class="material-icons">exit_to_app</i>
+                        {{ 'MENU.LOGOUT' | translate }}
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+        
     </div>
 </md-toolbar>
-
-<md-sidenav md-component-id="right" class="md-sidenav-right">
-
-    <md-list ng-controller="ModulesMenuController as menu">
-        <md-list-item ng-repeat="item in menu.items | orderBy: 'order'">
-            <ng-include src="item.templateUrl"></ng-include>
-            <md-divider></md-divider>
-        </md-list-item>
-    </md-list>
-
-</md-sidenav>

@@ -2,26 +2,155 @@
  * Global values
  */
 
+$main-color: #AD2624;
+$base-text-color: #333; 
+$header-color: #6e6e6e;
+$negative-text-color: #bdbdbd;
+$background-color: #f2f2f2;
+
 $u: 16px;
+
+
+/*
+ * Element level (atom) styles
+ */
+
+body {
+    background: url(../app/assets/images/logos/e-ark-ship_watermark.svg) no-repeat center center $background-color;
+    background-size: auto 50%;
+}
+
+dt {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.7em;
+    opacity: 0.65;
+}
+
+dd {
+    display: block;
+    padding: 0 0 $u;
+    margin: 0;
+}
+
+
+/*
+ * Style helpers
+ */
+
+.muted {
+    opacity: 0.6;
+}
+
+
+/*
+ * Molecule level styles
+ */
+
+md-content {
+    background-color: transparent;
+    
+    a,
+    a:link,
+    a:visited {
+        color: $main-color;
+    }
+    a:hover,
+    a:active {
+        color: lighten($main-color, 20%);
+    }
+}
+
+// Table-like list styling
+    
+.simple-list__header {
+    padding: 0 16px;
+    border-bottom: solid 1px $background-color;
+    background-color: #fff;
+}
+
+.simple-list__body {
+    overflow: auto;
+    background-color: #fff;
+}
+
+.simple-list__body__item:nth-child(even) {
+    background-color: $background-color;
+}
+
+.simple-list__cell {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 0 8px;
+}
+
+
+// Show progress indicator when data loads
+#loader {
+  display: none;
+  position: absolute;
+  top: $u*8;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  z-index: 99;
+  background: rgba(255, 255, 255, 0.5);
+  
+  md-progress-circular {
+    margin: $u*4 auto;
+  }
+}
+
 
 /*
  * Global styles
  */
 
-#loader {
-    visibility: hidden;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    z-index: 99;
-    background: rgba(255, 255, 255, 0.5);
-    opacity: 0.7;
-    filter: alpha(opacity=70);
-    -moz-opacity: 0.7;
+// Buttons and labels with icons in them (adjust .md-button)
+.md-button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.md-text-icon-button,
+.text-icon-label {
+    text-align: left;
+    padding: 0 $u;
+    
+    .material-icons {
+        vertical-align: middle;
+        margin-top: -($u*0.25);
+    }
 }
 
-// Buttons (adjust .md-button)
-.md-text-icon-button .material-icons {
-    vertical-align: middle;
-    margin-top: -($u*0.25);
+/* Md-dialog sizes */
+md-dialog {
+  &[class*="dialog-"] {
+    max-width:800px;
+    md-dialog-content {
+      max-height:810px;
+    }
+  }
+  &.dialog-large {
+    min-width: 550px;
+  }
+  &.dialog-large-fixed {
+    width: 550px;
+  }
+  &.dialog-small {
+    width: 400px;
+  }
+  md-dialog-content {
+    padding: 16px; // Corresponds to ng-material heading padding
+  }
+}
+
+@media screen and (max-width: 45em) {
+  md-dialog.dialog-huge, md-dialog.dialog-large, md-dialog.dialog-small {
+    width: 80%;
+  }
 }

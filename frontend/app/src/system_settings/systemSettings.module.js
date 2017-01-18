@@ -1,30 +1,22 @@
 angular
-        .module('openeApp.systemsettings', [ 'ngMaterial', 'pascalprecht.translate'])
-        .config(config);
+    .module('eArkPlatform.systemsettings', [ 'ngMaterial', 'pascalprecht.translate'])
+    .config(config);
 
-function config(systemSettingsPagesServiceProvider, $stateProvider, USER_ROLES){
-    systemSettingsPagesServiceProvider.addPage('ADMIN.SYS_SETTINGS.GENERAL.GENERAL_CONFIG', 'administration.systemsettings.general');
+function config( $stateProvider, languageFilesProvider, USER_ROLES){
 
-    $stateProvider.state('administration.systemsettings', {
+    /**
+     * Inject the modules translation files
+     */
+    languageFilesProvider.addFile('app/src/system_settings/i18n/','-sysConfig-cmis.json');
+
+    $stateProvider.state('systemsettings', {
+        parent: 'site',
         url: '/system-settings',
         data: {
             authorizedRoles: [USER_ROLES.admin],
-            selectedTab: 4
         },
         views: {
-            'systemsettings': {
-                templateUrl: 'app/src/system_settings/menu/system_settings.html',
-                controller: 'SystemSettingsController',
-                controllerAs: 'vm'
-            }
-        }
-    }).state('administration.systemsettings.general', {
-        url: '/general-configuration',
-        data: {
-            authorizedRoles: [USER_ROLES.admin]
-        },
-        views: {
-            'systemsetting-view': {
+            'content@': {
                 templateUrl: 'app/src/system_settings/general_configuration/view/generalConfiguration.html',
                 controller: 'GeneralConfigurationController',
                 controllerAs: 'vm'

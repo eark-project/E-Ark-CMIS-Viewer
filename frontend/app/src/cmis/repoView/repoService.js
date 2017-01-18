@@ -11,8 +11,10 @@ function cmisRepoService($http, fileUtilsService) {
     //methods
     cmisSvc.connect = connect;
     cmisSvc.initRepoView = initRepoView;
+    cmisSvc.getFolder = getFolder;
     cmisSvc.getFolderChildren = getFolderChildren;
     cmisSvc.getDocument = getDocument;
+    cmisSvc.getDocumentUrl = getDocumentUrl;
     cmisSvc.goToCrumb = goToCrumb;
 
     /**
@@ -45,9 +47,28 @@ function cmisRepoService($http, fileUtilsService) {
      * @param requestObject object constructed thus {profileName:[a profile name], objectId:[documentObjectId, includeContentStream:false/true}
      * @returns {*}
      */
+    function getDocumentUrl(objectId) {
+        return '/webapi/repository/document/'+encodeURIComponent(objectId);
+    }
+
+    /**
+     * Will return the properties of a document and, optionally, it's content stream.
+     * @param requestObject object constructed thus {profileName:[a profile name], objectId:[documentObjectId, includeContentStream:false/true}
+     * @returns {*}
+     */
     function getDocument(requestObject) {
         return $http.post('/webapi/repository/getDocument', requestObject).then(function (response) {
             return response.data.document;
+        });
+    }
+    
+    /**
+     * Will return the properties of a folder
+     * @param requestObject
+     */
+    function getFolder(requestObject) {
+        return $http.post('/webapi/repository/getFolder', requestObject).then(function (response) {
+            return response.data;
         });
     }
 

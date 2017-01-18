@@ -3,6 +3,7 @@ package dk.magenta.eark.cmis.repository;
 import org.apache.chemistry.opencmis.client.api.CmisObject;
 import org.apache.chemistry.opencmis.client.api.Session;
 import org.apache.chemistry.opencmis.commons.spi.*;
+import org.jvnet.hk2.annotations.Contract;
 
 import javax.json.JsonObject;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * @author lanre.
  */
+@Contract
 public interface CmisSessionWorker {
 
     //<editor-fold desc="webservices endpoints">
@@ -86,6 +88,13 @@ public interface CmisSessionWorker {
      * @return
      */
     JsonObject getDocument(String documentObjectId, boolean includeContentStream);
+
+    /**
+     * provides a URL from which the requested document can be downloaded.
+     * @param documentObjectId the id of the document to retrieve
+     * @return
+     */
+    String getBufferedDocumentPath(String documentObjectId);
 
     /**
      * Returns the parent folder of a folder object

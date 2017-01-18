@@ -3,7 +3,7 @@ angular.module('eArkPlatform.users', ['ngMaterial', 'pascalprecht.translate'])
 
 function config($stateProvider, USER_ROLES) {
 
-    $stateProvider.state('usersView', {
+    $stateProvider.state('users', {
         parent: 'site',
         url: '/users',
         views: {

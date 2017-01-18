@@ -31,4 +31,14 @@ public class Constants {
 	public static final String CONTENT_STREAM_FILENAME ="contentStreamFileName"; //Actual filename
 	public static final String CONTENT_STREAM_ID = "contentStreamId";
 	public static final String CONTENT_STREAM_MIMETYPE = "contentStreamMimeType";
+
+	//a Person's property keys
+	public static final String USER_NAME = "userName";
+	public static final String FIRST_NAME = "firstName";
+	public static final String LAST_NAME = "lastName";
+	public static final String EMAIL = "email";
+	public static final String PASSWORD = "password";
+	public static final String USER_ROLE = "role";
+	public static final String SESSION_TICKET = "sessionTicket";
+//	public static final String  = "";
 }

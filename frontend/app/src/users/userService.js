@@ -14,7 +14,7 @@ function userService($http) {
     };
 
     function deletePerson(userName) {
-        return $http.delete('/webapi/authentication/person/delete/' + userName).then(function (response) {
+        return $http.delete('/webapi/authentication/person/' + userName).then(function (response) {
             return response.data;
         });
     }
@@ -26,25 +26,21 @@ function userService($http) {
     }
 
     function createUser(userObj) {
-        return $http.post('/webapi/person',
-            userObj
-        ).then(function (response) {
+        return $http.post('/webapi/authentication/person', userObj).then(function (response) {
                 return response.data;
             });
     }
 
     function updateUser(userObj) {
-        return $http.put('/webapi/person?userName=' + encodeURIComponent(userObj.userName), userObj).then(
-            function (response) {
+        return $http.put('/webapi/authentication/person/'+ userObj.userName, userObj).then(function (response) {
                 console.log("Return success");
                 return response.data;
             }
         );
     }
 
-    function getPersons(roleType) {
-        var url = '/webapi/people?selectableType=';
-        roleType (roleType && roleType.length > 0) ? url += roleType : url+= '*';
+    function getPersons() {
+        var url = '/webapi/authentication/people';
         return $http.get(url).then(function (result) {
             return result.data;
         });

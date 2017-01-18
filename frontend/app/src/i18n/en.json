@@ -66,7 +66,10 @@
     "GRID_VIEW": "Grid view",
     "DOWNLOAD_TEMPLATE_CSV": "Download template CSV",
     "LOCKED_BY": "Locked by {{locked_by}}",
-    "CONGRATULATIONS": "Congratulations!"
+    "CONGRATULATIONS": "Congratulations!",
+    "PASSWORD": "Password",
+    "URL": "Url",
+    "ROLE": "Role"
   },
   "DOCUMENT": {
     "STATUS_CHANGED_SUCCESS": "Status has been changed successfully",
@@ -156,7 +159,11 @@
     "ARE_YOU_SURE_YOU_WANT_TO_DELETE_USER": "Are you sure you want to delete '{{user}}'?",
     "CAN_NOT_DELETE_ADMIN_USER": "Deletion of the admin user is not permitted.",
     "SAVE_USER_FAILURE": "User could not be saved",
-    "EMAIL_FEED_ENABLED": "Email feed enabled"
+    "EMAIL_FEED_ENABLED": "Email feed enabled",
+    "ROLES": {
+      "ADMIN": "Administrator",
+      "STANDARD": "Standard"
+    }
   },
   "ERROR": {
     "REQUIRED": "This field is required",

@@ -1,63 +1,175 @@
-<md-content layout="column" ng-controller="SearchController as sctrl">
-
-    <div id="global-search"
-         ng-controller="AutosuggestController as asctrl"
-         class="global-tools__search">
-        <form ng-submit="asctrl.gotoSearchPage()">
-            <md-input-container md-no-float>
-                <i class="material-icons global-tools__search__icon">search</i>
-                <input type="text" ng-model="asctrl.searchTerm"
-                       ng-change=""
-                       ng-keydown="asctrl.keydown($event)" ng-model-options="{ debounce: 250 }"
-                       placeholder="{{ 'SEARCH.SEARCH' | translate }}">
-            </md-input-container>
-
-        </form>
-    </div>
-
-
-    <div class="sub-toolbar" layout-padding>
-        <h1 class="md-headline search__header">
-            <span class="muted">{{ 'SEARCH.SEARCHING_FOR' | translate }}:</span>
-            {{ sctrl.searchTerm }}
-        </h1>
-
-        <div flex class="opene-toggleview">
-            <md-button class="md-icon-button md-accent" ng-class="{active: sctrl.layout == 'grid'}"
-                       ng-click="sctrl.layout = 'grid'" title="{{ 'COMMON.GRID_VIEW' | translate }}"><i
-                    class="material-icons">view_stream</i></md-button>
-            <md-button class="md-icon-button md-accent" ng-class="{active: sctrl.layout == 'list'}"
-                       ng-click="sctrl.layout = 'list'" title="{{ 'COMMON.LIST_VIEW' | translate }}"><i
-                    class="material-icons">view_list</i></md-button>
-        </div>
-    </div>
-
-    <div layout="row">
-
-        <div class="search__list">
-
-            <div ng-repeat="item in sctrl.fullSearchResults.results" ng-show="sctrl.layout == 'grid'">
-
+<section id="adv-search"
+    layout="column"
+    layout-gt-sm="row"
+    layout-align="start"
+    flex>
+    
+    <div class="adv-search__form"
+        layout="column"
+        layout-align="start center"
+        ng-class="{minimize: sctrl.searchResults.documents}">
+    
+        <form ng-submit="sctrl.executeSearch()"
+            layout="column"
+            layout="center center">
+            
+            <p class="muted"
+                style="text-align: center;">
+                Search documents
+            </p>
+            
+            <div layout="row" layout-align="center center">
+                <i class="material-icons">search</i>
+                <input type="text"
+                    class="adv-search__primary-input"
+                    ng-model="sctrl.initialTerm"
+                    placeholder="Search keyword"
+                    required>
+                <md-button id="adv-search-help"
+                    class="md-icon-button"
+                    ng-click="sctrl.helpfulSearchHints($event)">
+                    <i class="material-icons">help</i> 
+                </md-button>
             </div>
-
-            <table ng-show="sctrl.layout == 'list'" class="list-search">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>{{ "COMMON.TITLE" | translate }}</th>
-                    <th>{{ "COMMON.DESCRIPTION" | translate }}</th>
-                    <th style="text-align: right; padding-right: 24px;">{{ "COMMON.MODIFIED_BY" | translate }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="item in sctrl.fullSearchResults.results">
-
-                </tr>
-                </tbody>
-            </table>
-
+            
+            <div ng-repeat="input in sctrl.searchInputs"
+                style="text-align: center;">
+                <select ng-model="input.operator">
+                    <option>OR</option>
+                    <option>AND</option>
+                    <option>NOT</option>
+                </select>
+                <input type="text"
+                    ng-model="input.term"
+                    placeholder="Keyword"
+                    class="adv-search__secondary-input"
+                    required>
+                <md-button ng-click="sctrl.removeInput(input)"
+                    class="md-icon-button">
+                    <i class="material-icons">remove_circle_outline</i>
+                </md-button>
+            </div>
+            <div style="text-align: center;">
+                <md-button class="md-text-icon-button"
+                    ng-click="sctrl.addInput()">
+                    <i class="material-icons">add</i>
+                    Add keyword
+                </md-button>
+            </div>
+            <div style="text-align: center;">
+                <input type="submit" class="md-button md-primary md-raised" value="Search">
+            </div>
+        </form>
+        <div ng-hide="sctrl.searchStr === ''"
+            class="muted"
+            style="padding: 8px;">
+            Searching for: {{ sctrl.searchStr }}
         </div>
-
+    </div>
+    
+    <div class="search__list adv-search__list"
+        ng-show="sctrl.searchResults.documents"
+        layout="column"
+        flex>
+        <div class="simple-list"
+            layout="column">
+            <div class="simple-list__header">
+                <div layout="row">
+                    <div flex="20"
+                        flex-gt-sm="10"
+                         style="text-align: center; vertical-align: top;">
+                        <md-button
+                            class="md-text-icon-button md-primary"
+                            ng-click="sctrl.sortThis($event, 'thumbnail')">
+                            {{ "COMMON.TYPE" | translate }}
+                            <i ng-show="sctrl.orderBy === '-thumbnail'" class="material-icons">arrow_drop_up</i>
+                            <i ng-show="sctrl.orderBy === 'thumbnail'" class="material-icons">arrow_drop_down</i>
+                        </md-button>
+                    </div>
+                    <div flex style="vertical-align: top;">
+                        <md-button
+                            class="md-text-icon-button md-primary"
+                            ng-click="sctrl.sortThis($event, 'title')">
+                            {{ "COMMON.TITLE" | translate }}
+                            <i ng-show="sctrl.orderBy === '-title'" class="material-icons">arrow_drop_up</i>
+                            <i ng-show="sctrl.orderBy === 'title'" class="material-icons">arrow_drop_down</i>
+                        </md-button>
+                        <form class="adv-search__filter-form">
+                            <input
+                                ng-model="sctrl.filterBy.title"
+                                type="text"
+                                placeholder="Filter by title"
+                                class="adv-search__filter-form__filter">
+                        </form>
+                    </div>
+                    <div flex
+                        flex-gt-sm="30"
+                        style="vertical-align: top;"
+                        hide
+                        show-gt-sm>
+                        <md-button
+                            class="md-text-icon-button md-primary"
+                            ng-click="sctrl.sortThis($event, 'packageId')">
+                            {{ "COMMON.PACKAGE_ID" | translate }}
+                            <i ng-show="sctrl.orderBy === '-packageId'" class="material-icons">arrow_drop_up</i>
+                            <i ng-show="sctrl.orderBy === 'packageId'" class="material-icons">arrow_drop_down</i>
+                        </md-button>
+                        <form class="adv-search__filter-form">
+                            <input
+                                ng-model="sctrl.filterBy.packageId"
+                                type="text"
+                                placeholder="Filter by package ID"
+                                class="adv-search__filter-form__filter">
+                        </form>
+                    </div>
+                    <div flex="20"
+                        flex-gt-sm="10"
+                        class="muted"
+                        layout="column"
+                        layout-align="end center"
+                        layout-padding
+                        style="text-align: center;">
+                        <span>Add to basket</span>
+                    </div>
+                </div>
+            </div>
+            <md-list class="simple-list__body md-dense" style="overflow: initial;">
+                <md-list-item ng-repeat="item in sctrl.searchResults.documents | filter: sctrl.filterBy | orderBy: sctrl.orderBy"
+                    layout="row"
+                    class="simple-list__body__item"
+                    ng-click="sctrl.fileInfoDiag($event, item)">
+                    <div flex="20"
+                        flex-gt-sm="10"
+                        style="text-align: center"
+                        class="simple-list__cell">
+                        <img ng-src="app/assets/images/filetypes/{{item.thumbnail}}" alt="">
+                    </div>
+                    <div flex class="simple-list__cell">
+                        {{ item.title }} <small class="muted">{{item.displaySize}}</small>
+                    </div>
+                    <div flex
+                        flex-gt-sm="30"
+                        class="simple-list__cell"
+                        hide
+                        show-gt-sm>
+                        {{ item.packageId }}
+                    </div>
+                    <div flex="20"
+                        flex-gt-sm="10"
+                        layout="column"
+                        layout-align="center center"
+                        class="simple-list__cell">
+                        <md-checkbox
+                            ng-click="$event.stopPropagation(); $event.preventDefault();"
+                            ng-change="sctrl.addToBasket(item);"
+                            ng-true-value="'add'"
+                            ng-false-value="'delete'"
+                            ng-model="item.baskOp"
+                            aria-label="Add {{ item.title }} to basket">
+                    </div>
+                </md-list-item>
+            </md-list>
+        </div>
     </div>
 
-</md-content>
+</section>

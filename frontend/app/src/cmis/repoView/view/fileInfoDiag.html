@@ -1,0 +1,57 @@
+<md-dialog aria-label="File information" class="file-info-diag">
+    <form ng-cloak>
+
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{ doc.name }}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="material-icons">close</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-content>
+            <md-tabs md-dynamic-height md-selected="currentTab">
+                <md-tab id="tab1">
+                    <md-tab-label>Properties</md-tab-label>
+                    <md-tab-body>
+                        <div layout="column" layout-gt-xs="row" layout-padding>
+                            <dl>
+                                <ng-repeat ng-repeat="(key, value) in doc.allProperties" ng-if="value">
+                                    <dt>{{ key }}</dt>
+                                    <dd>{{ value }}</dd>
+                                </ng-repeat>
+                            </dl>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab id="tab2">
+                    <md-tab-label>Extension properties</md-tab-label>
+                    <md-tab-body>
+                        <div layout="column" layout-gt-xs="row" layout-padding>
+                            <script type="text/ng-template" id="nodes_renderer.html">
+                                <span class="extprops-name muted">{{ data.name }} :</span>
+                                <div ng-if="data.children.length > 0">
+                                    <ul class="extprops">
+                                        <li ng-repeat="data in data.children"
+                                            ng-include="'nodes_renderer.html'">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="extprops-value" ng-if="data.value !='' "><span>{{ data.value }}</span></div>
+                            </script>
+                            <ul class="extprops">
+                                <li ng-repeat="data in doc.extensionProperties" ng-include="'nodes_renderer.html'">
+                                </li>
+                            </ul>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+
+            </md-tabs>
+
+        </md-content>
+
+    </form>
+</md-dialog>
