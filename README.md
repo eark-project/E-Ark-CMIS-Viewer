@@ -2,18 +2,18 @@
 A Browser based viewer for CMIS 1.0 complaint repositories.
 
 This is the code repository for the E-Ark, browser based, CMIS viewer project
-All issues concerning features and issues with UI should to be reported here.
+All issues concerning features and issues with UI should to be reported [here](https://github.com/magenta-aps/E-Ark-CMIS-Viewer/issues).
 
 ## Requirements
 For the backend<br/>
-1. A servlet container such as Tomcat(7+)<br/>
-2. Java 1.8+<br/>
-3. Apache Maven 3.3+<br/>
+1. A servlet container such as [Apache Tomcat 7+](https://tomcat.apache.org/tomcat-7.0-doc/appdev/installation.html)<br/>
+2. [Java 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)<br/>
+3. [Apache Maven 3.3+](https://maven.apache.org/install.html)<br/>
 
 For the frontend<br/>
-1. Angular JS - 1.4.12+<br/>
-2. Gulp build tool (requires Node.js and npm)<br/>
-3. A webserver like apache2 or Nginx<br/>
+1. [Angular JS](https://angularjs.org/) - 1.4.12+<br/>
+2. [Gulp](http://gulpjs.com/) build tool (requires Node.js and npm)<br/>
+3. A webserver like [Apache 2](https://httpd.apache.org/docs/2.4/install.html) or [Nginx](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/)<br/>
 
 ## Get up and running
 Preparing the Server:<br/>
@@ -38,13 +38,19 @@ Installing the viewer:
 3 - Run terminal commands:
       ```
       npm update
+      
       npm install
+      
       bower update
+      
       bower install
+      
       gulp build
+      
       ```
       
-## Features to consider
+## Feature considerations and todos
 
 - [ ] TreeView
+- [ ] Search
 - [ ] oAuth enabled authentication
