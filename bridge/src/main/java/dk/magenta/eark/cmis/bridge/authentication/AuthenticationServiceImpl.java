@@ -114,7 +114,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (Exception ge) {
             logger.error("******** Error authenticating user [" + userName + "] ********");
             ge.printStackTrace();
-            throw new CmisBridgeUserAuthenticationException("Unable to authenticate user. Check error logs for details");
+            throw new CmisBridgeUserAuthenticationException("Unable to authenticate user.");
         }
     }
 

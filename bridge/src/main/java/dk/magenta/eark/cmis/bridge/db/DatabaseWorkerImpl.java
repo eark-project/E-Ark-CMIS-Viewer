@@ -28,9 +28,9 @@ import java.util.stream.Collectors;
 @Service
 public class DatabaseWorkerImpl implements DatabaseWorker {
     private final Logger logger = LoggerFactory.getLogger(DatabaseWorkerImpl.class);
+    
     @Inject
     DatabaseConnectionStrategy dbConnectionStrategy;
-
 
     /**
      * Returns a json object representing a person from the db if the user name and password match
@@ -66,7 +66,7 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
     @Override
     public boolean createPerson(JsonObject jsonObject) throws CmisBridgeUserAdminException {
         try {
-            Person person = this.dbConnectionStrategy.getPerson(jsonObject.getString(Constants.USER_NAME));
+            Person person = dbConnectionStrategy.getPerson(jsonObject.getString(Constants.USER_NAME));
             if (!person.equals(Person.EMPTY))
                 throw new CmisBridgeUserAdminException("A person with the userName already exists in the db");
             else {
@@ -81,7 +81,7 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
                     person.setEmail(jsonObject.getString(Constants.EMAIL));
                 if (jsonObject.containsKey(Constants.USER_ROLE))
                     person.setRole(jsonObject.getString(Constants.USER_ROLE));
-                this.dbConnectionStrategy.createPerson(person);
+                dbConnectionStrategy.createPerson(person);
                 return true;
             }
         } catch (SQLException | CmisBridgeDbException | NullPointerException ge) {
@@ -121,7 +121,7 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
         JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
         try {
             JsonArrayBuilder users = Json.createArrayBuilder();
-            List<JsonObject> persons = this.dbConnectionStrategy.getPersons().stream().map(Person::toJson)
+            List<JsonObject> persons = dbConnectionStrategy.getPersons().stream().map(Person::toJson)
                     .collect(Collectors.toList());
             persons.forEach(users::add);
             jsonObjectBuilder.add(Constants.SUCCESS, true);
@@ -147,7 +147,7 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
     @Override
     public boolean updatePerson(String userName, JsonObject jsonObject) throws CmisBridgeUserAdminException {
         try {
-            Person person = this.dbConnectionStrategy.getPerson(userName);
+            Person person = dbConnectionStrategy.getPerson(userName);
             if (person.equals(Person.EMPTY))
                 throw new NullPointerException("User was not retrieved from the db");
             else {
@@ -162,7 +162,7 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
                 if (jsonObject.containsKey(Constants.USER_ROLE))
                     person.setRole(jsonObject.getString(Constants.USER_ROLE));
 
-                this.dbConnectionStrategy.updatePerson(person);
+                dbConnectionStrategy.updatePerson(person);
                 return true;
             }
         } catch (SQLException | CmisBridgeDbException | NullPointerException ge) {
@@ -182,7 +182,7 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
     @Override
     public boolean deletePerson(String userName) throws CmisBridgeUserAdminException {
         try {
-            this.dbConnectionStrategy.deletePerson(userName);
+            dbConnectionStrategy.deletePerson(userName);
             return true;
         } catch (SQLException | CmisBridgeDbException | NullPointerException ge) {
             logger.error("********** Error *********");
@@ -205,9 +205,9 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
             Map<String, String> details = cmis1Connector.getRepoDetails();
             json.add(Repository.URL, details.get(Repository.URL));
             json.add(Repository.USERNAME, details.get(Repository.USERNAME));
-            json.add(Repository.PASSWORD, details.get(Repository.PASSWORD));
+            json.add(Repository.PASSWORD, "thouShaltNotCovetMinePassw0rd");
         } catch (Exception ge) {
-            String rnd = RandomStringUtils.random(7, true, true);
+            String rnd = RandomStringUtils.random(16, true, true);
             logger.error("********** Error (" + rnd + ") **********");
             ge.printStackTrace();
             throw new CmisBridgeDbException("Unable to retrieve repository details. See error [" + rnd + "] in server logs for details");
@@ -223,7 +223,7 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
     @Override
     public JsonObject updateRepoDetails(Map<String, String> repoProperties) throws CmisBridgeDbException {
         try {
-            if (this.dbConnectionStrategy.updateRepository(repoProperties)) {
+            if (dbConnectionStrategy.updateRepository(repoProperties)) {
                 //Refresh the singleton
                 Repository.getInstance().refreshDetails();
                 //Clear any cached sessions
@@ -246,6 +246,6 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
      */
     @Override
     public boolean userExists(String userName) {
-        return this.dbConnectionStrategy.userExists(userName);
+        return dbConnectionStrategy.userExists(userName);
     }
 }

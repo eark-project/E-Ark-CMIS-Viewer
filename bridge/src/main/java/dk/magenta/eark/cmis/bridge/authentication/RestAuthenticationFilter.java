@@ -1,9 +1,12 @@
 package dk.magenta.eark.cmis.bridge.authentication;
 
+import dk.magenta.eark.cmis.bridge.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -54,8 +57,10 @@ public class RestAuthenticationFilter implements ContainerRequestFilter {
         if(!LOGIN_PATH.equals(relPath) && !TEST_PATH.equals(relPath)){
             String authCredentials = requestContext.getHeaderString(AUTHENTICATION_HEADER);
             if (! authenticationService.isAuthenticated(authCredentials) ){
+                JsonObjectBuilder message = Json.createObjectBuilder();
+                message.add(Constants.ERRORMSG, "Session expired");
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("SessionTokenExpired")
+                        .entity(message)
                         .build());
             }
         }
