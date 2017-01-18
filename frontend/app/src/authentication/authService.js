@@ -41,8 +41,8 @@ function httpTicketInterceptor($injector, $translate, $window, $q, sessionServic
 
     function responseError(rejection) {
         //Prevent from popping up the message on failed SSO attempt
-        if (rejection.status == 401) {
-            console.log('==> Authentication failure ');
+        if (rejection.status == 401 || rejection.status == 500 ) {
+            console.log('==> Authentication failure/Session Expired ');
             sessionExpired();
         }
         return $q.reject(rejection);

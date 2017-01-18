@@ -3,7 +3,6 @@ package dk.magenta.eark.cmis.repository;
 import dk.magenta.eark.cmis.Repository;
 import dk.magenta.eark.cmis.bridge.Constants;
 import dk.magenta.eark.cmis.bridge.db.DatabaseWorker;
-import dk.magenta.eark.cmis.bridge.db.DatabaseWorkerImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +33,9 @@ public class RepositoryResource {
     public static final String DOCUMENT_OBJECT_ID = "documentObjectId";
     @Inject
     CmisSessionWorker cmisSessionWorker;
+
+    @Inject
+    DatabaseWorker databaseWorker;
 
     public RepositoryResource() {
     }
@@ -184,11 +186,8 @@ public class RepositoryResource {
     public JsonObject getRepoDetails() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         try {
-            //Get a db session worker
-            DatabaseWorker dbWorker = new DatabaseWorkerImpl();
-
             //Build the json for the repository details
-            builder.add("repository", dbWorker.getRepositoryDetails());
+            builder.add("repository", databaseWorker.getRepositoryDetails());
             builder.add(Constants.SUCCESS, true);
 
         } catch (Exception e) {
@@ -215,14 +214,10 @@ public class RepositoryResource {
                 repoProps.put((Repository.PASSWORD), json.getString(Repository.PASSWORD));
 
             try {
-                //Get a session worker
-                DatabaseWorker dbWorker = new DatabaseWorkerImpl();
-
                 //Build the json for the repository details
-                builder.add("repository", dbWorker.updateRepoDetails(repoProps));
-                builder.add(Constants.MESSAGE, "Repository details successfully update");
+                builder.add("repository", databaseWorker.updateRepoDetails(repoProps));
+                builder.add(Constants.MESSAGE, "Repository details successfully updated");
                 builder.add(Constants.SUCCESS, true);
-
             } catch (Exception e) {
                 builder.add(Constants.SUCCESS, false);
                 builder.add(Constants.ERRORMSG, e.getMessage());
