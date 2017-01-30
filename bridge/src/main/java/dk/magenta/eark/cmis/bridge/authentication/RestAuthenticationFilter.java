@@ -1,6 +1,7 @@
 package dk.magenta.eark.cmis.bridge.authentication;
 
 import dk.magenta.eark.cmis.bridge.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,12 +52,11 @@ public class RestAuthenticationFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws WebApplicationException {
         final UriInfo reqURI = requestContext.getUriInfo();
-
         final String relPath = reqURI.getPath();
         //proceed as normal
-        if(!LOGIN_PATH.equals(relPath) && !TEST_PATH.equals(relPath)){
-            String authCredentials = requestContext.getHeaderString(AUTHENTICATION_HEADER);
-            if (! authenticationService.isAuthenticated(authCredentials) ){
+        if (!LOGIN_PATH.equals(relPath) && !TEST_PATH.equals(relPath)) {
+            String authCredentials = this.resolveAuthToken(requestContext);
+            if (!authenticationService.isAuthenticated(authCredentials)) {
                 JsonObjectBuilder message = Json.createObjectBuilder();
                 message.add(Constants.ERRORMSG, "Session expired");
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
@@ -64,6 +64,22 @@ public class RestAuthenticationFilter implements ContainerRequestFilter {
                         .build());
             }
         }
+    }
 
+    /**
+     * Checks the request context to see if we have a token in the header or in a query parameter list.
+     * Returns null if both conditions are false;
+     * @param requestContext
+     * @return
+     */
+    private String resolveAuthToken(ContainerRequestContext requestContext) {
+        String authHeaderToken = requestContext.getHeaderString(AUTHENTICATION_HEADER);
+        String authQueryToken = requestContext.getUriInfo().getQueryParameters().getFirst("sessionToken");
+
+        if (StringUtils.isNotBlank(authHeaderToken))
+            return authHeaderToken;
+        else if (StringUtils.isNotBlank(authQueryToken))
+            return authQueryToken;
+        else return null;
     }
 }

@@ -71,77 +71,6 @@
     "URL": "Url",
     "ROLE": "Role"
   },
-  "DOCUMENT": {
-    "STATUS_CHANGED_SUCCESS": "Status has been changed successfully",
-    "CATEGORY": {
-      "annex": "Annex",
-      "proof": "Proof",
-      "contract": "Contract",
-      "note": "Note",
-      "report": "Report",
-      "proxy": "Proxy",
-      "warranty": "Warranty",
-      "part": "Part",
-      "statement": "Statement",
-      "summary": "Summary",
-      "accounting": "Accounting",
-      "offers": "Offers",
-      "other": "Other"
-    },
-    "STATE": {
-      "draft": "Draft",
-      "final": "Final",
-      "received": "Received",
-      "distributed": "Distributed",
-      "under-review": "Under review",
-      "published": "Published",
-      "finalised": "Finalised",
-      "submitted": "Submitted"
-    },
-    "STATUS": {
-      "draft": "Draft",
-      "final": "Final"
-    },
-    "DOCUMENT": "Document",
-    "DOCUMENTS": "Documents",
-    "UPLOAD_NEW_DOCUMENTS": "Upload new document",
-    "SEND_DOCUMENTS": "Send documents",
-    "EMAIL_DOCUMENTS": "Email documents",
-    "MY_DOCUMENTS": "My documents",
-    "CHANGE_STATUS": "Change status",
-    "VERSION": "Version",
-    "VERSION_ADDED": "Version added",
-    "DOCUMENT_NAME": "Document name",
-    "VERSION_DESCRIPTION": "Version description",
-    "EDIT_PROPERTIES": "Edit information",
-    "EDIT_DOCUMENT": "Edit document",
-    "EDIT_DOCUMENT_SHAREPOINT": "Edit document in MS Office",
-    "UPLOAD_NEW_VERSION": "Upload new version",
-    "PREVIEW": "Preview",
-    "ATTACHMENTS": {
-      "ATTACHMENTS": "Attachments",
-      "CURRENT_VERSION": "Current version",
-      "EDIT_ATTACHMENT": "Edit attachment",
-      "UPLOAD_NEW_ATTACHMENT": "Upload new attachment"
-    },
-    "OPEN_PREVIEW": "Open preview",
-    "UPLOAD_DOCUMENT": "Upload document",
-    "UPLOAD_ATTACHMENT": "Upload attachment",
-    "DOCUMENT_TO_UPLOAD": "Document to upload",
-    "VERSIONTYPE": "Version type",
-    "MINOR_VERSION": "Minor version",
-    "MAJOR_VERSION": "Major version",
-    "CANNOT_PREVIEW": "Can't preview",
-    "DOWNLOAD_DOCUMENT": "Download document",
-    "IMAGE_MAX_SIZE_EXCEEDED": "Image \"{{image}}\" is too large to display.",
-    "PREVIEW_DOCUMENT": "Preview document",
-    "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THE_DOCUMENT": "Are you sure you want to delete the document \"{{document_title}}\" with all attachments?",
-    "VIEW_DOCUMENT_DETAILS": "View document",
-    "SENT_FROM_OUTLOOK": "Sent from Outlook",
-    "DELETE_DOC_SUCCESS": "Document successfully deleted",
-    "DELETE_DOC_FAILURE": "Document could not be deleted",
-    "NO_DOCUMENTS_ADDED_YET": "No documents added yet"
-  },
   "USER": {
     "USERS": "Users",
     "USER": "User",
@@ -201,6 +130,6 @@
     "FIND_USERS": "Find users",
     "FIND_GROUPS": "Find groups",
     "FIND_PERSON": "Find persons",
-    "FIND_ORGANISATION": "Find organizations"
+    "FIND_ORGANISATION": "Find organisations"
   }
 }

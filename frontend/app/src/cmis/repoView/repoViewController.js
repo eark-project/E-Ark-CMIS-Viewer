@@ -2,7 +2,7 @@ angular
     .module('eArkPlatform.cmis.repoView')
     .controller('RepoViewController', RepoViewController);
 
-function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $window, BRIDGE_URI) {
+function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $window, BRIDGE_URI, sessionService) {
     var rvc = this;
     rvc.repo = cmisRepoService.repoItems;
     rvc.loadRepoView = loadRepoView;
@@ -22,13 +22,11 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         cmisRepoService.connect();
     }
 
-    
     /**
      * Request folder children for view
      * @param objectId
      * @private
      */
-    
     function _getFolderView(objectId){
         var requestObject = {
             profileName: rvc.profileName,
@@ -44,7 +42,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
      * @param objectId
      * @private
      */
-    
     function _getDocument(ev, objectId){
         var requestObject = {
             profileName: rvc.profileName,
@@ -58,25 +55,22 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         
     }
 
-    
     /**
      * Just returns whether the item is a document or folder
      * @param item
      * @returns {boolean}
      */
-    
     function isFile(item){
         return item.type === "document";
     }
 
-    
     /**
      * Downloads a document
      * @param document
      */
-    
     function download(document){
-        $window.open(BRIDGE_URI.serviceProxy+cmisRepoService.getDocumentUrl(document.objectId));
+        var token = sessionService.getUserInfo().sessionTicket;
+        $window.open(BRIDGE_URI.serviceProxy+cmisRepoService.getDocumentUrl(document.objectId)+'?sessionToken='+token);
     }
 
     
@@ -85,7 +79,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
      * @param objectId
      * @param itemType
      */
-    
     function getItem(ev, objectId, itemType){
         (itemType === 'folder') ? _getFolderView(objectId) : _getDocument(ev, objectId);
     }
@@ -95,7 +88,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
      * Display meta-data for a document or a folder.
      * @param objectId
      */
-    
     function getItemInfo(ev, objectId, itemType){
         ev.preventDefault();
         ev.stopPropagation();
@@ -121,7 +113,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
      * Returns the current path based on the breadcrumbs
      * @private
      */
-    
     function _getBreadcrumbPath(){
         var path = "";
         rvc.breadcrumbs.forEach(function(item){
@@ -134,7 +125,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
     /**
      * Re-assigns the repo view array on changes to objects in the array
      */
-    
     function repoViewObserver(){
         rvc.breadcrumbs = cmisRepoService.breadcrumbs;
         rvc.repo = cmisRepoService.repoItems;
@@ -144,7 +134,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
     /**
      * Dialog to show info on individual files
      */
-    
     function fileInfoDiag(ev, doc) {
         $mdDialog.show({
           controller: fileInfoDialogController,

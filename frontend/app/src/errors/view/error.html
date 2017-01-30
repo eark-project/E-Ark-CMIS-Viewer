@@ -1,0 +1,6 @@
+<md-toolbar class="md-warn err-bar" ng-show="ectrl.errData.errorVisible">
+    <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <p flex>{{ ectrl.errData.errorMsg }}</p>
+        <md-button ng-click="ectrl.closeErrorMsg()">{{ 'COMMON.CLOSE' | translate }}</md-button>
+    </div>
+</md-toolbar>
