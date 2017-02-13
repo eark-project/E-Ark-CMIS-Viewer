@@ -3,7 +3,6 @@ package dk.magenta.eark.cmis.bridge.authentication;
 import dk.magenta.eark.cmis.bridge.Constants;
 import dk.magenta.eark.cmis.bridge.db.DatabaseWorker;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeUserAdminException;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
