@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @author lanre.
+ * @author DarkStar1.
  */
 @Service
 public class DatabaseWorkerImpl implements DatabaseWorker {

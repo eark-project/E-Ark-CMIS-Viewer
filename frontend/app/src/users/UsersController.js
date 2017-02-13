@@ -100,71 +100,12 @@ function UsersController($scope, $mdDialog, $mdToast, userService, $translate, s
         });
     }
 
-    function showCSVUploadDialog() {
-
-        return $mdDialog.show({
-            controller: userUploadCSVDialogController,
-            templateUrl: 'app/src/users/view/usersUploadDialog.html',
-            parent: angular.element(document.body),
-            targetEvent: null,
-            clickOutsideToClose: true,
-            focusOnOpen: false
-        }).then(function () {
-            getAllSystemUsers();
-        });
-    }
-
     function getAllSystemUsers(query) {
-        return userService.getPersons().then(function (response) {
+        console.log('getting users using this query: ', query);
+        return userService.getPersons(query).then(function (response) {
             vm.allSystemUsers = response.users;
             return response;
         });
-    }
-
-    function userUploadCSVDialogController($scope, $translate, $mdDialog, alfrescoUploadService) {
-
-        $scope.cancel = function () {
-            $mdDialog.cancel();
-        };
-
-        $scope.upload = function (ev) {
-            $mdDialog.hide();
-
-            userService.uploadUsersCSVFile($scope.fileToUpload).then(function (response) {
-                var returnedUsers = response.users;
-                var failedUsers = [], msg, dlgTitle;
-                var numOfFailedUsers = response.totalUsers - response.addedUsers;
-                if (response.error == "true") {
-                    dlgTitle = $translate.instant('COMMON.ERROR');
-                    msg = response.message;
-                } else if (numOfFailedUsers > 0) {
-                    dlgTitle = $translate.instant('COMMON.ERROR');
-                    //accumulate the failed users into a separate array
-                    returnedUsers.forEach(function (user) {
-                        if (user.uploadStatus.indexOf("@") == -1)
-                            failedUsers.push(user);
-                    });
-                    msg = $translate.instant('USER.FAILED_TO_UPLOAD_MSG', {failedNumberOfUsers: numOfFailedUsers});
-                    failedUsers.forEach(function (fUser) {
-                        msg += "<br/>" + fUser.username + ": " + fUser.uploadStatus;
-                    });
-
-                } else {
-                    dlgTitle = $translate.instant('COMMON.SUCCESS');
-                }
-
-                $mdDialog.show(
-                    $mdDialog.alert()
-                        .parent(angular.element(document.querySelector('body')))
-                        .clickOutsideToClose(true)
-                        .title(dlgTitle)
-                        .textContent(msg)
-                        .ariaLabel('User upload csv response.')
-                        .ok("OK")
-                        .targetEvent(ev)
-                );
-            });
-        };
     }
 
 }

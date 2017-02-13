@@ -1,0 +1,10 @@
+/*
+ * Error styles
+ */
+
+.err-bar p {
+    font-size: smaller;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

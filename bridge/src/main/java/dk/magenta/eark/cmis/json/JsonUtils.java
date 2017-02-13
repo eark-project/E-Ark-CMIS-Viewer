@@ -1,10 +1,10 @@
 package dk.magenta.eark.cmis.json;
 
+import dk.magenta.eark.cmis.bridge.Constants;
+
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-
-import dk.magenta.eark.cmis.bridge.Constants;
 
 /**
  * Various JSON utilities
@@ -75,8 +75,7 @@ public class JsonUtils {
 		}
 		return true;
 	}
-	
-	
+
 	public static JsonObjectBuilder addArrayErrorMessage(JsonObjectBuilder builder, String key) {
 		builder.add(Constants.SUCCESS, false);
 		builder.add(Constants.ERRORMSG, "The array given in " + key + " is not valid");
