@@ -2,7 +2,6 @@ package dk.magenta.eark.cmis.bridge.authentication;
 
 import dk.magenta.eark.cmis.bridge.Constants;
 import dk.magenta.eark.cmis.bridge.db.DatabaseWorker;
-import dk.magenta.eark.cmis.bridge.db.SearchQueryObj;
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeUserAdminException;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -15,6 +14,8 @@ import javax.json.JsonObjectBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+//import dk.magenta.eark.cmis.bridge.db.SearchQueryObj;
 
 /**
  * @author DarkStar1.
@@ -193,7 +194,7 @@ public class AuthenticationResource {
                                 @DefaultValue("all") @QueryParam(value = "filter") final String searchTerm,
                                 @DefaultValue("100") @QueryParam(value = "maxResults") final String maxResults) {
         try {
-            SearchQueryObj searchQueryObj = new SearchQueryObj(searchTerm,sortBy,direction, NumberUtils.toInt(maxResults));
+//            SearchQueryObj searchQueryObj = new SearchQueryObj(searchTerm,sortBy,direction, NumberUtils.toInt(maxResults));
             return databaseWorker.getPeople();
         } catch (Exception e) {
             JsonObjectBuilder builder = Json.createObjectBuilder();
