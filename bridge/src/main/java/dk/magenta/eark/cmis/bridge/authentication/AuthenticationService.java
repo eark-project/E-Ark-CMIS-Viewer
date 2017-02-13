@@ -4,6 +4,9 @@ import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeInvalidSessionTokenExcep
 import dk.magenta.eark.cmis.bridge.exceptions.CmisBridgeUserAuthenticationException;
 import org.jvnet.hk2.annotations.Contract;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 /**
  * @author DarkStar1.
  */
@@ -48,12 +51,23 @@ public interface AuthenticationService {
      * @param authCredentials
      * @return
      */
-    public boolean isAuthenticated(String authCredentials);
+    boolean isAuthenticated(String authCredentials);
 
     /**
      * Generate a random string.
      *
      * @return
      */
-    public String generateAccessToken();
+    String generateAccessToken();
+
+    /**
+     * Generic function used to decoded base64 string
+     * @param codedString
+     * @return
+     */
+    static String decodeB64String(String codedString){
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] decodedByteArr = decoder.decode(codedString);
+        return new String(decodedByteArr, StandardCharsets.UTF_8);
+    }
 }
