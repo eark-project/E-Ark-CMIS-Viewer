@@ -103,8 +103,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public String authenticateUser(String userName, String password) throws CmisBridgeUserAuthenticationException {
         try {
+            String decodedPassword =  AuthenticationService.decodeB64String(password);
             //If this fails for whatever reason, an exception is thrown so need to make use of the returned value for now.
-            JsonObject person = databaseWorker.authenticatePerson(userName, password);
+            JsonObject person = databaseWorker.authenticatePerson(userName, decodedPassword);
             AccessToken sessionToken = createAccessToken(userName);
             sessionTokenMap.put(userName, sessionToken);
             String ueSessionToken = userName + ';' + sessionToken.getTokenId();
@@ -114,7 +115,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (Exception ge) {
             logger.error("******** Error authenticating user [" + userName + "] ********");
             ge.printStackTrace();
-            throw new CmisBridgeUserAuthenticationException("Unable to authenticate user.");
+            throw new CmisBridgeUserAuthenticationException("Wrong userName or password. Unable to authenticate user.");
         }
     }
 
@@ -130,7 +131,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         try {
             Pair<String,String> userNameId = this.decodeAccessToken(sessionToken);
-            if (this.getUserAccessToken(userName, sessionToken) != null)
+            if (this.getUserAccessToken(userName, userNameId.getRight()) != null)
                 sessionTokenMap.remove(userName);
         }
         catch(Exception ge){
@@ -156,6 +157,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      *
      * @return
      */
+    @Override
     public String generateAccessToken() {
         return new BigInteger(130, random).toString(32);
     }
@@ -166,13 +168,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @return
      */
     public Pair<String,String> decodeAccessToken(String token){
-        Base64.Decoder decoder = Base64.getDecoder();
-        byte[] decodedByteArr = decoder.decode(token);
-        String userNameId = new String(decodedByteArr, StandardCharsets.UTF_8);
+        String userNameId = AuthenticationService.decodeB64String(token);
         final StringTokenizer tokenizer = new StringTokenizer(userNameId, ";");
         final String userName = tokenizer.nextToken();
         final String tokenId = tokenizer.nextToken();
         return new ImmutablePair<>(userName, tokenId);
     }
+
 
 }
