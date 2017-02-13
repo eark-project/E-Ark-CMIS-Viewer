@@ -8,7 +8,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 /**
- * @author lanre.
+ * @author DarkStar1.
  */
 public class Person {
     private static final Logger logger = LoggerFactory.getLogger(Person.class);

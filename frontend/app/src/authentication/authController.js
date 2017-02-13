@@ -2,7 +2,7 @@ angular
     .module('eArkPlatform')
     .controller('AuthController', AuthController);
 
-function AuthController($state, $stateParams, authService, $mdDialog, sessionService, $window, modulesMenuService) {
+function AuthController($state, $stateParams, $mdDialog, $window, authService, errorService, sessionService, modulesMenuService, base64) {
     var vm = this;
     var loginErrorMessage = angular.fromJson($stateParams.error);
 
@@ -29,7 +29,7 @@ function AuthController($state, $stateParams, authService, $mdDialog, sessionSer
     }
 
     function login(credentials) {
-        authService.login(credentials.username, credentials.password).then(function (response) {
+        authService.login(credentials.username, base64.encode(credentials.password) ).then(function (response) {
             modulesMenuService.fixPerms(sessionService.getUserInfo().user);
 
             // Logged in
@@ -39,10 +39,11 @@ function AuthController($state, $stateParams, authService, $mdDialog, sessionSer
             }
 
             // If incorrect values            
-            if (response.status == 403) {
-                vm.form.password.$setValidity("loginFailure", false);
+            if (response.status == 401) {
+                debugger;
+                errorService.displayErrorMsg( response );
             } else if (response.status == 500) {
-                vm.form.password.$setValidity("loginError", false);
+                errorService.displayErrorMsg( response );
             }
 
         });
@@ -58,10 +59,9 @@ function AuthController($state, $stateParams, authService, $mdDialog, sessionSer
     }
 
     function logout() {
-        //Fix when we have auth fixed
+        $state.go('login');
         authService.logout().then(function () {
             delete vm.user;
-            $state.go('login');
 
         });
     }

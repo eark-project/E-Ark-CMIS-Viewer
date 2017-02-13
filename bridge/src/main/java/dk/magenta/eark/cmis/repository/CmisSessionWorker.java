@@ -9,7 +9,7 @@ import javax.json.JsonObject;
 import java.util.List;
 
 /**
- * @author lanre.
+ * @author DarkStar1.
  */
 @Contract
 public interface CmisSessionWorker {

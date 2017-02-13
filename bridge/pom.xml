@@ -39,6 +39,7 @@
         <maven.springloaded.version>1.2.6.RELEASE</maven.springloaded.version>
 
         <jersey.version>2.25</jersey.version>
+        <jooq.version>3.8.2</jooq.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -232,35 +233,29 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.39</version>
         </dependency>
-        <!--Bring in the JOOQ plugin for working with the DB -->
+
+        <!--Bring in the JOOQ plugin for working with the DB - http://www.jooq.org/ -->
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
-            <version>3.8.2</version>
+            <version>${jooq.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-meta</artifactId>
-            <version>3.8.2</version>
+            <version>${jooq.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen</artifactId>
-            <version>3.8.2</version>
+            <version>${jooq.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.jdom/jdom2 -->
+        <!-- For accessing, manipulating, and outputting XML datahttps://mvnrepository.com/artifact/org.jdom/jdom2 -->
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom2</artifactId>
             <version>2.0.6</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
-        <dependency>
-            <groupId>jaxen</groupId>
-            <artifactId>jaxen</artifactId>
-            <version>1.1.6</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->

@@ -58,7 +58,7 @@ function httpTicketInterceptor($injector, $translate, $window, $q, sessionServic
         var $mdDialog = $injector.get('$mdDialog'),
             notificationUtilsService = $injector.get('notificationUtilsService');
         $mdDialog.cancel();
-        //sessionService.retainCurrentLocation();
+        sessionService.retainCurrentLocation();
         $window.location = "/#/login";
         notificationUtilsService.notify($translate.instant('LOGIN.SESSION_TIMEOUT'));
         delete $window._omsSessionExpired;
@@ -151,7 +151,7 @@ function authService($http, $window, sessionService, userService, $q) {
             authorizedRoles = [authorizedRoles];
         }
         return userInfo.user.role == 'ADMIN' ||
-            (authorizedRoles.length > 0 && authorizedRoles.indexOf('standard') > -1);
+            (authorizedRoles.length > 0 && authorizedRoles.indexOf('STANDARD') > -1);
     }
 
     function addUserAndParamsToSession(userName) {
