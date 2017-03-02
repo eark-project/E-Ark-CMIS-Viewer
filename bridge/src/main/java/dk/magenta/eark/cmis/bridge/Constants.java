@@ -2,6 +2,8 @@ package dk.magenta.eark.cmis.bridge;
 
 public class Constants {
 
+	public static final String DEFAULT_REPO_PASSWORD = "thouShaltNotCovetMinePassw0rd";
+
 	// Accepted extraction formats
 
 	// JSON keys

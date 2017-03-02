@@ -205,7 +205,7 @@ public class DatabaseWorkerImpl implements DatabaseWorker {
             Map<String, String> details = cmis1Connector.getRepoDetails();
             json.add(Repository.URL, details.get(Repository.URL));
             json.add(Repository.USERNAME, details.get(Repository.USERNAME));
-            json.add(Repository.PASSWORD, "thouShaltNotCovetMinePassw0rd");
+            json.add(Repository.PASSWORD, Constants.DEFAULT_REPO_PASSWORD);
         } catch (Exception ge) {
             String rnd = RandomStringUtils.random(16, true, true);
             logger.error("********** Error (" + rnd + ") **********");
