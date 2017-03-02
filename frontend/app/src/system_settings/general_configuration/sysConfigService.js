@@ -1,4 +1,3 @@
-
 angular
         .module('eArkPlatform.systemsettings')
         .factory('sysConfigService', sysConfigService);
