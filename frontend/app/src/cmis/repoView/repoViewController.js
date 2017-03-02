@@ -15,7 +15,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
     rvc.download = download;
     
     rvc.loadRepoView();
-    
 
     function loadRepoView(){
         cmisRepoService.registerObserverCallback(repoViewObserver);
@@ -35,7 +34,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         cmisRepoService.getFolderChildren(requestObject);
         rvc.repo = []; // Reset repo items
     }
-
     
     /**
      * Returns all the information about a document
@@ -72,7 +70,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         var token = sessionService.getUserInfo().sessionTicket;
         $window.open(BRIDGE_URI.serviceProxy+cmisRepoService.getDocumentUrl(document.objectId)+'?sessionToken='+token);
     }
-
     
     /**
      * Decides which to call between getting information on a document or a folder.
@@ -82,7 +79,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
     function getItem(ev, objectId, itemType){
         (itemType === 'folder') ? _getFolderView(objectId) : _getDocument(ev, objectId);
     }
-    
     
     /**
      * Display meta-data for a document or a folder.
@@ -108,7 +104,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         };
     }
 
-    
     /**
      * Returns the current path based on the breadcrumbs
      * @private
@@ -120,7 +115,6 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         });
         return path;
     }
-
     
     /**
      * Re-assigns the repo view array on changes to objects in the array
@@ -129,8 +123,7 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
         rvc.breadcrumbs = cmisRepoService.breadcrumbs;
         rvc.repo = cmisRepoService.repoItems;
     }
-    
-    
+
     /**
      * Dialog to show info on individual files
      */
@@ -145,8 +138,7 @@ function RepoViewController(cmisRepoService, fileUtilsService, $mdDialog, $windo
           fullscreen: true
         });
     }
-    
-    
+
     function fileInfoDialogController($scope, $mdDialog, document) {
         var fidc = this;
         

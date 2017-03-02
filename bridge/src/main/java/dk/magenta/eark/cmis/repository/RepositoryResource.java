@@ -2,6 +2,7 @@ package dk.magenta.eark.cmis.repository;
 
 import dk.magenta.eark.cmis.Repository;
 import dk.magenta.eark.cmis.bridge.Constants;
+import dk.magenta.eark.cmis.bridge.authentication.AuthenticationService;
 import dk.magenta.eark.cmis.bridge.db.DatabaseWorker;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -210,8 +211,11 @@ public class RepositoryResource {
                 repoProps.put(Repository.URL, json.getString(Repository.URL));
             if (json.containsKey(Repository.USERNAME))
                 repoProps.put((Repository.USERNAME), json.getString(Repository.USERNAME));
-            if (json.containsKey(Repository.PASSWORD))
-                repoProps.put((Repository.PASSWORD), json.getString(Repository.PASSWORD));
+            if (json.containsKey(Repository.PASSWORD)){
+                String decodedPassword = AuthenticationService.decodeB64String(json.getString(Repository.PASSWORD));
+                if(!Constants.DEFAULT_REPO_PASSWORD.equalsIgnoreCase(decodedPassword))
+                    repoProps.put((Repository.PASSWORD), decodedPassword);
+            }
 
             try {
                 //Build the json for the repository details
