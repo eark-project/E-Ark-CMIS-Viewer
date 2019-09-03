@@ -1,3 +1,5 @@
+### Please note that this library is obsolete and maintained here for historic reasons only ###
+
 # E-Ark-CMIS-Viewer
 A Browser based viewer for CMIS 1.0 complaint repositories.
 
